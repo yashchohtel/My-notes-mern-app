@@ -1,18 +1,17 @@
-import mongoose from "mongoose"; // Import mongoose
-
+import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
+
+    fullName: {
+        type: String,
+        required: [true, "Full Name is required"],
+        trim: true,
+    },
 
     username: {
         type: String,
         required: [true, "Username is required"],
         trim: true,
         unique: true,
-    },
-
-    fullName: {
-        type: String,
-        required: [true, "Full Name is required"],
-        trim: true,
     },
 
     email: {

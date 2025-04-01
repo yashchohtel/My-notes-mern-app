@@ -4,6 +4,7 @@ import cors from "cors"; // Middleware to enable CORS (Cross-Origin Resource Sha
 import dotenv from "dotenv"; // Import dotenv for environment variables
 import cookieParser from "cookie-parser"; // Import cookieParser 
 import connectDB from "./Config/dataBase.js"; // Import the function to connect to MongoDB
+import userRouter from "./routes/userRoute.js";
 
 // Load environment variables
 dotenv.config();
@@ -32,10 +33,9 @@ connectDB(); // Call the function to connect to MongoDB
 
 // -------------------- Routes -------------------- //
 
-// Default Route
-app.get("/", (req, res) => {
-    res.send("API is running...");
-});
+// User routes `/api/auth`
+app.use("/api/user", userRouter); // Use userRouter for user-related routes
+
 
 // -------------------- Server Configuration -------------------- //
 
