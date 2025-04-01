@@ -1,8 +1,8 @@
-import User from "../../models/User.js"; // Importing the User model
 import bcrypt from "bcryptjs"; // Import bcrypt for password hashing
 import jwt from "jsonwebtoken"; // Import JWT for authentication
 import transporter from "../Config/emailService.js";  // Import email service for sending emails
 import dotenv from "dotenv"; // Import dotenv to use environment variables
+import User from "../models/User.js";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -237,4 +237,120 @@ export const logout = async (req, res) => {
     }
 }
 
+// SEND VERIFY OTP CONTROLLER -------------------------- //
 
+export const sendVerifyOtp = async (req, res) => {
+
+    try {
+
+        // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
+        const userId = req.userId;
+
+        // Find user by ID in database
+        const user = await User.findById(userId);
+
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        // Check if user is already verified
+        if (user.isAccountVerified) {
+            return res.status(400).json({
+                success: false,
+                message: "Account already verified",
+            });
+        }
+
+        // Generate a 6-digit random OTP
+        const otp = String(Math.floor(100000 + Math.random() * 900000));
+
+        // Store OTP in the user document along with expiration time (24 hours)
+        user.emailVerifyOtp = otp;
+        user.emailVerifyOtpExpiredAt = Date.now() + 24 * 60 * 60 * 1000;
+
+        // Save the updated user data in the database
+        await user.save();
+
+        // Configure email options
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL, // Sender email (from environment variable)
+            to: user.email, // Recipient email
+            subject: "Account Verification OTP", // Email subject
+            text: `Your verification OTP is: ${otp}`, // Email body,
+            html: `
+            <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
+                <h2 style="color: #333;">Account Verification</h2>
+                <p>Your verification OTP is:</p>
+                <h3 style="color: #007BFF;">${otp}</h3>
+                <p>Please enter this OTP to verify your account.</p>
+                <p>OTP will expire in 24 hours.</p>
+            </div>`,
+        }
+
+        // Sending email using the transporter instance with another try-catch block to handle errors
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Email sent:", info.messageId);
+        } catch (emailError) {
+            console.error("Error sending email:", emailError);
+        }
+
+        // logs for debugging remove in production
+        console.log('↓--- sendVerifyOtp controller ---↓');
+        console.log("User details:", user);
+        console.log("OTP sent to email:", user.email); //
+        console.log('↑--- sendVerifyOtp controller ---↑');
+
+        // Success response
+        return res.status(200).json({
+            success: true,
+            message: `OTP sent to your registered email`
+        });
+
+    } catch (error) {
+
+        console.error("Error in register controller:", error);
+
+        // Check if the error has a specific message and handle accordingly
+        const errorMessage = error.message ? error.message : "Internal Server Error. Please try again later.";
+
+        // Return a generic message to the client
+        return res.status(500).json({
+            success: false,
+            message: errorMessage
+        });
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// {
+//     "fullName":"yashchohtel",
+//     "username": "yash_chohtel",
+//     "email": "yashchohtel@gmail.com",
+//     "password": "12345678",
+// }
