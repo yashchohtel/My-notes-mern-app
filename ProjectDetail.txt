@@ -1,0 +1,90 @@
+**# Notes App Features - Detailed Summary**
+
+## **1. Frontend Features (Client-Side Only)**
+These features will be implemented only on the frontend using React.
+
+### **1.1 Pagination**
+- Display notes in a paginated format instead of loading all at once.
+- "Load More" or "Next/Previous Page" navigation.
+
+### **1.2 Sorting Options**
+- Sort notes based on:
+  - **Newest First / Oldest First** (By creation date)
+  - **Recently Updated First** (By last edited date)
+  - **Important Notes First**
+
+### **1.3 Filtering Options**
+- Users can filter notes by:
+  - **All Notes**
+  - **Important Notes**
+  - **Deleted Notes (Recycle Bin)**
+  - **Recently Updated Notes**
+
+### **1.4 Search Functionality**
+- Search notes by **title or description**.
+- Instant search (as the user types).
+
+### **1.5 Dark Mode / Theme Switching**
+- Toggle between **light mode & dark mode**.
+- Store theme preference using Redux.
+
+### **1.6 Multi-Select Actions**
+- Select multiple notes at once to:
+  - Move to **Recycle Bin**
+  - Restore from **Recycle Bin**
+  - Delete Permanently
+
+## **2. Backend Features (CRUD & Other Server-Side Functionalities)**
+These features will be implemented on the backend using Node.js and Express.
+
+### **2.1 Create Notes**
+- Each note must have:
+  - **Title**
+  - **Description**
+  - **Creation Date** (Automatically assigned)
+
+### **2.2 Read Notes**
+- Fetch all notes belonging to the user.
+- Allow fetching a single note by ID.
+- Support pagination when fetching multiple notes.
+
+### **2.3 Update Notes**
+- Update **title and description**.
+- Automatically update the **last edited timestamp**.
+
+### **2.4 Mark Notes as Important / Unimportant**
+- Toggle an **important** flag for a note.
+
+### **2.5 Delete Notes**
+- Move notes to **Recycle Bin** instead of permanently deleting.
+- Provide options to:
+  - **Restore Notes** from Recycle Bin.
+  - **Permanently Delete Notes**.
+
+### **2.6 Auto-Delete Notes in Recycle Bin After 30 Days**
+- Use a **cron job** to permanently delete notes after **30 days** in the bin.
+
+### **2.7 Bulk Delete Operations**
+- Allow users to delete multiple notes at once:
+  - Delete all notes.
+  - Delete all important notes.
+  - Delete all notes in the Recycle Bin.
+
+## **3. Features Requiring Both Frontend & Backend**
+These features need coordination between frontend and backend.
+
+| Feature | Frontend | Backend |
+|---------|---------|---------|
+| Pagination | ✅ | ✅ |
+| Sorting | ✅ | ✅ |
+| Filtering | ✅ | ✅ |
+| Search | ✅ | ✅ |
+| Multi-Select Actions | ✅ | ✅ |
+| Mark Notes as Important | ✅ | ✅ |
+| Move Notes to Recycle Bin | ✅ | ✅ |
+| Restore Notes | ✅ | ✅ |
+| Auto-Delete Notes (Cron Job) | ❌ | ✅ |
+
+---
+This document provides a clear breakdown of features needed for the Notes App. The next step is to design the API structure for implementing these features.
+

@@ -53,13 +53,6 @@ const userSchema = new mongoose.Schema({
         default: null
     },
 
-    notes: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: "Task"
-        }
-    ]
-
 }, { timestamps: true });
 
 // Create a user model

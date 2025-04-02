@@ -4,7 +4,8 @@ import cors from "cors"; // Middleware to enable CORS (Cross-Origin Resource Sha
 import dotenv from "dotenv"; // Import dotenv for environment variables
 import cookieParser from "cookie-parser"; // Import cookieParser 
 import connectDB from "./Config/dataBase.js"; // Import the function to connect to MongoDB
-import userRouter from "./routes/userRoute.js";
+import userRouter from "./routes/userRoute.js"; // Import user routes
+import notesRouter from "./routes/notesRoute.js";  // Import notes routes
 
 // Load environment variables
 dotenv.config();
@@ -35,6 +36,9 @@ connectDB(); // Call the function to connect to MongoDB
 
 // User routes `/api/auth`
 app.use("/api/user", userRouter); // Use userRouter for user-related routes
+
+// Notes routes `/api/notes`
+app.use("/api/notes", notesRouter); // Uncomment when notesRouter is defined
 
 
 // -------------------- Server Configuration -------------------- //
