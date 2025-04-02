@@ -34,3 +34,4 @@ userRouter.post("/reset-password", resetPassword); // 'http://localhost:3000/api
 userRouter.get("/getUser-data", userAuth, getUserData); // 'http://localhost:3000/api/user/getUser-data'
 
 export default userRouter; // exporting the userRouter
+
