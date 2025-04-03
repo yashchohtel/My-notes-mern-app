@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser"; // Import cookieParser
 import connectDB from "./Config/dataBase.js"; // Import the function to connect to MongoDB
 import userRouter from "./routes/userRoute.js"; // Import user routes
 import notesRouter from "./routes/notesRoute.js";  // Import notes routes
+import "./Config/cronJobs.js"; // Import cron jobs for scheduled tasks
 
 // Load environment variables
 dotenv.config();
