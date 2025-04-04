@@ -626,15 +626,4 @@ export const deleteAllNotesPermanently = async (req, res) => {
 
 }
 
-
-
-// {
-//     "title" : "note1",
-//     "description" : "description1"
-// }
-
-// {
-//     "updatedTitle" : "note1",
-//     "updatedDescription" : "description1"
-// }
-
+// END OF FILE 
