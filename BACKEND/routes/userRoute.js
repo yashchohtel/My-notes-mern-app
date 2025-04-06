@@ -14,7 +14,7 @@ userRouter.post("/register", catchAsyncError(register)); // 'http://localhost:30
 userRouter.post("/login", catchAsyncError(login)); // 'http://localhost:3000/api/user/login'
 
 // logout route [POST]
-userRouter.post("/logout", logout); // 'http://localhost:3000/api/user/logout'
+userRouter.post("/logout", catchAsyncError(logout)); // 'http://localhost:3000/api/user/logout'
 
 // send verify otp route [POST]
 userRouter.post("/send-verify-otp", userAuth, sendEmailVerifyOtp); // 'http://localhost:3000/api/user/send-verify-otp'
