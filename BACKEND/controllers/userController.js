@@ -86,6 +86,7 @@ export const register = async (req, res, next) => {
         console.log("Email sent:", info.messageId);
     } catch (emailError) {
         console.error("Error sending email:", emailError);
+        return next(new ErrorHandler("Failed to send OTP email", 500));
     }
 
     // logs for debugging remove in production
@@ -110,7 +111,7 @@ export const register = async (req, res, next) => {
 
 // LOGIN CONTROLLER -------------------------- //
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
 
     // Extracting data from body, "identifier" can be either email or username
     const { identifier, password } = req.body;
@@ -123,8 +124,7 @@ export const login = async (req, res) => {
     // Checking user exists or not
     if (!user) {
         // If user not found, return an error response
-        return next(new ErrorHandler("Invalid username or password", 400));
-
+        return next(new ErrorHandler("Invalid username or password", 404));
     }
 
     // Compare passwords
@@ -168,7 +168,7 @@ export const login = async (req, res) => {
 
 // LOGOUT CONTROLLER ------------------------- //
 
-export const logout = async (req, res) => {
+export const logout = async (req, res, next) => {
     try {
 
         // Clear the token cookie to log out the user
@@ -191,65 +191,54 @@ export const logout = async (req, res) => {
 
     } catch (error) {
 
-        console.error("Error in logout controller:", error);
-
-        // Check if the error has a specific message and handle accordingly
-        const errorMessage = error.message ? error.message : "Internal Server Error. Please try again later.";
-
-        // Return a generic message to the client
-        return res.status(500).json({
-            success: false,
-            message: errorMessage
-        });
+        next(new ErrorHandler(error.message || "Logout failed", 500));
 
     }
 }
 
 // SEND VERIFY OTP CONTROLLER ---------------- //
 
-export const sendEmailVerifyOtp = async (req, res) => {
+export const sendEmailVerifyOtp = async (req, res, next) => {
 
-    try {
+    // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
+    const userId = req.userId;
 
-        // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
-        const userId = req.userId;
+    // Find user by ID in database
+    const user = await User.findById(userId);
 
-        // Find user by ID in database
-        const user = await User.findById(userId);
+    // Check if user exists
+    if (!user) {
 
-        // Check if user exists
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
+        // If user not found, return an error response
+        return next(new ErrorHandler("User not found", 404));
 
-        // Check if user is already verified
-        if (user.isAccountVerified) {
-            return res.status(400).json({
-                success: false,
-                message: "Account already verified",
-            });
-        }
+    }
 
-        // Generate a 6-digit random OTP
-        const otp = String(Math.floor(100000 + Math.random() * 900000));
+    // Check if user is already verified
+    if (user.isAccountVerified) {
 
-        // Store OTP in the user document along with expiration time (24 hours)
-        user.emailVerifyOtp = otp;
-        user.emailVerifyOtpExpiredAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        // If user is already verified, return an error response
+        return next(new ErrorHandler("Account already verified", 400));
 
-        // Save the updated user data in the database
-        await user.save();
+    }
 
-        // Configure email options
-        const mailOptions = {
-            from: process.env.SENDER_EMAIL, // Sender email (from environment variable)
-            to: user.email, // Recipient email
-            subject: "Account Verification OTP", // Email subject
-            text: `Your verification OTP is: ${otp}`, // Email body,
-            html: `
+    // Generate a 6-digit random OTP
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
+
+    // Store OTP in the user document along with expiration time (24 hours)
+    user.emailVerifyOtp = otp;
+    user.emailVerifyOtpExpiredAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    // Save the updated user data in the database
+    await user.save();
+
+    // Configure email options
+    const mailOptions = {
+        from: process.env.SENDER_EMAIL, // Sender email (from environment variable)
+        to: user.email, // Recipient email
+        subject: "Account Verification OTP", // Email subject
+        text: `Your verification OTP is: ${otp}`, // Email body,
+        html: `
             <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
                 <h2 style="color: #333;">Account Verification</h2>
                 <p>Your verification OTP is:</p>
@@ -257,137 +246,93 @@ export const sendEmailVerifyOtp = async (req, res) => {
                 <p>Please enter this OTP to verify your account.</p>
                 <p>OTP will expire in 24 hours.</p>
             </div>`,
-        }
-
-        // Sending email using the transporter instance with another try-catch block to handle errors
-        try {
-            const info = await transporter.sendMail(mailOptions);
-            console.log("Email sent:", info.messageId);
-        } catch (emailError) {
-            console.error("Error sending email:", emailError);
-        }
-
-        // logs for debugging remove in production
-        console.log('↓--- sendEmailVerifyOtp controller ---↓');
-        console.log("User details:", user);
-        console.log("OTP sent to email:", user.email); //
-        console.log('↑--- sendEmailVerifyOtp controller ---↑');
-
-        // Success response
-        return res.status(200).json({
-            success: true,
-            message: `OTP sent to your registered email`
-        });
-
-    } catch (error) {
-
-        console.error("Error in send vaeification otp controller:", error);
-
-        // Check if the error has a specific message and handle accordingly
-        const errorMessage = error.message ? error.message : "Internal Server Error. Please try again later.";
-
-        // Return a generic message to the client
-        return res.status(500).json({
-            success: false,
-            message: errorMessage
-        });
-
     }
+
+    // Sending email using the transporter instance with another try-catch block to handle errors
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent:", info.messageId);
+    } catch (emailError) {
+        console.error("Error sending email:", emailError);
+        return next(new ErrorHandler("Failed to send OTP email", 500));
+    }
+
+    // logs for debugging remove in production
+    console.log('↓--- sendEmailVerifyOtp controller ---↓');
+    console.log("User details:", user);
+    console.log("OTP sent to email:", user.email); //
+    console.log('↑--- sendEmailVerifyOtp controller ---↑');
+
+    // Success response
+    return res.status(200).json({
+        success: true,
+        message: `OTP sent to your registered email`
+    });
 
 }
 
 // VERIFY EMAIL CONTROLLER ------------------- //
 
-export const verifyEmail = async (req, res) => {
+export const verifyEmail = async (req, res, next) => {
+    // Extract otp from request body
+    const { otp } = req.body;
 
-    try {
+    // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
+    const userId = req.userId;
 
-        // Extract otp from request body
-        const { otp } = req.body;
-
-        // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
-        const userId = req.userId;
-
-        // Check if userId and OTP are provided
-        if (!userId || !otp) {
-            return res.status(400).json({
-                success: false,
-                message: "Missing details: userId and OTP are required"
-            });
-        }
-
-        // Find user by ID in database
-        const user = await User.findById(userId);
-
-        // Check if user exists
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
-
-        // Check if user is already verified
-        if (user.isAccountVerified) {
-            return res.status(400).json({
-                success: false,
-                message: "Account already verified",
-            });
-        }
-
-        // Check if OTP is valid and not expired
-        if (user.emailVerifyOtp !== otp || Date.now() > user.emailVerifyOtpExpiredAt.getTime()) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid or expired OTP",
-            });
-        }
-
-        // Update user's account verification status
-        user.isAccountVerified = true;
-        user.emailVerifyOtp = ""; // Clear OTP after successful verification
-        user.emailVerifyOtpExpiredAt = null; // Clear OTP expiration time
-
-        // Save the updated user data in the database
-        await user.save();
-
-        // logs for debugging remove in production
-        console.log('↓--- verifyEmail controller ---↓');
-        console.log("User details:", user);
-        console.log('↑--- verifyEmail controller ---↑');
-
-        // Success response
-        return res.status(200).json({
-            success: true,
-            message: "Account verified successfully",
-            user: {
-                id: user._id,
-                fullName: user.fullName,
-                username: user.username,
-                email: user.email,
-            }
-        });
-
-    } catch (error) {
-
-        console.error("Error in email verify controller:", error);
-
-        // Check if the error has a specific message and handle accordingly
-        const errorMessage = error.message ? error.message : "Internal Server Error. Please try again later.";
-
-        // Return a generic message to the client
-        return res.status(500).json({
-            success: false,
-            message: errorMessage
-        });
-
+    // Check if userId and OTP are provided
+    if (!userId || !otp) {
+        return next(new ErrorHandler("Missing details: userId and OTP are required", 400));
     }
+
+    // Find user by ID in database
+    const user = await User.findById(userId);
+
+    // Check if user exists
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Check if user is already verified
+    if (user.isAccountVerified) {
+        return next(new ErrorHandler("Account already verified", 400));
+    }
+
+    // Check if OTP is valid and not expired
+    if (user.emailVerifyOtp !== otp || Date.now() > user.emailVerifyOtpExpiredAt.getTime()) {
+        return next(new ErrorHandler("Invalid or expired OTP", 400));
+    }
+
+    // Update user's account verification status
+    user.isAccountVerified = true;
+    user.emailVerifyOtp = ""; // Clear OTP after successful verification
+    user.emailVerifyOtpExpiredAt = null; // Clear OTP expiration time
+
+    // Save the updated user data in the database
+    await user.save();
+
+    // logs for debugging remove in production
+    console.log('↓--- verifyEmail controller ---↓');
+    console.log("User details:", user);
+    console.log('↑--- verifyEmail controller ---↑');
+
+    // Success response
+    return res.status(200).json({
+        success: true,
+        message: "Account verified successfully",
+        user: {
+            id: user._id,
+            fullName: user.fullName,
+            username: user.username,
+            email: user.email,
+        }
+    });
 
 };
 
 // CHECK USER AUTHENTICATED CONTROLLER ------- //
 
-export const isUserAuthenticated = async (req, res) => {
+export const isUserAuthenticated = async (req, res, next) => {
 
     try {
 
@@ -399,16 +344,7 @@ export const isUserAuthenticated = async (req, res) => {
 
     } catch (error) {
 
-        console.error("Error in isAuthenticated controller:", error);
-
-        // Check if the error has a specific message and handle accordingly
-        const errorMessage = error.message ? error.message : "Internal Server Error. Please try again later.";
-
-        // Return a generic message to the client
-        return res.status(500).json({
-            success: false,
-            message: errorMessage
-        });
+        return next(new ErrorHandler("Something went wrong", 500));
 
     }
 
@@ -416,52 +352,44 @@ export const isUserAuthenticated = async (req, res) => {
 
 // SEND PASSWORD RESET OTP CONTROLLER ------- //
 
-export const sendPassResetOtp = async (req, res) => {
+export const sendPassResetOtp = async (req, res, next) => {
 
-    try {
+    // Extract email from request body
+    const { email } = req.body;
 
-        // Extract email from request body
-        const { email } = req.body;
+    // Check if email is provided
+    if (!email) {
+        return next(new ErrorHandler("Email is required", 400));
+    }
 
-        // Check if email is provided
-        if (!email) {
-            return res.status(400).json({
-                success: false,
-                message: "Email is required"
-            });
-        }
+    // Find user by email in database
+    const user = await User.findOne({ email });
 
-        // Find user by email in database
-        const user = await User.findOne({ email });
+    // Check if user exists
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
 
-        // Check if user exists
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
+    // Generate a 6-digit random OTP
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
 
-        // Generate a 6-digit random OTP
-        const otp = String(Math.floor(100000 + Math.random() * 900000));
+    // Hash the OTP before storing
+    const salt = await bcrypt.genSalt(10);
+    const hashedOtp = await bcrypt.hash(otp, salt);
 
-        // Hash the OTP before storing
-        const salt = await bcrypt.genSalt(10);
-        const hashedOtp = await bcrypt.hash(otp, salt);
+    // Store OTP in the user document along with expiration time (10 minutes)
+    user.passwordResetOtp = hashedOtp;
+    user.passwordResetOtpExpiredAt = new Date(Date.now() + 10 * 60 * 1000);
 
-        // Store OTP in the user document along with expiration time (10 minutes)
-        user.passwordResetOtp = hashedOtp;
-        user.passwordResetOtpExpiredAt = new Date(Date.now() + 10 * 60 * 1000);
+    // Save the updated user data in the database
+    const savedUser = await user.save();
 
-        // Save the updated user data in the database
-        const savedUser = await user.save();
-
-        // Configure email options
-        const mailOptions = {
-            from: process.env.SENDER_EMAIL, // Sender email (from environment variable)
-            to: user.email, // Recipient email
-            subject: "Password Reset OTP", // Email subject
-            html: `
+    // Configure email options
+    const mailOptions = {
+        from: process.env.SENDER_EMAIL, // Sender email (from environment variable)
+        to: user.email, // Recipient email
+        subject: "Password Reset OTP", // Email subject
+        html: `
                 <div style="font-family: Arial, sans-serif; text-align: center;">
                     <h3>Password Reset Request</h3>
                     <p>Your OTP for resetting the password is:</p>
@@ -470,186 +398,123 @@ export const sendPassResetOtp = async (req, res) => {
                     <p>If you didn't request this, please ignore this email.</p>
                 </div>
             `
-        };
+    };
 
-        // Sending email using the transporter instance with another try-catch block to handle errors
-        try {
-            const info = await transporter.sendMail(mailOptions);
-            console.log("Email sent:", info.messageId);
-        } catch (emailError) {
-            console.error("Error sending email:", emailError);
-        }
-
-        // logs for debugging remove in production
-        console.log('↓--- sendPassResetOtp controller ---↓');
-        console.log("User details:", savedUser);
-        console.log("OTP sent to email:", user.email); //
-        console.log('↑--- sendPassResetOtp controller ---↑');
-
-        // Success response
-        return res.status(200).json({
-            success: true,
-            message: `OTP sent to your registered email`
-        });
-
-
-    } catch (error) {
-
-        console.error("Error in sendPassResetOtp controller:", error);
-
-        // Check if the error has a specific message and handle accordingly
-        const errorMessage = error.message ? error.message : "Internal Server Error. Please try again later.";
-
-        // Return a generic message to the client
-        return res.status(500).json({
-            success: false,
-            message: errorMessage
-        });
+    // Sending email using the transporter instance with another try-catch block to handle errors
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent:", info.messageId);
+    } catch (emailError) {
+        console.error("Error sending email:", emailError);
+        return next(new ErrorHandler("Failed to send OTP email. Please try again later.", 500));
     }
+
+    // logs for debugging remove in production
+    console.log('↓--- sendPassResetOtp controller ---↓');
+    console.log("User details:", savedUser);
+    console.log("OTP sent to email:", user.email); //
+    console.log('↑--- sendPassResetOtp controller ---↑');
+
+    // Success response
+    return res.status(200).json({
+        success: true,
+        message: `OTP sent to your registered email`
+    });
+
 
 }
 
 // RESET PASSWORD CONTROLLER --------------- //
 
-export const resetPassword = async (req, res) => {
+export const resetPassword = async (req, res, next) => {
 
-    try {
+    // Extract email, OTP, and new password from request body
+    const { email, otp, newPassword } = req.body;
 
-        // Extract email, OTP, and new password from request body
-        const { email, otp, newPassword } = req.body;
-
-        // Validate input fields
-        if (!email || !otp || !newPassword) {
-            return res.status(400).json({
-                success: false,
-                message: "Email, OTP, and new password are required",
-            });
-        }
-
-        // Find user by email
-        const user = await User.findOne({ email });
-
-        // If user does not exist
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
-
-        // Check if OTP is expired
-        if (Date.now() > user.passwordResetOtpExpiredAt.getTime()) {
-            return res.status(400).json({
-                success: false,
-                message: "OTP has expired",
-            });
-        }
-
-        // Compare the entered OTP with the hashed OTP stored in the database
-        const isOtpValid = await bcrypt.compare(otp, user.passwordResetOtp);
-
-        if (!isOtpValid) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid OTP",
-            });
-        }
-
-        // Hash the new password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-        // Update the user's password
-        user.password = hashedPassword;
-
-        // Clear OTP and expiry
-        user.passwordResetOtp = "";
-        user.passwordResetOtpExpiredAt = null;
-
-        // Save updated user data
-        const savedUser = await user.save();
-
-        // logs for debugging remove in production
-        console.log('↓--- resetPassword controller ---↓');
-        console.log("User details:", savedUser);
-        console.log('↑--- resetPassword controller ---↑');
-
-        // Success response
-        return res.status(200).json({
-            success: true,
-            message: "Password reset successful.",
-        });
-
-
-    } catch (error) {
-
-        console.error("Error in resetPassword controller:", error);
-
-        // Check if the error has a specific message and handle accordingly
-        const errorMessage = error.message ? error.message : "Internal Server Error. Please try again later.";
-
-        // Return a generic message to the client
-        return res.status(500).json({
-            success: false,
-            message: errorMessage
-        });
-
+    // Validate input fields
+    if (!email || !otp || !newPassword) {
+        return next(new ErrorHandler("Email, OTP, and new password are required", 400));
     }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+
+    // If user does not exist
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Check if OTP is expired
+    if (Date.now() > user.passwordResetOtpExpiredAt.getTime()) {
+        return next(new ErrorHandler("OTP has expired", 400));
+    }
+
+    // Compare the entered OTP with the hashed OTP stored in the database
+    const isOtpValid = await bcrypt.compare(otp, user.passwordResetOtp);
+
+    if (!isOtpValid) {
+        return next(new ErrorHandler("Invalid OTP", 400));
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update the user's password
+    user.password = hashedPassword;
+
+    // Clear OTP and expiry
+    user.passwordResetOtp = "";
+    user.passwordResetOtpExpiredAt = null;
+
+    // Save updated user data
+    const savedUser = await user.save();
+
+    // logs for debugging remove in production
+    console.log('↓--- resetPassword controller ---↓');
+    console.log("User details:", savedUser);
+    console.log('↑--- resetPassword controller ---↑');
+
+    // Success response
+    return res.status(200).json({
+        success: true,
+        message: "Password reset successful.",
+    });
 
 }
 
 // GET USER DATA CONTROLLER ---------------- //
 
-export const getUserData = async (req, res) => {
+export const getUserData = async (req, res, next) => {
 
-    try {
+    // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
+    const userId = req.userId;
 
-        // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
-        const userId = req.userId;
+    // Find user by ID in database
+    const user = await User.findById(userId);
 
-        // Find user by ID in database
-        const user = await User.findById(userId);
-
-        // Check if user exists
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
-
-        // logs for debugging remove in production
-        console.log('↓--- getUserData controller ---↓');
-        console.log("User details:", user);
-        console.log('↑--- getUserData controller ---↑');
-
-        // Success response
-        return res.status(200).json({
-            success: true,
-            message: "User data retrieved successfully",
-            user: {
-                id: user._id,
-                fullName: user.fullName,
-                username: user.username,
-                email: user.email,
-                isAccountVerified: user.isAccountVerified,
-            }
-        });
-
-    } catch (error) {
-
-        console.error("Error in getUserData controller:", error);
-
-        // Check if the error has a specific message and handle accordingly
-        const errorMessage = error.message ? error.message : "Internal Server Error. Please try again later.";
-
-        // Return a generic message to the client
-        return res.status(500).json({
-            success: false,
-            message: errorMessage
-        });
-
+    // Check if user exists
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
     }
+
+    // logs for debugging remove in production
+    console.log('↓--- getUserData controller ---↓');
+    console.log("User details:", user);
+    console.log('↑--- getUserData controller ---↑');
+
+    // Success response
+    return res.status(200).json({
+        success: true,
+        message: "User data retrieved successfully",
+        user: {
+            id: user._id,
+            fullName: user.fullName,
+            username: user.username,
+            email: user.email,
+            isAccountVerified: user.isAccountVerified,
+        }
+    });
 
 }
 
