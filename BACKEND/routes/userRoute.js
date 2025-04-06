@@ -1,16 +1,17 @@
 import express from "express"; // Importing express
 import { register, login, logout, sendEmailVerifyOtp, verifyEmail, isUserAuthenticated, sendPassResetOtp, resetPassword, getUserData, } from "../controllers/userController.js"; // Importing the controllers function
 import userAuth from "../middleware/userAuthMiddleware.js"; // Importing User Authentication middleware
+import catchAsyncError from "../middleware/catchAsyncError.js"; // Importing catchAsyncError middleware
 
 const userRouter = express.Router(); // Created a router instance
 
 // AUTHENTICATION USER ROUTES -------------------- //
 
 // register route [POST]
-userRouter.post("/register", register); // 'http://localhost:3000/api/user/register'
+userRouter.post("/register", catchAsyncError(register)); // 'http://localhost:3000/api/user/register'
 
 // login route [POST]
-userRouter.post("/login", login); // 'http://localhost:3000/api/user/login'
+userRouter.post("/login", catchAsyncError(login)); // 'http://localhost:3000/api/user/login'
 
 // logout route [POST]
 userRouter.post("/logout", logout); // 'http://localhost:3000/api/user/logout'
