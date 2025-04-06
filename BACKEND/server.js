@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser"; // Import cookieParser
 import connectDB from "./Config/dataBase.js"; // Import the function to connect to MongoDB
 import userRouter from "./routes/userRoute.js"; // Import user routes
 import notesRouter from "./routes/notesRoute.js";  // Import notes routes
+import errorMiddleware from "./middleware/error.js"; // Import Error handling middleware
 import "./Config/cronJobs.js"; // Import cron jobs for scheduled tasks
 
 // Load environment variables
@@ -41,6 +42,9 @@ app.use("/api/user", userRouter); // Use userRouter for user-related routes
 // Notes routes `/api/notes`
 app.use("/api/notes", notesRouter); // Uncomment when notesRouter is defined
 
+// --------------------Error Middleware -------------------- //
+
+app.use(errorMiddleware); // Use error handling middleware
 
 // -------------------- Server Configuration -------------------- //
 

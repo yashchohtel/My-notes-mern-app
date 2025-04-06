@@ -17,4 +17,4 @@ const deleteOldNotes = async () => {
 };
 
 // Run cron job every day at midnight
-cron.schedule("*/1 * * * *", deleteOldNotes);
+cron.schedule("0 0 * * * *", deleteOldNotes);
