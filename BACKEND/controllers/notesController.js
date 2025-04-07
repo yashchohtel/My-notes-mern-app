@@ -27,11 +27,12 @@ export const createNote = async (req, res, next) => {
     const savedNote = await newNote.save();
 
     // logs for debugging remove in production
-    console.log('↓--- createNote controller ---↓');
-    console.log("userId : " + userId); // 
-    console.log(`Notes created: ${savedNote}`);
-    console.log('↑--- createNote controller ---↑');
-
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- createNote controller ---↓');
+        console.log("userId : " + userId); // 
+        console.log(`Notes created: ${savedNote}`);
+        console.log('↑--- createNote controller ---↑');
+    }
 
     // send success response to the client
     return res.status(201).json({
@@ -58,10 +59,12 @@ export const getAllNotes = async (req, res, next) => {
     }
 
     // logs for debugging remove in production
-    console.log('↓--- getAllNotes controller ---↓');
-    console.log("userId : " + userId); // 
-    console.log(`Notes fetched: ${notes}`);
-    console.log('↑--- getAllNotes controller ---↑');
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- getAllNotes controller ---↓');
+        console.log("userId : " + userId); // 
+        console.log(`Notes fetched: ${notes}`);
+        console.log('↑--- getAllNotes controller ---↑');
+    }
 
     // send success response to the client
     return res.status(200).json({
@@ -91,10 +94,12 @@ export const getSingleNote = async (req, res, next) => {
     }
 
     // logs for debugging remove in production
-    console.log('↓--- getSingleNote controller ---↓');
-    console.log("userId : " + userId);
-    console.log("note : " + note);
-    console.log("↑--- getSingleNote controller ---↑")
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- getSingleNote controller ---↓');
+        console.log("userId : " + userId);
+        console.log("note : " + note);
+        console.log("↑--- getSingleNote controller ---↑")
+    }
 
     // Send the note data as response
     return res.status(200).json({
@@ -130,10 +135,12 @@ export const markNoteImportant = async (req, res, next) => {
     await note.save();
 
     // logs for debugging remove in production
-    console.log('↓--- markNoteImportant controller ---↓');
-    console.log("userId : " + userId);
-    console.log("note : " + note);
-    console.log("↑--- markNoteImportant controller ---↑")
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- markNoteImportant controller ---↓');
+        console.log("userId : " + userId);
+        console.log("note : " + note);
+        console.log("↑--- markNoteImportant controller ---↑")
+    }
 
     // Send the note data as response
     return res.status(200).json({
@@ -178,10 +185,12 @@ export const updateNote = async (req, res, next) => {
     const updatedNote = await note.save();
 
     // logs for debugging remove in production
-    console.log('↓--- updateNote controller ---↓');
-    console.log("userId : " + userId);
-    console.log("note : " + updatedNote);
-    console.log("↑--- updateNote controller ---↑")
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- updateNote controller ---↓');
+        console.log("userId : " + userId);
+        console.log("note : " + updatedNote);
+        console.log("↑--- updateNote controller ---↑")
+    }
 
     // Send the updated note data as response
     return res.status(200).json({
@@ -218,10 +227,12 @@ export const softDeleteNote = async (req, res, next) => {
     await note.save();
 
     // logs for debugging remove in production
-    console.log('↓--- softDeletenote controller ---↓');
-    console.log("userId : " + userId);
-    console.log("note : " + note);
-    console.log("↑--- softDeletenote controller ---↑")
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- softDeletenote controller ---↓');
+        console.log("userId : " + userId);
+        console.log("note : " + note);
+        console.log("↑--- softDeletenote controller ---↑")
+    }
 
     // Send success response
     return res.status(200).json({
@@ -254,10 +265,12 @@ export const softDeleteAllNotes = async (req, res, next) => {
     );
 
     // logs for debugging remove in production
-    console.log('↓--- softDeleteAllNotes controller ---↓');
-    console.log("userId : " + userId);
-    console.log("notes : " + notes);
-    console.log("↑--- softDeleteAllNotes controller ---↑");
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- softDeleteAllNotes controller ---↓');
+        console.log("userId : " + userId);
+        console.log("notes : " + notes);
+        console.log("↑--- softDeleteAllNotes controller ---↑");
+    }
 
     // Send success response
     return res.status(200).json({
@@ -293,10 +306,12 @@ export const restoreSoftDeletedNote = async (req, res, next) => {
     await note.save();
 
     // logs for debugging remove in production
-    console.log('↓--- restoreSoftDeletedNote controller ---↓');
-    console.log("userId : " + userId);
-    console.log("note : " + note);
-    console.log("↑--- restoreSoftDeletedNote controller ---↑");
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- restoreSoftDeletedNote controller ---↓');
+        console.log("userId : " + userId);
+        console.log("note : " + note);
+        console.log("↑--- restoreSoftDeletedNote controller ---↑");
+    }
 
     // Send success response
     return res.status(200).json({
@@ -329,10 +344,12 @@ export const restoreAllSoftDeletedNotes = async (req, res, next) => {
     );
 
     // logs for debugging remove in production
-    console.log('↓--- restoreAllSoftDeletedNotes controller ---↓');
-    console.log("userId : " + userId);
-    console.log("notes : " + notes);
-    console.log("↑--- restoreAllSoftDeletedNotes controller ---↑");
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- restoreAllSoftDeletedNotes controller ---↓');
+        console.log("userId : " + userId);
+        console.log("notes : " + notes);
+        console.log("↑--- restoreAllSoftDeletedNotes controller ---↑");
+    }
 
     // Return success response
     return res.status(200).json({
@@ -364,10 +381,12 @@ export const deleteNotePermanently = async (req, res, next) => {
     await Notes.deleteOne({ _id: noteId });
 
     // logs for debugging remove in production
-    console.log('↓--- deleteNotePermanently controller ---↓');
-    console.log("userId : " + userId);
-    console.log("Deleted Note ID : " + noteId);
-    console.log("↑--- deleteNotePermanently controller ---↑");
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- deleteNotePermanently controller ---↓');
+        console.log("userId : " + userId);
+        console.log("Deleted Note ID : " + noteId);
+        console.log("↑--- deleteNotePermanently controller ---↑");
+    }
 
     // Return success response
     return res.status(200).json({
@@ -396,10 +415,12 @@ export const deleteAllNotesPermanently = async (req, res, next) => {
     await Notes.deleteMany({ user: userId, isDeleted: true });
 
     // logs for debugging remove in production
-    console.log('↓--- deleteAllPermanently controller ---↓');
-    console.log("userId : " + userId);
-    console.log("Deleted Notes Count : " + deletedNotes.length);
-    console.log("↑--- deleteAllPermanently controller ---↑");
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- deleteAllPermanently controller ---↓');
+        console.log("userId : " + userId);
+        console.log("Deleted Notes Count : " + deletedNotes.length);
+        console.log("↑--- deleteAllPermanently controller ---↑");
+    }
 
     // Return success response
     return res.status(200).json({

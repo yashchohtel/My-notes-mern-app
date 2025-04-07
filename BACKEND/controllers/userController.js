@@ -83,10 +83,12 @@ export const register = async (req, res, next) => {
     }
 
     // logs for debugging remove in production
-    console.log('↓--- register controller ---↓');
-    console.log("token : " + token); // 
-    console.log(`User created: ${savedUser}`);
-    console.log('↑--- register controller ---↑');
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- register controller ---↓');
+        console.log("token : " + token); // 
+        console.log(`User created: ${savedUser}`);
+        console.log('↑--- register controller ---↑');
+    }
 
     // Send success response with user details and token
     return res.status(201).json({
@@ -137,10 +139,12 @@ export const login = async (req, res, next) => {
     });
 
     // logs for debugging remove in production
-    console.log('↓--- login controller ---↓');
-    console.log("token : " + token); //
-    console.log(`User logged in: ${user}`);
-    console.log('↑--- login controller ---↑');
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- login controller ---↓');
+        console.log("token : " + token); //
+        console.log(`User logged in: ${user}`);
+        console.log('↑--- login controller ---↑');
+    }
 
     // Send success response with user details and token
     return res.status(200).json({
@@ -169,9 +173,11 @@ export const logout = async (req, res, next) => {
         });
 
         // logs for debugging remove in production
-        console.log('↓--- logout controller ---↓');
-        console.log("User logged out");
-        console.log('↑--- logout controller ---↑');
+        if (process.env.NODE_ENV === "development") {
+            console.log('↓--- logout controller ---↓');
+            console.log("User logged out");
+            console.log('↑--- logout controller ---↑');
+        }
 
         // Send success response
         return res.status(200).json({
@@ -242,10 +248,12 @@ export const sendEmailVerifyOtp = async (req, res, next) => {
     }
 
     // logs for debugging remove in production
-    console.log('↓--- sendEmailVerifyOtp controller ---↓');
-    console.log("User details:", user);
-    console.log("OTP sent to email:", user.email); //
-    console.log('↑--- sendEmailVerifyOtp controller ---↑');
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- sendEmailVerifyOtp controller ---↓');
+        console.log("User details:", user);
+        console.log("OTP sent to email:", user.email); //
+        console.log('↑--- sendEmailVerifyOtp controller ---↑');
+    }
 
     // Success response
     return res.status(200).json({
@@ -296,9 +304,11 @@ export const verifyEmail = async (req, res, next) => {
     await user.save();
 
     // logs for debugging remove in production
-    console.log('↓--- verifyEmail controller ---↓');
-    console.log("User details:", user);
-    console.log('↑--- verifyEmail controller ---↑');
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- verifyEmail controller ---↓');
+        console.log("User details:", user);
+        console.log('↑--- verifyEmail controller ---↑');
+    }
 
     // Success response
     return res.status(200).json({
@@ -394,10 +404,12 @@ export const sendPassResetOtp = async (req, res, next) => {
     }
 
     // logs for debugging remove in production
-    console.log('↓--- sendPassResetOtp controller ---↓');
-    console.log("User details:", savedUser);
-    console.log("OTP sent to email:", user.email); //
-    console.log('↑--- sendPassResetOtp controller ---↑');
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- sendPassResetOtp controller ---↓');
+        console.log("User details:", savedUser);
+        console.log("OTP sent to email:", user.email); //
+        console.log('↑--- sendPassResetOtp controller ---↑');
+    }
 
     // Success response
     return res.status(200).json({
@@ -455,9 +467,11 @@ export const resetPassword = async (req, res, next) => {
     const savedUser = await user.save();
 
     // logs for debugging remove in production
-    console.log('↓--- resetPassword controller ---↓');
-    console.log("User details:", savedUser);
-    console.log('↑--- resetPassword controller ---↑');
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- resetPassword controller ---↓');
+        console.log("User details:", savedUser);
+        console.log('↑--- resetPassword controller ---↑');
+    }
 
     // Success response
     return res.status(200).json({
@@ -483,9 +497,11 @@ export const getUserData = async (req, res, next) => {
     }
 
     // logs for debugging remove in production
-    console.log('↓--- getUserData controller ---↓');
-    console.log("User details:", user);
-    console.log('↑--- getUserData controller ---↑');
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- getUserData controller ---↓');
+        console.log("User details:", user);
+        console.log('↑--- getUserData controller ---↑');
+    }
 
     // Success response
     return res.status(200).json({
