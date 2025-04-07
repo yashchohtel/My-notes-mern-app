@@ -16,18 +16,13 @@ export const register = async (req, res, next) => {
 
     // Check if all required fields are provided
     if (!fullName || !username || !email || !password) {
-
-        // If any field is missing, return an error response
         return next(new ErrorHandler("Missing user details", 400));
-
     }
 
     // Check if a user with the given username already exists
     const existingUsername = await User.findOne({ username });
 
     if (existingUsername) {
-
-        // If username already exists, return an error response
         return next(new ErrorHandler("username already exists", 400));
     }
 
@@ -35,8 +30,6 @@ export const register = async (req, res, next) => {
     const existingEmail = await User.findOne({ email });
 
     if (existingEmail) {
-
-        // If email already exists, return an error response
         return next(new ErrorHandler("Email already exists", 400));
     }
 
@@ -57,7 +50,7 @@ export const register = async (req, res, next) => {
     // Save the new user to the database
     const savedUser = await newUser.save();
 
-    // Generate a JWT token for the new user expiring in 10 days
+    // Generate a JWT token for the new user expiring in 7 days
     const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
     // Store the token in an HTTP-only cookie for security
@@ -123,15 +116,12 @@ export const login = async (req, res, next) => {
 
     // Checking user exists or not
     if (!user) {
-        // If user not found, return an error response
         return next(new ErrorHandler("Invalid username or password", 404));
     }
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-
-        // If password does not match, return an error response
         return next(new ErrorHandler("Invalid username or password", 400));
     }
 
@@ -208,18 +198,12 @@ export const sendEmailVerifyOtp = async (req, res, next) => {
 
     // Check if user exists
     if (!user) {
-
-        // If user not found, return an error response
         return next(new ErrorHandler("User not found", 404));
-
     }
 
     // Check if user is already verified
     if (user.isAccountVerified) {
-
-        // If user is already verified, return an error response
         return next(new ErrorHandler("Account already verified", 400));
-
     }
 
     // Generate a 6-digit random OTP
