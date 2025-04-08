@@ -180,3 +180,121 @@ export const demoteAdminToUser = async (req, res, next) => {
     });
 
 };
+
+// DEMOTE SUPERADMIN TO ADMIN CONTROLLER -------------------------- //
+
+export const demoteSupAdmintoAdmin = async (req, res, next) => {
+
+    // Extract user ID from request parameters
+    const { id } = req.params; // User ID to demote
+
+    //  Check if ID is provided
+    if (!id) {
+        return next(new ErrorHandler("User ID is required", 400));
+    }
+
+    // Find the user 
+    const user = await User.findById(id);
+
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // ❌ Don't allow demotion if user is superadmin
+    if (user.role.includes("superadmin")) {
+        return next(new ErrorHandler(`${user.fullName} cannot be demoted because they are a SUPER ADMIN`, 400));
+    }
+
+    // Check if user is already an admin
+    if (user.role.includes("admin") && !user.role.includes("superadmin")) {
+        return next(new ErrorHandler(`${user.fullName} is already an admin`, 400));
+    }
+
+    // demote the superadmin to admin by removing superadmin role   
+    user.role = user.role.filter(role => role !== "superadmin");
+
+    // Save updated user
+    await user.save();
+
+    // logs for debugging remove in production
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- demoteAdminToUser controller ---↓');
+        console.log("superAdmin demoted to admin:", user);
+        console.log('↑--- demoteAdminToUser controller ---↑');
+    }
+
+    res.status(200).json({
+        success: true,
+        message: `${user.fullName} demoted to ADMIN role successfully.`,
+    });
+
+};
+
+// DELETE USER CONTROLLER -------------------------- //
+export const deleteUserAccount = async (req, res, next) => {
+
+    // Extract user ID from request parameters
+    const { id } = req.params; // User ID to delete
+
+    //  Check if ID is provided
+    if (!id) {
+        return next(new ErrorHandler("User ID is required", 400));
+    }
+
+    // Find the user 
+    const user = await User.findById(id);
+
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Check if user is already an admin
+    if (user.role.includes("superadmin")) {
+        return next(new ErrorHandler(`You can't delete ${user.fullName} because they are a Super Admin`, 400));
+    }
+
+    // Delete the user 
+    await User.findByIdAndDelete(id);
+
+    // Delete all notes of the user (both active & deleted)
+    await Notes.deleteMany({ user: user._id });
+
+    // Send email to the user informing account deletion
+    const mailOptions = {
+        from: process.env.SENDER_EMAIL,
+        to: user.email,
+        subject: "Account Deleted",
+        html: `
+            <div style="font-family: Arial, sans-serif;">
+                <h2>Account Deletion Notice</h2>
+                <p>Dear ${user.fullName},</p>
+                <p>Your account has been permanently removed due to a breach of our terms.</p>
+                <p>If you believe this is a mistake, please contact our support team.</p>
+                <br>
+                <p>Thank you,</p>
+                <p>Team</p>
+            </div>
+        `,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log("Account deletion email sent to", user.email);
+    } catch (error) {
+        console.error("Failed to send email:", error);
+        // Not returning error response here to avoid blocking the deletion success
+    }
+
+    // logs for debugging remove in production
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- deleteUserAccount controller ---↓');
+        console.log("User deleted:", user);
+        console.log('↑--- deleteUserAccount controller ---↑');
+    }
+
+    res.status(200).json({
+        success: true,
+        message: `${user.fullName}'s account deleted successfully.`,
+    });
+
+};

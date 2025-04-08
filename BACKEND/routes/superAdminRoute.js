@@ -2,7 +2,7 @@ import express from 'express'; // Importing express framework
 import userAuth from '../middleware/userAuthMiddleware.js';// Importing user authentication middleware
 import authorizeRoles from '../middleware/authorizeRoles.js'; // Importing authorizeRoles middleware
 import catchAsyncError from '../middleware/catchAsyncError.js'; // Importing catchAsyncError middleware
-import { demoteAdminToUser, getAllUsersData, promoteUserToAdmin, promoteUserToSuperAdmin } from '../controllers/adminController.js'; // Importing the Controller function from adminController
+import { deleteUserAccount, demoteAdminToUser, demoteSupAdmintoAdmin, getAllUsersData, promoteUserToAdmin, promoteUserToSuperAdmin } from '../controllers/adminController.js'; // Importing the Controller function from adminController
 
 const superAdminRouter = express.Router(); // Creating an instance of Express Router
 
@@ -19,5 +19,11 @@ superAdminRouter.patch('/promote-user-to-superAdmin/:id', userAuth, authorizeRol
 
 // demote admin to user route [PATCH] | 'http://localhost:3000/api/superAdmin/demote-admin-to-user/:id'
 superAdminRouter.patch('/demote-admin-to-user/:id', userAuth, authorizeRoles("superadmin"), catchAsyncError(demoteAdminToUser));
+
+// demote superadmin to admin [PATCH] | 'http://localhost:3000/api/superAdmin/demote-supAdmin-to-admin/:id'
+superAdminRouter.patch('/demote-supAdmin-to-admin/:id', userAuth, authorizeRoles("superadmin"), catchAsyncError(demoteSupAdmintoAdmin));
+
+// delete user's account [DELETE] | 'http://localhost:3000/api/superAdmin/delete-user-account/:id'
+superAdminRouter.delete('/delete-user-account/:id', userAuth, authorizeRoles("superadmin"), catchAsyncError(deleteUserAccount));
 
 export default superAdminRouter; // Exporting the superAdminRouter instance
