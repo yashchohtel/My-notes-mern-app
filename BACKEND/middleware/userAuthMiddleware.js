@@ -19,12 +19,15 @@ const userAuth = (req, res, next) => {
         // Verify and decode the token
         const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
 
-        // Debugging logs (Remove in production)
-        console.log('↓--- auth middleware ---↓');
-        console.log("Token details:", token);
-        console.log("DecodedToken details:", tokenDecode);
-        console.log("DecodedToken userId:", tokenDecode.id);
-        console.log('↑--- auth middleware ---↑');
+        // logs for debugging remove in production
+        if (process.env.NODE_ENV === "development") {
+            console.log('↓--- auth middleware ---↓');
+            console.log("Token details:", token);
+            console.log("DecodedToken details:", tokenDecode);
+            console.log("DecodedToken userId:", tokenDecode.id);
+            console.log('↑--- auth middleware ---↑');
+        }
+
 
         // Check if the token contains a valid user ID
         if (!tokenDecode.id) {

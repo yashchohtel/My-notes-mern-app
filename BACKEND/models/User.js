@@ -53,10 +53,16 @@ const userSchema = new mongoose.Schema({
         default: null
     },
 
+    role: {
+        type: [String],
+        enum: ["user", "admin", "superadmin"],
+        default: ["user"],
+    }
+
 }, { timestamps: true });
 
 // Create a user model
-const User = mongoose.model("User", userSchema); 
+const User = mongoose.model("User", userSchema);
 
 // Export the user model
 export default User; 

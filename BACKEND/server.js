@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser"; // Import cookieParser
 import connectDB from "./Config/dataBase.js"; // Import the function to connect to MongoDB
 import userRouter from "./routes/userRoute.js"; // Import user routes
 import notesRouter from "./routes/notesRoute.js";  // Import notes routes
+import adminRouter from "./routes/adminRoute.js"; // Import admin routes
+import superAdminRouter from "./routes/superAdminRoute.js"; // Import super admin routes
 import errorMiddleware from "./middleware/error.js"; // Import Error handling middleware
 import "./Config/cronJobs.js"; // Import cron jobs for scheduled tasks
 
@@ -40,7 +42,13 @@ connectDB(); // Call the function to connect to MongoDB
 app.use("/api/user", userRouter); // Use userRouter for user-related routes
 
 // Notes routes `/api/notes`
-app.use("/api/notes", notesRouter); // Uncomment when notesRouter is defined
+app.use("/api/notes", notesRouter); // User notesRouter for notes-related routes
+
+// Admin routes `/api/admin`
+app.use("/api/admin", adminRouter); // Use adminRouter for admin-related routes
+
+// Admin routes `/api/admin`
+app.use("/api/superAdmin", superAdminRouter); // Use superAdminRouter for super-admin-related routes
 
 // --------------------Error Middleware -------------------- //
 
