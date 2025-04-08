@@ -125,7 +125,7 @@ export const markNoteImportant = async (req, res, next) => {
 
     // If note not found, return 404 response
     if (!note) {
-        next(new ErrorHandler("Note not found or you do not have permission to access it.", 404));
+        return next(new ErrorHandler("Note not found or you do not have permission to access it.", 404));
     }
 
     // Toggle note important/unimportant
@@ -169,12 +169,12 @@ export const updateNote = async (req, res, next) => {
 
     // If note not found, return 404 response
     if (!note) {
-        next(new ErrorHandler("Note not found or you do not have permission to access it.", 404));
+        return next(new ErrorHandler("Note not found or you do not have permission to access it.", 404));
     }
 
     // If no updates are provided, return an error
     if (!updatedTitle && !updatedDescription) {
-        next(new ErrorHandler("Please provide at least one field to update.", 400));
+        return next(new ErrorHandler("Please provide at least one field to update.", 400));
     }
 
     // Update the note with new data
@@ -216,7 +216,7 @@ export const softDeleteNote = async (req, res, next) => {
 
     // If note not found, return 404 response
     if (!note) {
-        next(new ErrorHandler("Note not found or already deleted.", 404));
+        return next(new ErrorHandler("Note not found or already deleted.", 404));
     }
 
     // Soft delete the note by updating the isDeleted field
@@ -255,7 +255,7 @@ export const softDeleteAllNotes = async (req, res, next) => {
 
     // If no notes found, return a message
     if (notes.length === 0) {
-        next(new ErrorHandler("No active notes found to delete.", 404));
+        return next(new ErrorHandler("No active notes found to delete.", 404));
     }
 
     // Soft delete all notes by updating isDeleted and deletedAt fields
@@ -295,7 +295,7 @@ export const restoreSoftDeletedNote = async (req, res, next) => {
 
     // If note not found, return 404 response
     if (!note) {
-        next(new ErrorHandler("Note not found or it's not in the recycle bin.", 404));
+        return next(new ErrorHandler("Note not found or it's not in the recycle bin.", 404));
     }
 
     // Restore the note by updating isDeleted and deletedAt fields
@@ -334,7 +334,7 @@ export const restoreAllSoftDeletedNotes = async (req, res, next) => {
 
     // If no notes found, return a message
     if (notes.length === 0) {
-        next(new ErrorHandler("No deleted notes found to restore.", 404));
+        return next(new ErrorHandler("No deleted notes found to restore.", 404));
     }
 
     // Find and restore all delete notes by updating isDeleted and deletedAt fields
@@ -374,7 +374,7 @@ export const deleteNotePermanently = async (req, res, next) => {
 
     // If note is not found or not in trash, return 404
     if (!note) {
-        next(new ErrorHandler("Note not found in trash or you do not have permission to delete it.", 404));
+        return next(new ErrorHandler("Note not found in trash or you do not have permission to delete it.", 404));
     }
 
     // Permanently delete the note from the database
@@ -408,7 +408,7 @@ export const deleteAllNotesPermanently = async (req, res, next) => {
 
     // If no soft deleted notes found, return 404
     if (deletedNotes.length === 0) {
-        next(new ErrorHandler("No notes found in trash to delete permanently.", 404));
+        return next(new ErrorHandler("No notes found in trash to delete permanently.", 404));
     }
 
     // Permanently delete all soft-deleted notes

@@ -27,13 +27,15 @@ const authorizeRoles = (...allowedRoles) => {
                 console.log('↓--- role auth middleware ---↓');
                 console.log("loged User role", user.role);
                 console.log("Role allowed", allowedRoles);
+                console.log("loged User id", user._id);
+                console.log("loged User name", user.fullName);
                 console.log("user has access", hasAccess);
                 console.log('↑--- role auth middleware ---↑');
             }
 
             // Check if user role is allowed
             if (!hasAccess) {
-               return next(new ErrorHandler(`Access denied! Roles [${user.role.join(", ")}] are not permitted for this route.`, 403));
+                return next(new ErrorHandler(`Access denied! Roles [${user.role.join(", ")}] are not permitted for this route.`, 403));
             }
 
             req.user = user;

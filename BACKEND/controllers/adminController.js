@@ -3,6 +3,8 @@ import Notes from "../models/Notes.js"; // Importing Notes model
 import ErrorHandler from "../utils/errorHandler.js"; // Importing ErrorHandler
 
 
+// GET ALL NOTES CONTROLLER ---------------------------------- //
+
 export const getAllUsersData = async (req, res) => {
 
     // get all users data from database
@@ -15,10 +17,10 @@ export const getAllUsersData = async (req, res) => {
         users.map(async (user) => {
 
             // geting active notes count
-            const activeNotesCount = await Notes.countDocuments({ user: user._id, isDeleted: false,});
+            const activeNotesCount = await Notes.countDocuments({ user: user._id, isDeleted: false, });
 
             // geting deleted notes count
-            const deletedNotesCount = await Notes.countDocuments({ user: user._id, isDeleted: true,});
+            const deletedNotesCount = await Notes.countDocuments({ user: user._id, isDeleted: true, });
 
             return {
                 _id: user._id,
@@ -44,5 +46,137 @@ export const getAllUsersData = async (req, res) => {
         users: usersWithNoteStats,
     });
 
+
+};
+
+// PROMOTE USER TO ADMIN CONTROLLER -------------------------- //
+
+export const promoteUserToAdmin = async (req, res, next) => {
+
+    // Extract user ID from request parameters
+    const { id } = req.params; // User ID to promote
+
+    //  Check if ID is provided
+    if (!id) {
+        return next(new ErrorHandler("User ID is required", 400));
+    }
+
+    // Find the user 
+    const user = await User.findById(id);
+
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Check if user is already an admin
+    if (user.role.includes("admin")) {
+        return next(new ErrorHandler(`${user.fullName} is already an admin`, 400));
+    }
+
+    // Promote the user by adding 'admin' role
+    user.role.push("admin");
+
+    // Save updated user
+    await user.save();
+
+    // logs for debugging remove in production
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- promoteUserToAdmin controller ---↓');
+        console.log("User promoted to admin:", user);
+        console.log('↑--- promoteUserToAdmin controller ---↑');
+    }
+
+    res.status(200).json({
+        success: true,
+        message: `User ${user.fullName} promoted to admin successfully.`,
+    });
+
+};
+
+// PROMOTE USER TO ADMIN CONTROLLER -------------------------- //
+
+export const promoteUserToSuperAdmin = async (req, res, next) => {
+
+    // Extract user ID from request parameters
+    const { id } = req.params; // User ID to promote
+
+    //  Check if ID is provided
+    if (!id) {
+        return next(new ErrorHandler("User ID is required", 400));
+    }
+
+    // Find the user to promote
+    const user = await User.findById(id);
+
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Check if user is already an admin
+    if (user.role.includes("superadmin")) {
+        return next(new ErrorHandler(`${user.fullName} is already an SUPERADMIN`, 400));
+    }
+
+    // Promote the user by adding 'superAdmin' role if we direct promote user to superadmin it also add admin role
+    user.role.push(...(user.role.includes("admin") ? ["superadmin"] : ["admin", "superadmin"]));
+
+    // Save updated user
+    await user.save();
+
+    // logs for debugging remove in production
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- promoteUserToSuperAdmin controller ---↓');
+        console.log("User promoted to admin:", user);
+        console.log('↑--- promoteUserToSuperAdmin controller ---↑');
+    }
+
+    res.status(200).json({
+        success: true,
+        message: `User ${user.fullName} promoted to SUPERADMIN successfully.`,
+    });
+
+};
+
+// DEMOTE ADMIN TO USER CONTROLLER -------------------------- //
+
+export const demoteAdminToUser = async (req, res, next) => {
+
+    // Extract user ID from request parameters
+    const { id } = req.params; // User ID to demote
+
+    //  Check if ID is provided
+    if (!id) {
+        return next(new ErrorHandler("User ID is required", 400));
+    }
+
+    // Find the user 
+    const user = await User.findById(id);
+
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Check if user is already an admin
+    if (!user.role.includes("admin") && !user.role.includes("superadmin")) {
+        return next(new ErrorHandler(`${user.fullName} is already a user`, 400));
+    }
+
+    // demote the user by removing admin and superadmin role
+    user.role = user.role.filter((role) => role !== "admin" && role !== "superadmin");
+
+    // Save updated user
+    await user.save();
+
+    // logs for debugging remove in production
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- demoteAdminToUser controller ---↓');
+        console.log("Admin demoted to user:", user);
+        console.log('↑--- demoteAdminToUser controller ---↑');
+    }
+
+    res.status(200).json({
+        success: true,
+        message: `${user.fullName} demoted to USER role successfully.`,
+    });
 
 };
