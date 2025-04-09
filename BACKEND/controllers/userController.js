@@ -118,13 +118,29 @@ export const login = async (req, res, next) => {
 
     // Checking user exists or not
     if (!user) {
-        return next(new ErrorHandler("Invalid username or password", 404));
+        return next(new ErrorHandler("Invalid username, email or password", 404));
     }
+
+    // flag to check if user is deleted or not
+    let isDeletedFlag = false;
+
+    // Check is user is deleted or not
+    if (user.isAcountDeleted) {
+
+        // Restore account
+        user.isAcountDeleted = false;
+        user.deletedAt = null;
+        await user.save();
+
+        // Set is deleted flag to true if used was soft deleted
+        isDeletedFlag = true;
+
+    };
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        return next(new ErrorHandler("Invalid username or password", 400));
+        return next(new ErrorHandler("Invalid username, email or password", 400));
     }
 
     // Generate JWT token
@@ -149,7 +165,7 @@ export const login = async (req, res, next) => {
     // Send success response with user details and token
     return res.status(200).json({
         success: true,
-        message: "Login successful",
+        message: `${isDeletedFlag ? "Welcome back you account has beed restored!" : "Login successful"}`,
         user: {
             id: user._id,
             fullName: user.fullName,
@@ -190,6 +206,53 @@ export const logout = async (req, res, next) => {
         next(new ErrorHandler(error.message || "Logout failed", 500));
 
     }
+}
+
+// DELETE USER ACCOUNT CONTROLLER ------------- //
+export const softDeleteAccount = async (req, res, next) => {
+
+    // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
+    const userId = req.userId;
+
+    // Find user by ID in database
+    const user = await User.findById(userId);
+
+    // Check if user exists
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Check if user is already marked for deletion
+    if (user.isAccountDeleted) {
+        return next(new ErrorHandler("Your account is already marked for deletion", 400));
+    }
+
+    // Mark user as deleted and set deletion date
+    user.isAccountDeleted = true;
+    user.deletedAt = new Date();
+
+    // Save the updated user 
+    await user.save();
+
+    // Clear the token cookie to log out the user
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
+    });
+
+    // logs for debugging remove in production
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- softDeleteAccount controller ---↓');
+        console.log("User details:", user);
+        console.log('↑--- softDeleteAccount controller ---↑');
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "We'll delete your account in 30 days. Log in to undo."
+    });
+
 }
 
 // SEND VERIFY OTP CONTROLLER ---------------- //
@@ -517,5 +580,7 @@ export const getUserData = async (req, res, next) => {
     });
 
 }
+
+
 
 // END OF FILE

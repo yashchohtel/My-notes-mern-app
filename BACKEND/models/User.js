@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"; // Import mongoose
 
+// Create a user schema
 const userSchema = new mongoose.Schema({
 
     fullName: {
@@ -57,6 +58,16 @@ const userSchema = new mongoose.Schema({
         type: [String],
         enum: ["user", "admin", "superadmin"],
         default: ["user"],
+    },
+
+    isAccountDeleted: {
+        type: Boolean,
+        default: false
+    },
+
+    deletedAt: {
+        type: Date,
+        default: null
     }
 
 }, { timestamps: true });

@@ -1,5 +1,5 @@
 import express from "express"; // Importing express
-import { register, login, logout, sendEmailVerifyOtp, verifyEmail, isUserAuthenticated, sendPassResetOtp, resetPassword, getUserData, } from "../controllers/userController.js"; // Importing the controllers function
+import { register, login, logout, sendEmailVerifyOtp, verifyEmail, isUserAuthenticated, sendPassResetOtp, resetPassword, getUserData, softDeleteAccount, } from "../controllers/userController.js"; // Importing the controllers function
 import userAuth from "../middleware/userAuthMiddleware.js"; // Importing User Authentication middleware
 import catchAsyncError from "../middleware/catchAsyncError.js"; // Importing catchAsyncError middleware
 
@@ -33,6 +33,9 @@ userRouter.post("/reset-password", catchAsyncError(resetPassword)); // 'http://l
 
 // get user data route [GET]
 userRouter.get("/getUser-data", userAuth, catchAsyncError(getUserData)); // 'http://localhost:3000/api/user/getUser-data'
+
+// DELETE USER ACOUNT [DELETE]
+userRouter.delete("/soft-delete-account", userAuth, catchAsyncError(softDeleteAccount)); // 'http://localhost:3000/api/user/soft-delete-account'
 
 export default userRouter; // exporting the userRouter
 
