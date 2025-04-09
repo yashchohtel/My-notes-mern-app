@@ -45,12 +45,10 @@ const deleteOldUsersAndTheirNotes = async () => {
 };
 
 // 🕛 Run daily at midnight
-cron.schedule("* * * * *", async () => {
+cron.schedule("0 0 0 * * *", async () => {
     console.log("🔁 Running daily cleanup cron job...");
     await deleteOldNotes();
     await deleteOldUsersAndTheirNotes();
 });
 
 
-// Run cron job every day at midnight at 00:00:00
-// cron.schedule("0 0 0 * * *", deleteOldNotes);
