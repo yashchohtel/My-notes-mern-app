@@ -43,6 +43,7 @@ export const getAllUsersData = async (req, res) => {
 
     res.status(200).json({
         success: true,
+        message: "All users data fetched successfully",
         users: usersWithNoteStats,
     });
 
@@ -112,7 +113,7 @@ export const promoteUserToSuperAdmin = async (req, res, next) => {
         return next(new ErrorHandler("User not found", 404));
     }
 
-    // Check if user is already an admin
+    // Check if user is already a superadmin
     if (user.role.includes("superadmin")) {
         return next(new ErrorHandler(`${user.fullName} is already an SUPERADMIN`, 400));
     }
@@ -161,6 +162,11 @@ export const demoteAdminToUser = async (req, res, next) => {
         return next(new ErrorHandler(`${user.fullName} is already a user`, 400));
     }
 
+    // Check if user is superadmin or not
+    if (user.role.includes("superadmin")) {
+        return next(new ErrorHandler(`${user.fullName} cannot be demoted because they are a SUPER ADMIN`, 400));
+    }
+
     // demote the user by removing admin and superadmin role
     user.role = user.role.filter((role) => role !== "admin" && role !== "superadmin");
 
@@ -200,7 +206,7 @@ export const demoteSupAdmintoAdmin = async (req, res, next) => {
         return next(new ErrorHandler("User not found", 404));
     }
 
-    // ❌ Don't allow demotion if user is superadmin
+    // Don't allow demotion if user is superadmin
     if (user.role.includes("superadmin")) {
         return next(new ErrorHandler(`${user.fullName} cannot be demoted because they are a SUPER ADMIN`, 400));
     }
@@ -248,7 +254,7 @@ export const deleteUserAccount = async (req, res, next) => {
         return next(new ErrorHandler("User not found", 404));
     }
 
-    // Check if user is already an admin
+    // Check if user is already a superadmin
     if (user.role.includes("superadmin")) {
         return next(new ErrorHandler(`You can't delete ${user.fullName} because they are a Super Admin`, 400));
     }

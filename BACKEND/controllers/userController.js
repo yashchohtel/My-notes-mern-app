@@ -121,14 +121,20 @@ export const login = async (req, res, next) => {
         return next(new ErrorHandler("Invalid username, email or password", 404));
     }
 
-    // flag to check if user is deleted or not
-    let isDeletedFlag = false;
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return next(new ErrorHandler("Invalid username, email or password", 400));
+    }
 
-    // Check is user is deleted or not
-    if (user.isAcountDeleted) {
+    // flag to check if user is soft deleted or not
+    let isDeletedFlag = false;
+    
+    // Check if user is soft deleted or not
+    if (user.isAccountDeleted) {
 
         // Restore account
-        user.isAcountDeleted = false;
+        user.isAccountDeleted = false;
         user.deletedAt = null;
         await user.save();
 
@@ -136,12 +142,6 @@ export const login = async (req, res, next) => {
         isDeletedFlag = true;
 
     };
-
-    // Compare passwords
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-        return next(new ErrorHandler("Invalid username, email or password", 400));
-    }
 
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });

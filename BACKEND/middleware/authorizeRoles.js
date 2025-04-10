@@ -20,16 +20,16 @@ const authorizeRoles = (...allowedRoles) => {
             }
 
             // ✅ user.role is an array now
-            const hasAccess = user.role.some((r) => allowedRoles.includes(r));
+            const hasAccess = user.role.some((role) => allowedRoles.includes(role));
 
             // logs for debugging remove in production
             if (process.env.NODE_ENV === "development") {
                 console.log('↓--- role auth middleware ---↓');
                 console.log("loged User role", user.role);
                 console.log("Role allowed", allowedRoles);
+                console.log("user has access", hasAccess);
                 console.log("loged User id", user._id);
                 console.log("loged User name", user.fullName);
-                console.log("user has access", hasAccess);
                 console.log('↑--- role auth middleware ---↑');
             }
 

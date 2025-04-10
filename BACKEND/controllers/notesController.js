@@ -82,7 +82,7 @@ export const getSingleNote = async (req, res, next) => {
     // Extract note ID from request parameters
     const { noteId } = req.params;
 
-    // Extract user ID from auth middleware
+    // Extract user ID send from auth middleware
     const userId = req.userId;
 
     // Find the note that matches the ID, belongs to the user, and is not deleted
