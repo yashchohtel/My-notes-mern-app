@@ -1,0 +1,24 @@
+/* navbar */
+.navbar {
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 2rem 4rem;
+}
+
+/* logo */
+.navbar__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: "Poetsen One", sans-serif;
+}
+
+.navbar__left p{
+    font-size: 3rem;
+    color: white;
+    text-transform: uppercase;
+    font-family: var(--font-secondary);
+}

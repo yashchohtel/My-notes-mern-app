@@ -1,68 +1,114 @@
+/* google font import link */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poetsen+One&display=swap');
+
+/* CSS root variable */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+    /* background colors */
+    --bg-primary: #202124;
+    --bg-secondary: #3b3c3e;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    /* colors */
+    --text-color-tertiary: #dfdfdf;
+
+    /* hover colors */
+    --hover-primary: #4a4a4a;
+
+    /* border-color */
+    --border-primary: #3b3c3e;
+    --border-secondary: #2b2b2b;
+
+    /* fonts */
+    --font-primary: "Outfit", sans-serif;
+    --font-secondary: "Poetsen One", sans-serif;
+
+    /* box shadow */
+    --box-shadow-primary: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    /* transitions */
+    --transition: background-color 0.3s ease, all 0.3s ease;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+
+body.light-mode {
+
+    /* background colors */
+    --bg-primary: #202124;
+    --bg-secondary: #3b3c3e;
+
+    /* colors */
+    --text-color-tertiary: #dfdfdf;
 }
-a:hover {
-  color: #535bf2;
+
+
+/* Universal Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Outfit", sans-serif;
+}
+
+
+/* HTML & Body Styling */
+html {
+    scroll-behavior: smooth;
+    font-size: 62.5%;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary);
+    overflow: hidden;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Headings & Paragraph */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+    padding: 0;
 }
 
+/* Buttons */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+    border: none;
+    outline: none;
+    background: none;
+    font: inherit;
+    cursor: pointer;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Inputs & Textareas */
+input,
+textarea {
+    border: none;
+    outline: none;
+    font: inherit;
+    background-color: transparent;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Lists */
+ul,
+ol {
+    list-style: none;
+    padding: 0;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
