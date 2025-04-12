@@ -8,7 +8,7 @@ const Navbar = () => {
 
                 {/* Left - Logo area */}
                 <div className="navbar__left">
-                    <img src="/logo1.png" alt="logo" />
+                    <img src="/mainloo.png" alt="logo" />
                     <p>note nest</p>
                 </div>
 

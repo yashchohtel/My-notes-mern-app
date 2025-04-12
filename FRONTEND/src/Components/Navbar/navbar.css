@@ -16,6 +16,10 @@
     font-family: "Poetsen One", sans-serif;
 }
 
+.navbar__left img{
+    height: 6rem;
+}
+
 .navbar__left p{
     font-size: 3rem;
     color: white;
