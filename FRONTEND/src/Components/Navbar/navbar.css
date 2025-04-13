@@ -5,7 +5,12 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 2rem 4rem;
+    padding: 2rem 3rem;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
 }
 
 /* logo */
@@ -13,16 +18,40 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    font-family: "Poetsen One", sans-serif;
 }
 
-.navbar__left img{
+.navbar__left img {
     height: 6rem;
 }
 
-.navbar__left p{
-    font-size: 3rem;
-    color: white;
+.navbar__left p {
+    font-size: 2.5rem;
+    color: var(--text-color-primary-light);
     text-transform: uppercase;
     font-family: var(--font-secondary);
+}
+
+/* navbar right */
+.navbar__right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+
+.theme_toggle {
+    background: var(--bg-secondary);
+    color: var(--text-color-primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50%;
+    font-size: 2.5rem;
+    transition: var(--transition);
+}
+
+.theme_toggle:hover {
+    background-color: var(--hover-primary);
 }

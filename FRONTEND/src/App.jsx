@@ -13,6 +13,9 @@ function App() {
         {/* Route for welcome page */}
         <Route path="/" element={<Welcome />} />
 
+        {/* Route for login page */}
+        <Route path="/login" element={<h1>Login</h1>} />
+
 
       </Routes>
 

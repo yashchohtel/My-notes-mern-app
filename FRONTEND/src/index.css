@@ -8,15 +8,21 @@
     --bg-primary: #202124;
     --bg-secondary: #3b3c3e;
 
+    --bg-button: #fecd1a;
+
     /* colors */
-    --text-color-tertiary: #dfdfdf;
+    --text-color-primary-light: #ffffff;
+    --text-color-secondary-light: #e8eaed;
+    --text-color-tertiary-light: #dfdfdf;
+
+    --text-color-primary-dark: #000000;
 
     /* hover colors */
     --hover-primary: #4a4a4a;
 
     /* border-color */
     --border-primary: #3b3c3e;
-    --border-secondary: #2b2b2b;
+    --border-secondary: #2b2b2b9c;
 
     /* fonts */
     --font-primary: "Outfit", sans-serif;
@@ -111,4 +117,40 @@ img {
     max-width: 100%;
     height: auto;
     display: block;
+}
+
+/* reusable classes */
+
+
+/* BUTTON PRIMARY */
+.button_primary {
+    background-color: var(--bg-button);
+    border-radius: 6px;
+    box-shadow: var(--box-shadow-primary);
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    transition: var(--transition);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    color: var(--text-color-primary-dark);
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    margin-right: 2rem;
+    border: 0.2rem solid var(--bg-primary);
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 2rem;
+}
+
+.button_primary:hover {
+    background-color: var(--bg-primary);
+    border-color: var(--border-primary);
+    color: var(--text-color-primary-light);
 }
