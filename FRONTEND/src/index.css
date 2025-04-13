@@ -1,5 +1,5 @@
 /* google font import link */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poetsen+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Arrows:wght@400..700&family=Outfit:wght@100..900&family=Poetsen+One&display=swap');
 
 /* CSS root variable */
 :root {
@@ -8,7 +8,7 @@
     --bg-primary: #202124;
     --bg-secondary: #3b3c3e;
 
-    --bg-button: #fecd1a;
+    --bg-button: #506ef3;
 
     /* colors */
     --text-color-primary-light: #ffffff;
@@ -27,6 +27,8 @@
     /* fonts */
     --font-primary: "Outfit", sans-serif;
     --font-secondary: "Poetsen One", sans-serif;
+    --font-teritary: "Edu AU VIC WA NT Arrows", cursive;
+    ;
 
     /* box shadow */
     --box-shadow-primary: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -136,7 +138,7 @@ img {
     touch-action: manipulation;
     font-family: var(--font-primary);
     font-size: 1.5rem;
-    color: var(--text-color-primary-dark);
+    color: var(--text-color-primary-light);
     font-weight: 600;
     letter-spacing: 0.1rem;
     margin-right: 2rem;

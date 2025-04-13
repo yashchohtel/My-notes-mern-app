@@ -25,7 +25,7 @@
 }
 
 .welcomePage__content img {
-    height: 13rem;
+    height: 10rem;
 }
 
 .welcomePage__content h1 {
@@ -35,16 +35,16 @@
     word-spacing: 0.1rem;
     font-weight: 600;
     text-transform: uppercase;
-}
-
-.welcomePage__content h2 {
-    color: var(--text-color-secondary-light);
+    font-family: var(--font-teritary);
+    word-spacing: 0.5rem;
 }
 
 .welcomePage__content p {
-    color: var(--text-color-tertiary-light);
-    font-size: 2rem;
+    font-size: 2.4rem;
+    word-spacing: 0.4rem;
     width: 60%;
     margin: 1rem 0;
     font-weight: 400;
+    font-family: var(--font-teritary);
+    -webkit-text-stroke: 1px var(--text-color-secondary-light);
 }

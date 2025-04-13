@@ -11,21 +11,20 @@ const Navbar = () => {
     // configure navigator
     const navigate = useNavigate();
 
-
     return (
         <>
             <nav className="navbar">
 
                 {/* Left - Logo area */}
                 <div className="navbar__left">
-                    <img src="/logo.png" alt="logo" />
+                    <img src="/logo1.png" alt="logo" />
                     <p>note nest</p>
                 </div>
 
                 {/* Right - Buttons */}
                 <div className="navbar__right">
 
-                    <button className="button_primary login-btn" onClick={() => navigate('/login')}>
+                    <button className="button_primary login-btn" onClick={() => navigate('/register')}>
                         Login <LuLogIn />
                     </button>
 
