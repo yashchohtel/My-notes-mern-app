@@ -45,6 +45,8 @@ const RegisterForm = ({ type }) => {
                         </div>
                     )}
 
+                    
+
                     {/* field for unique username name for signup */}
                     {formType === 'signup' && (
                         <div className="input_group">
