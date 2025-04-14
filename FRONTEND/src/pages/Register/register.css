@@ -1,0 +1,14 @@
+.main_form_section {
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    background-image:
+        linear-gradient(to right, var(--border-secondary) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border-secondary) 1px, transparent 1px);
+    background-size: 30px 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}

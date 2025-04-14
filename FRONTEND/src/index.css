@@ -143,12 +143,13 @@ img {
     letter-spacing: 0.1rem;
     margin-right: 2rem;
     border: 0.2rem solid var(--bg-primary);
-    height: 5rem;
+    height: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
+    font-size: 1.4rem;
 }
 
 .button_primary:hover {

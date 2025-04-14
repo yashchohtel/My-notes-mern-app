@@ -6,7 +6,7 @@ import { LuLogIn } from "react-icons/lu";
 import { MdLightMode } from "react-icons/md";
 import { MdOutlineLightMode } from "react-icons/md";
 
-const Navbar = () => {
+const Navbar = ({ hideLoginButton }) => {
 
     // configure navigator
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Navbar = () => {
             <nav className="navbar">
 
                 {/* Left - Logo area */}
-                <div className="navbar__left">
+                <div className="navbar__left" onClick={() => navigate("/")}>
                     <img src="/logo1.png" alt="logo" />
                     <p>note nest</p>
                 </div>
@@ -24,10 +24,14 @@ const Navbar = () => {
                 {/* Right - Buttons */}
                 <div className="navbar__right">
 
-                    <button className="button_primary login-btn" onClick={() => navigate('/register')}>
-                        Login <LuLogIn />
-                    </button>
+                    {/* lgin button showing conditionaly */}
+                    {!hideLoginButton &&
+                        <button className="button_primary login-btn" onClick={() => navigate('/register')}>
+                            Login <LuLogIn />
+                        </button>
+                    }
 
+                    {/* theme toggle button */}
                     <button className="theme_toggle"><MdOutlineLightMode /></button>
 
                 </div>

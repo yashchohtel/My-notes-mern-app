@@ -27,10 +27,19 @@ const Welcome = () => {
 
                 {/* welcome page content */}
                 <div className="welcomePage__content">
+
                     <h1> "Capture Your Thoughts Effortlessly "</h1>
+
                     <img src="/pen.png" alt="png" />
-                    <p>Never lose a thought again. Create, organize, and revisit your notes — anytime, anywhere. Built for clarity, speed, and simplicity.</p>
-                    <button className="button_primary" onClick={() => handleRegisterClick()} >Get Started For Free</button>
+
+                    <p>Never lose a thought again. Create, organize, and revisit your notes
+                        — anytime, anywhere. Built for clarity, speed, and simplicity.
+                    </p>
+
+                    <button className="button_primary" onClick={() => navigate('/register', { state: { type: 'signup' } })} >
+                        Start For Free
+                    </button>
+
                 </div>
 
             </section>
