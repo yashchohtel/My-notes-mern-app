@@ -31,7 +31,7 @@
     ;
 
     /* box shadow */
-    --box-shadow-primary: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    --box-shadow-primary: 0 10px 15px rgba(0, 0, 0, 0.2);
 
     /* transitions */
     --transition: background-color 0.3s ease, all 0.3s ease;
@@ -142,7 +142,7 @@ img {
     font-weight: 600;
     letter-spacing: 0.1rem;
     margin-right: 2rem;
-    border: 0.2rem solid var(--bg-primary);
+    border: 0.2rem solid transparent;
     height: 4rem;
     display: flex;
     align-items: center;

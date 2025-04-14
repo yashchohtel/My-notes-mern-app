@@ -1,10 +1,68 @@
-.main_form_container {
+.register_form {
+    background-color: var(--bg-secondary);
+    padding: 2.5rem;
+    border-radius: 0.5rem;
+    box-shadow: var(--box-shadow-primary);
+    width: 100%;
+    max-width: 45rem;
+    color: #818cf8;
+    font-size: 0.875rem;
+}
+
+.register_form h2 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--text-color-primary-light);
+    word-spacing: 0.3rem;
+    letter-spacing: 0.05rem;
+    margin-bottom: 1.5rem;
+}
+
+.register_form p {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--text-color-tertiary-light);
+    font-size: 1.8rem;
+}
+
+.input_group {
+    margin-bottom: 1.5rem;
+    background: var(--bg-primary);
+    padding: 0rem 1rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 1rem;
+    border-radius: 0.5rem;
+}
 
-    height: 200px;
-    width: 200px;
-    background-color: red;
+.input_group span {
+    font-size: 2rem;
+}
 
+.input_group input {
+    width: 100%;
+    height: 4.5rem;
+    /* background-color: red; */
+    padding: 0 1rem;
+    font-size: 1.5rem;
+    /* text-transform: uppercase; */
+    color: var(--text-color-secondary-light);
+    letter-spacing: 0.05rem;
+}
+
+.input_group input::placeholder {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.register_form .button_primary{
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+p span{
+    cursor: pointer;
+    margin-left: 0.5rem;
+    text-decoration: underline;
 }
