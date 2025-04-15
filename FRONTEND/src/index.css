@@ -15,6 +15,9 @@
     --text-color-secondary-light: #e8eaed;
     --text-color-tertiary-light: #dfdfdf;
 
+    --text-color-primary-bright: #8da0f7;
+
+
     --text-color-primary-dark: #000000;
 
     /* hover colors */
@@ -60,7 +63,7 @@ body.light-mode {
 
 /* HTML & Body Styling */
 html {
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth; */
     font-size: 62.5%;
 }
 
@@ -68,7 +71,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: var(--bg-primary);
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 /* Headings & Paragraph */
@@ -156,4 +159,34 @@ img {
     background-color: var(--bg-primary);
     border-color: var(--border-primary);
     color: var(--text-color-primary-light);
+}
+
+
+
+
+
+
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--bg-secondary);
+    border: 2px solid var(--bg-primary);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

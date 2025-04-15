@@ -12,13 +12,12 @@ const Register = () => {
     // getting the type of form from the state passed from the router, default is login
     const formType = location.state?.type || 'login';
 
-    console.log(formType);
-
     return (
         <>
-            {/* Register page main container */}
-            <section className='main_form_section'>
 
+            {/* Register page main container */}
+
+            <section className='main_form_section'>
                 {/* rendering navbar */}
                 <Navbar hideLoginButton={true} />
 

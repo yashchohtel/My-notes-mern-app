@@ -1,52 +1,55 @@
 .register_form {
     background-color: var(--bg-secondary);
-    padding: 2.5rem;
+    padding: 2rem 2rem 1rem 2rem;
     border-radius: 0.5rem;
     box-shadow: var(--box-shadow-primary);
     width: 100%;
     max-width: 45rem;
     color: #818cf8;
-    font-size: 0.875rem;
 }
 
 .register_form h2 {
-    font-size: 2.5rem;
-    text-transform: uppercase;
+    margin-bottom: 2rem;
     text-align: center;
-    color: var(--text-color-primary-light);
-    word-spacing: 0.3rem;
-    letter-spacing: 0.05rem;
-    margin-bottom: 1.5rem;
+    color: var(--text-color-tertiary-light);
+    font-size: 2rem;
+    user-select: none;
+    text-transform: uppercase;
+    font-weight: 500;
 }
 
 .register_form p {
     margin-bottom: 1.5rem;
     text-align: center;
     color: var(--text-color-tertiary-light);
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    user-select: none;
 }
 
 .input_group {
-    margin-bottom: 1.5rem;
     background: var(--bg-primary);
     padding: 0rem 1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
     border-radius: 0.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .input_group span {
     font-size: 2rem;
 }
 
+.eye_icon {
+    cursor: pointer;
+}
+
 .input_group input {
     width: 100%;
-    height: 4.5rem;
-    /* background-color: red; */
+    height: 4rem;
     padding: 0 1rem;
     font-size: 1.5rem;
-    /* text-transform: uppercase; */
     color: var(--text-color-secondary-light);
     letter-spacing: 0.05rem;
 }
@@ -56,13 +59,35 @@
     font-weight: 400;
 }
 
-.register_form .button_primary{
+.register_form .button_primary {
     width: 100%;
     margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
 }
 
-p span{
+.register_form .reset_password {
+    text-align: left;
+    color: var(--text-color-primary-bright);
+}
+
+p span {
     cursor: pointer;
     margin-left: 0.5rem;
     text-decoration: underline;
+}
+
+.toggle-link{
+    color: var(--text-color-primary-bright);
+}
+
+.register_form .error_message {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.4rem;
+    text-transform: lowercase;
+    color: #ff5656;
+    letter-spacing: 0.04rem;
+    
 }

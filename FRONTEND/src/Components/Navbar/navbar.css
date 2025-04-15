@@ -6,11 +6,19 @@
     justify-content: space-between;
     width: 100%;
     padding: 1.5rem 2rem;
+    
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: var(--transition);
+    
+}
 
+.sticky {
     position: fixed;
     top: 0;
     left: 0;
-
+    background-color: #00000057;
 }
 
 /* logo */
