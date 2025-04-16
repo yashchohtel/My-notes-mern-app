@@ -15,7 +15,10 @@
     font-size: 2rem;
     user-select: none;
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 400;
+    font-family: var(--font-secondary);
+    word-spacing: 0.2rem;
+    letter-spacing: 0.05rem;
 }
 
 .register_form p {
@@ -76,7 +79,7 @@ p span {
     text-decoration: underline;
 }
 
-.toggle-link{
+.toggle-link {
     color: var(--text-color-primary-bright);
 }
 
@@ -89,5 +92,5 @@ p span {
     text-transform: lowercase;
     color: #ff5656;
     letter-spacing: 0.04rem;
-    
+
 }

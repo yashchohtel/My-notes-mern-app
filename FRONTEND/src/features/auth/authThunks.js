@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 // thunk to register user
@@ -13,13 +14,16 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (formDat
             headers: { 'Content-Type': 'application/json' }
         });
 
+        // thunk me inside try block
+        toast.success(res.data.message); // "Sign-up successful"
+
         // return succes response
-        return res.data; 
+        return res.data;
 
     } catch (err) {
 
         console.log(err);
-        
+
         // handle error
         return rejectWithValue(err.response?.data?.message || "Something went wrong");
 

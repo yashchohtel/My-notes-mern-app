@@ -202,3 +202,9 @@ img {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.my_toast{
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    font-weight: 500;
+}
