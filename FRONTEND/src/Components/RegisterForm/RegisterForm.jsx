@@ -6,12 +6,19 @@ import { MdOutlineEmail } from "react-icons/md";
 import { MdOutlineLock } from "react-icons/md";
 import { LuEye } from "react-icons/lu";
 import { LuEyeClosed } from "react-icons/lu";
+import { CgSpinner } from "react-icons/cg";
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../../features/auth/authThunks';
 
 
 const RegisterForm = ({ type }) => {
 
-    // state for storing loading state
-    const [loading, setLoading] = useState(false);
+    // configure dispatch use to dispatch actions
+    const dispatch = useDispatch();
+
+    // getting required Data from global store using useSelector
+    const { loading, successMessage, error } = useSelector((state) => state.auth);
+    console.log(loading, successMessage, error)
 
     // state for storing password visibility state
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -101,8 +108,11 @@ const RegisterForm = ({ type }) => {
         }
 
         // updating errors state with new errors
-        console.log("Errors:", newErrors);
         setErrors(newErrors);
+
+        // if no errors return true
+        return Object.keys(newErrors).length === 0;
+
     };
 
 
@@ -112,18 +122,14 @@ const RegisterForm = ({ type }) => {
         // prevent default form submission
         e.preventDefault();
 
-        validateForm();
+        if (formType === "signup" && validateForm()) {
 
-        if (formType === "signup") {
+            // dispatching registerUser action with form data
+            dispatch(registerUser(formData));
 
-            console.log("Signup done:", {
-                fullName: formData.fullName,
-                username: formData.username,
-                email: formData.email,
-                password: formData.password
-            });
+        }
 
-        } else {
+        if (formType === "login" && validateForm()) {
 
             // validate login fields
             console.log("Login data:", {
@@ -132,7 +138,8 @@ const RegisterForm = ({ type }) => {
             });
 
         }
-    }
+
+    };
 
     return (
         <>
@@ -155,6 +162,7 @@ const RegisterForm = ({ type }) => {
                                     type="text"
                                     placeholder="Full Name"
                                     name='fullName'
+                                    autoComplete="off"
                                     value={formData.fullName}
                                     onChange={handleInputChange}
                                 />
@@ -172,11 +180,13 @@ const RegisterForm = ({ type }) => {
                                     type="text"
                                     placeholder="Username"
                                     name='username'
+                                    autoComplete="off"
                                     value={formData.username}
                                     onChange={handleInputChange}
                                 />
                             </div>
                             {errors.username && (<span className="error_message">{errors.username}</span>)}
+                            {error && error.toLowerCase().includes("username") && (<span className="error_message">{error}</span>)}
                         </>
                     )}
 
@@ -189,11 +199,13 @@ const RegisterForm = ({ type }) => {
                                     type="text"
                                     placeholder="Email"
                                     name='email'
+                                    autoComplete="off"
                                     value={formData.email}
                                     onChange={handleInputChange}
                                 />
                             </div>
                             {errors.email && (<span className="error_message">{errors.email}</span>)}
+                            {error && error.toLowerCase().includes("email") && (<span className="error_message">{error}</span>)}
                         </>
                     )}
 
@@ -206,6 +218,7 @@ const RegisterForm = ({ type }) => {
                                     type="text"
                                     placeholder="Username Or Email"
                                     name='identifier'
+                                    autoComplete="off"
                                     value={formData.identifier}
                                     onChange={handleInputChange}
                                 />
@@ -236,7 +249,10 @@ const RegisterForm = ({ type }) => {
 
                     {/* submit button */}
                     <button type="submit" className='button_primary'>
-                        {formType === "login" ? "Login" : "Sign Up"}
+
+                        {loading ? (<span className='loder'> <CgSpinner size={25} /> </span>) : (formType === "login" ? "Login" : "Sign Up")}
+
+                        { }
                     </button>
 
                     {/* form toggle button */}
