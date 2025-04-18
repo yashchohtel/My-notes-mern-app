@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser } from "./authThunks";
+import { loadUser, registerUser } from "./authThunks";
 
 
 // initial state for auth slice
@@ -56,7 +56,24 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
                 state.isAuthenticated = false;
+            })
+
+            // load user data and auth state
+            .addCase(loadUser.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(loadUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.isAuthenticated = true;
+                state.user = action.payload.user;
+            })
+            .addCase(loadUser.rejected, (state, action) => {
+                state.loading = false;
+                state.isAuthenticated = false;
+                state.user = null;
+                state.error = action.payload;
             });
+
     }
 
 });

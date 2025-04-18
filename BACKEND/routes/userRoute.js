@@ -32,7 +32,7 @@ userRouter.post("/send-pass-reset-otp", catchAsyncError(sendPassResetOtp)); // '
 userRouter.post("/reset-password", catchAsyncError(resetPassword)); // 'http://localhost:3000/api/user/reset-password'
 
 // get user data route [GET]
-userRouter.get("/getUser-data", userAuth, catchAsyncError(getUserData)); // 'http://localhost:3000/api/user/getUser-data'
+userRouter.get("/get-user-data", userAuth, catchAsyncError(getUserData)); // 'http://localhost:3000/api/user/get-user-data'
 
 // DELETE USER ACOUNT [DELETE]
 userRouter.delete("/soft-delete-account", userAuth, catchAsyncError(softDeleteAccount)); // 'http://localhost:3000/api/user/soft-delete-account'

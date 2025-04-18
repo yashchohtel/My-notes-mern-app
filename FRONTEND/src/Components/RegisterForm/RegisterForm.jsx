@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import "./registerForm.css"
 import { LuUser } from "react-icons/lu";
 import { MdOutlineDriveFileRenameOutline } from "react-icons/md";
@@ -8,17 +8,21 @@ import { LuEye } from "react-icons/lu";
 import { LuEyeClosed } from "react-icons/lu";
 import { CgSpinner } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import { registerUser } from '../../features/auth/authThunks';
+import { clearMessages } from '../../features/auth/authSlice';
 
 
 const RegisterForm = ({ type }) => {
+
+    // configure useNavigate to navigate 
+    const navigate = useNavigate();
 
     // configure dispatch use to dispatch actions
     const dispatch = useDispatch();
 
     // getting required Data from global store using useSelector
-    const { loading, successMessage, error } = useSelector((state) => state.auth);
-    console.log(loading, successMessage, error)
+    const { loading, successMessage, error, user, isAuthenticated } = useSelector((state) => state.auth);
 
     // state for storing password visibility state
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -110,8 +114,11 @@ const RegisterForm = ({ type }) => {
         // updating errors state with new errors
         setErrors(newErrors);
 
+        console.log("Errors:", newErrors);
+
         // if no errors return true
-        return Object.keys(newErrors).length === 0;
+        // return Object.keys(newErrors).length === 0;
+        return Object.keys(newErrors).length;
 
     };
 
@@ -122,14 +129,14 @@ const RegisterForm = ({ type }) => {
         // prevent default form submission
         e.preventDefault();
 
-        if (formType === "signup" && validateForm()) {
+        if (formType === "signup" && validateForm() === 0) {
 
             // dispatching registerUser action with form data
             dispatch(registerUser(formData));
 
         }
 
-        if (formType === "login" && validateForm()) {
+        if (formType === "login" && validateForm() === 3) {
 
             // validate login fields
             console.log("Login data:", {
@@ -140,6 +147,15 @@ const RegisterForm = ({ type }) => {
         }
 
     };
+
+    useEffect(() => {
+
+        // redirecting to home page after sucessful Signup
+        if (isAuthenticated) {
+            navigate("/home");
+        }
+
+    }, [isAuthenticated, navigate]);
 
     return (
         <>

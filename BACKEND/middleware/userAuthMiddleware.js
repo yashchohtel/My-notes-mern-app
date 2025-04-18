@@ -28,7 +28,6 @@ const userAuth = (req, res, next) => {
             console.log('↑--- auth middleware ---↑');
         }
 
-
         // Check if the token contains a valid user ID
         if (!tokenDecode.id) {
             return res.status(401).json({

@@ -30,3 +30,31 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (formDat
     }
 
 });
+
+// thunk to load user data and auth state
+export const loadUser = createAsyncThunk('auth/loadUser', async (_, { rejectWithValue }) => {
+
+    try {
+
+        // send post request to register user
+        const { data: authData } = await axios.post('http://localhost:3000/api/user/is-user-auth', {}, {
+            withCredentials: true,
+        });
+
+        if (authData.success) {
+
+            const { data: userData } = await axios.get("http://localhost:3000/api/user/get-user-data", {
+                withCredentials: true,
+            });
+
+            return userData;
+
+        } else {
+            return thunkAPI.rejectWithValue("User not authenticated");
+        }
+
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to load user");
+    }
+
+});
