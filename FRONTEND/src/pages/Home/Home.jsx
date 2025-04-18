@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import './Home.css';
 import { clearMessages } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -25,15 +26,21 @@ const Home = () => {
         dispatch(clearMessages());
       }, 3000);
 
-      console.log("clearing set time out");
       return () => clearTimeout(timer);
 
     }
 
-  }, [isAuthenticated]);
+  }, [isAuthenticated, dispatch]);
 
   return (
-    <div>Home</div>
+    <>
+      <section className='home_section_container'>
+        <div className="home_section_content">
+          <h1>Welcome to the Home Page</h1>
+          <p>This is a simple home page.</p>
+        </div>
+      </section>
+    </>
   )
 }
 

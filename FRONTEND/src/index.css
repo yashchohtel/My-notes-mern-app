@@ -166,6 +166,25 @@ img {
     animation: spin 1s linear infinite;
 }
 
+.loader_2_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+
+    background-color: var(--bg-primary);
+    background-image:
+        linear-gradient(to right, var(--border-secondary) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border-secondary) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.loder_2 {
+    color: var(--text-color-primary-bright);
+    animation: spin 1s linear infinite;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -203,7 +222,7 @@ img {
     background: #555;
 }
 
-.my_toast{
+.my_toast {
     font-size: 1.8rem;
     text-transform: uppercase;
     font-weight: 500;

@@ -8,15 +8,6 @@ const Welcome = () => {
     // configure navigator
     const navigate = useNavigate();
 
-    // state to store form status (login or register)
-    const [formStatus, setFormStatus] = React.useState('login')
-
-    // navigate to register page
-    const handleRegisterClick = () => {
-        setFormStatus('register')
-        navigate('/register')
-    }
-
     return (
         <>
             {/* Welcome page main container*/}

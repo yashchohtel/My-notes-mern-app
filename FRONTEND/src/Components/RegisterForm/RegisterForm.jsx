@@ -10,7 +10,6 @@ import { CgSpinner } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { registerUser } from '../../features/auth/authThunks';
-import { clearMessages } from '../../features/auth/authSlice';
 
 
 const RegisterForm = ({ type }) => {
@@ -20,6 +19,9 @@ const RegisterForm = ({ type }) => {
 
     // configure dispatch use to dispatch actions
     const dispatch = useDispatch();
+
+    // state variable for storing loding for register page
+    const [formLoading, setFormLoading] = useState(false);
 
     // getting required Data from global store using useSelector
     const { loading, successMessage, error, user, isAuthenticated } = useSelector((state) => state.auth);
@@ -122,30 +124,29 @@ const RegisterForm = ({ type }) => {
 
     };
 
-
     // function to handle form submit
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
 
-        // prevent default form submission
+        // preventing default form submission
         e.preventDefault();
 
-        if (formType === "signup" && validateForm() === 0) {
+        setFormLoading(true);
+        try {
+            if (formType === "signup" && validateForm() === 0) {
+                dispatch(registerUser(formData)); // ✅ await lagaya
+            }
 
-            // dispatching registerUser action with form data
-            dispatch(registerUser(formData));
-
+            if (formType === "login" && validateForm() === 3) {
+                console.log("Login data:", {
+                    identifier: formData.identifier,
+                    password: formData.password
+                });
+            }
+        } catch (error) {
+            console.error("Error in handleFormSubmit:", error.message);
+        } finally {
+            setFormLoading(false);
         }
-
-        if (formType === "login" && validateForm() === 3) {
-
-            // validate login fields
-            console.log("Login data:", {
-                identifier: formData.identifier,
-                password: formData.password
-            });
-
-        }
-
     };
 
     useEffect(() => {
@@ -266,9 +267,8 @@ const RegisterForm = ({ type }) => {
                     {/* submit button */}
                     <button type="submit" className='button_primary'>
 
-                        {loading ? (<span className='loder'> <CgSpinner size={25} /> </span>) : (formType === "login" ? "Login" : "Sign Up")}
+                        {(loading && !isAuthenticated) ? (<span className='loder'> <CgSpinner size={25} /> </span>) : (formType === "login" ? "Login" : "Sign Up")}
 
-                        { }
                     </button>
 
                     {/* form toggle button */}
