@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Navbar.css'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { LuLogIn } from "react-icons/lu";
@@ -9,6 +9,7 @@ import { MdOutlineLightMode } from "react-icons/md";
 import { LuUser } from "react-icons/lu";
 import { PiRecycleBold } from "react-icons/pi";
 import { FaRegStar } from "react-icons/fa6";
+import { FaRegNoteSticky } from "react-icons/fa6";
 import { IoGridOutline } from "react-icons/io5";
 import SearchBar from '../Searchbar/SearchBar';
 
@@ -33,7 +34,7 @@ const Navbar = () => {
     // setting page locations
     const isWelcome = location.pathname === "/";
     const isRegister = location.pathname === "/register";
-    const isHome = location.pathname === "/home";
+    const isHome = location.pathname.startsWith("/home");
 
     // state to store sticky navbar status
     const [isSticky, setIsSticky] = useState(false);
@@ -96,6 +97,53 @@ const Navbar = () => {
                 {/* Right - Buttons */}
                 <div className="navbar__right">
 
+                    {/* All note button */}
+                    {isHome &&
+                        <div className="allNotes_btn nav_btn_container">
+
+                            {/* star icon */}
+                            <Link to="/home/" className="navbar_circular_btn"> <FaRegNoteSticky /> </Link>
+
+                        </div>
+                    }
+
+                    {/* important note button */}
+                    {isHome &&
+                        <div className="important_btn nav_btn_container">
+
+                            {/* star icon */}
+                            <Link to="/home/important-notes" className="navbar_circular_btn"> <FaRegStar /> </Link>
+
+                        </div>
+                    }
+
+                    {/* recucle bin button */}
+                    {isHome &&
+                        <div className="recycle_btn nav_btn_container">
+
+                            {/* bin icon */}
+                            <Link to="/home/deleted-notes" className="navbar_circular_btn"> <PiRecycleBold /> </Link>
+
+                        </div>
+                    }
+
+                    {/* layout button */}
+                    {isHome &&
+                        <div className="layout_btn nav_btn_container">
+
+                            {/* grid icon */}
+                            <div className="navbar_circular_btn"> <IoGridOutline /> </div>
+
+                        </div>
+                    }
+
+                    {/* login button only on welcome page */}
+                    {isWelcome &&
+                        <button className="button_primary login-btn" onClick={() => navigate('/register')}>
+                            Login <LuLogIn />
+                        </button>
+                    }
+
                     {/* user profile button*/}
                     {isHome &&
                         <div className="profile_btn nav_btn_container" ref={menuRef}>
@@ -111,43 +159,6 @@ const Navbar = () => {
                             </div>
 
                         </div>
-                    }
-
-                    {/* important note button */}
-                    {isHome &&
-                        <div className="important_btn nav_btn_container">
-
-                            {/* star icon */}
-                            <div className="navbar_circular_btn"> <FaRegStar /> </div>
-
-                        </div>
-                    }
-
-                    {/* layout button */}
-                    {isHome &&
-                        <div className="layout_btn nav_btn_container">
-
-                            {/* grid icon */}
-                            <div className="navbar_circular_btn"> <IoGridOutline /> </div>
-
-                        </div>
-                    }
-
-                    {/* recucle bin button */}
-                    {isHome &&
-                        <div className="recycle_btn nav_btn_container">
-
-                            {/* bin icon */}
-                            <div className="navbar_circular_btn"> <PiRecycleBold /> </div>
-
-                        </div>
-                    }
-
-                    {/* login button only on welcome page */}
-                    {isWelcome &&
-                        <button className="button_primary login-btn" onClick={() => navigate('/register')}>
-                            Login <LuLogIn />
-                        </button>
                     }
 
                     {/* theme toggle button */}

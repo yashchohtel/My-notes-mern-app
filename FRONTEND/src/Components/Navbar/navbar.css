@@ -76,6 +76,10 @@
     background-color: var(--hover-primary);
 }
 
+.hover_active{
+    background-color: red;
+}
+
 /* navbar curcular button icons */
 .navbar_circular_btn span {
     display: flex;

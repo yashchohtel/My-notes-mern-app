@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import './Home.css';
 import { clearMessages } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
+import AllNotes from '../AllNotes/AllNotes';
 
 const Home = () => {
 
@@ -42,10 +43,7 @@ const Home = () => {
 
         {/* home notes section (all notes, important notes, deleted notes) */}
         <div className='home_notes_section_container'>
-          <h1>Home</h1>
-          <p>All notes</p>
-          <p>Important notes</p>
-          <p>Deleted notes</p>
+          <Outlet />
         </div>
 
       </section>
