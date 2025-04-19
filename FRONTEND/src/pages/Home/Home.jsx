@@ -3,6 +3,7 @@ import './Home.css';
 import { clearMessages } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../../Components/Navbar/Navbar';
 
 const Home = () => {
 
@@ -35,13 +36,13 @@ const Home = () => {
   return (
     <>
       <section className='home_section_container'>
-        <div className="home_section_content">
-          <h1>Welcome to the Home Page</h1>
-          <p>This is a simple home page.</p>
-        </div>
+
+        {/* navbar Component */}
+        <Navbar />
+
       </section>
     </>
   )
 }
 
-export default Home
+export default Home;

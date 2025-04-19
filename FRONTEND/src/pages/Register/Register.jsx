@@ -18,8 +18,9 @@ const Register = () => {
             {/* Register page main container */}
 
             <section className='main_form_section'>
+
                 {/* rendering navbar */}
-                <Navbar hideLoginButton={true} />
+                <Navbar />
 
                 {/* rendring form component */}
                 <RegisterForm type={formType} />

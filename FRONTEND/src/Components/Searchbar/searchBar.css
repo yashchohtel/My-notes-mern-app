@@ -1,0 +1,32 @@
+.searchBar {
+    background: var(--bg-secondary);
+    width: 45rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    border-radius: 10px;
+}
+
+.search_input {
+    width: 100%;
+    height: 100%;
+    color: var(--text-color-tertiary-light);
+    font-size: 1.6rem;
+    letter-spacing: 0.05rem;
+    font-weight: 400;
+}
+
+.search_input::placeholder {
+    color: var(--text-color-primary-dim);
+}
+
+.searchBar span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color-primary-light);
+    font-size: 2rem;
+    cursor: pointer;
+}
