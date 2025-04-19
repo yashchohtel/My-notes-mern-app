@@ -40,6 +40,14 @@ const Home = () => {
         {/* navbar Component */}
         <Navbar />
 
+        {/* home notes section (all notes, important notes, deleted notes) */}
+        <div className='home_notes_section_container'>
+          <h1>Home</h1>
+          <p>All notes</p>
+          <p>Important notes</p>
+          <p>Deleted notes</p>
+        </div>
+
       </section>
     </>
   )
