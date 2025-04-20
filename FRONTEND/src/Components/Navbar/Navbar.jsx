@@ -97,6 +97,23 @@ const Navbar = () => {
                 {/* Right - Buttons */}
                 <div className="navbar__right">
 
+                    {/* user profile button*/}
+                    {isHome &&
+                        <div className="profile_btn nav_btn_container" ref={menuRef}>
+
+                            {/* Toggle Button */}
+                            <div className="navbar_circular_btn" onClick={() => setIsMenuVisible(prev => !prev)}>
+                                <LuUser />
+                            </div>
+
+                            {/* Sub Menu */}
+                            <div className={`${isMenuVisible ? "visible user_profile_sub_menu" : "user_profile_sub_menu"}`}>
+
+                            </div>
+
+                        </div>
+                    }
+
                     {/* All note button */}
                     {isHome &&
                         <div className="allNotes_btn nav_btn_container">
@@ -144,22 +161,6 @@ const Navbar = () => {
                         </button>
                     }
 
-                    {/* user profile button*/}
-                    {isHome &&
-                        <div className="profile_btn nav_btn_container" ref={menuRef}>
-
-                            {/* Toggle Button */}
-                            <div className="navbar_circular_btn" onClick={() => setIsMenuVisible(prev => !prev)}>
-                                <LuUser />
-                            </div>
-
-                            {/* Sub Menu */}
-                            <div className={`${isMenuVisible ? "visible user_profile_sub_menu" : "user_profile_sub_menu"}`}>
-
-                            </div>
-
-                        </div>
-                    }
 
                     {/* theme toggle button */}
                     <div className="theme_toggle nav_btn_container">

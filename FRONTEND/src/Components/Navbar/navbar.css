@@ -76,7 +76,7 @@
     background-color: var(--hover-primary);
 }
 
-.hover_active{
+.hover_active {
     background-color: red;
 }
 
@@ -104,6 +104,12 @@
     opacity: 0;
     transform: translateY(1rem);
     background-color: var(--bg-secondary);
+}
+
+.nav_btn_container:hover .user_profile_sub_menu {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .visible {

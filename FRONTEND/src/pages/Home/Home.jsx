@@ -43,7 +43,9 @@ const Home = () => {
 
         {/* home notes section (all notes, important notes, deleted notes) */}
         <div className='home_notes_section_container'>
+
           <Outlet />
+          
         </div>
 
       </section>

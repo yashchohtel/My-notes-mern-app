@@ -16,4 +16,7 @@
 .home_notes_section_container {
     height: calc(100% - 8rem);
     width: 100%;
+    overflow: auto;
+    border-top: 2px solid var(--border-primary);
+    padding-top: 1rem;
 }

@@ -274,11 +274,11 @@ const RegisterForm = ({ type }) => {
                     {/* form toggle button */}
                     {formType === "login" ?
 
-                        (<p className=''>Don't have an account ?
+                        (<p className='already'>Don't have an account ?
                             <span className='toggle-link' onClick={() => toggleForm()}>signup here</span>
                         </p>)
                         :
-                        (<p className=''>Already have an account ?
+                        (<p className='already'>Already have an account ?
                             <span className='toggle-link' onClick={() => toggleForm()}>Login here</span>
                         </p>)
                     }

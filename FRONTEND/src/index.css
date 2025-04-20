@@ -38,7 +38,7 @@
     --box-shadow-primary: 0 10px 15px rgba(0, 0, 0, 0.2);
 
     /* transitions */
-    --transition: background-color 0.3s ease, all 0.3s ease;
+    --transition: all 0.4s ease;
 }
 
 
@@ -145,7 +145,6 @@ img {
     color: var(--text-color-primary-light);
     font-weight: 600;
     letter-spacing: 0.1rem;
-    margin-right: 2rem;
     border: 0.2rem solid transparent;
     height: 4rem;
     display: flex;

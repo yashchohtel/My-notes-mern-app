@@ -1,8 +1,20 @@
 import React from 'react'
+import SecondaryNav from '../../Components/SecondaryNav/SecondaryNav'
 
 const ImportantNotes = () => {
+
   return (
-    <h1>ImportantNotes</h1>
+    <>
+
+      {/* all notes container */}
+      <div className="importantNotesContainer">
+
+        {/* secondary nav */}
+        <SecondaryNav title="Important Notes" count={8} />
+
+      </div>
+
+    </>
   )
 }
 

@@ -73,7 +73,7 @@
     color: var(--text-color-primary-bright);
 }
 
-p span {
+.already span {
     cursor: pointer;
     margin-left: 0.5rem;
     text-decoration: underline;
