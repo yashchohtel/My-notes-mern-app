@@ -7,7 +7,7 @@ import { CgSpinner } from "react-icons/cg";
 const PublicRoute = ({ children }) => {
 
     // getting required data from global store using useSelector
-    const { isAuthenticated, loading } = useSelector((state) => state.auth);
+    const { isAuthenticated, loading, initialAuthChecked } = useSelector((state) => state.auth);
 
     // is user data loading show loading
     if (loading) {

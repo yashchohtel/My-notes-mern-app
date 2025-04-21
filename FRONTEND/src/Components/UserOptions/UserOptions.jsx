@@ -8,6 +8,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { LuLogOut } from "react-icons/lu";
 import { logoutAccount } from '../../features/auth/authThunks';
+import { logoutUser } from '../../features/auth/authSlice';
 
 
 const UserOptions = () => {
@@ -18,6 +19,7 @@ const UserOptions = () => {
     // function to handle logout
     const handleLogout = () => {
         dispatch(logoutAccount());
+        dispatch(logoutUser())
     };
 
 

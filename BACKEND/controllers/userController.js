@@ -118,13 +118,13 @@ export const login = async (req, res, next) => {
 
     // Checking user exists or not
     if (!user) {
-        return next(new ErrorHandler("Invalid username, email or password", 404));
+        return next(new ErrorHandler("Invalid credentials", 404));
     }
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        return next(new ErrorHandler("Invalid username, email or password", 400));
+        return next(new ErrorHandler("Invalid credentials", 400));
     }
 
     // flag to check if user is soft deleted or not

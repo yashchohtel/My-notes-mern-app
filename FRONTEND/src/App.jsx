@@ -28,7 +28,6 @@ function App() {
     dispatch(loadUser());
   }, [dispatch]);
 
-
   return (
     <>
 

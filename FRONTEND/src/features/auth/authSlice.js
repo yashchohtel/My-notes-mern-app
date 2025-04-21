@@ -9,6 +9,7 @@ const initialState = {
     error: null,
     successMessage: null,
     isAuthenticated: false,
+    initialAuthChecked: true,
 };
 
 // creating slice for auth 
@@ -30,7 +31,9 @@ const authSlice = createSlice({
             state.user = null;
             state.isAuthenticated = false;
             state.isAccountVerified = false;
-        }
+            state.initialAuthChecked = true;
+        },
+
     },
 
     // extrareducers to handle async actions
@@ -64,12 +67,14 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.isAuthenticated = true;
                 state.user = action.payload.user;
+                state.initialAuthChecked = true;
             })
             .addCase(loadUser.rejected, (state, action) => {
                 state.loading = false;
                 state.isAuthenticated = false;
                 state.user = null;
                 state.error = action.payload;
+                state.initialAuthChecked = true;
             })
 
             // logout user

@@ -8,8 +8,9 @@ import { LuEye } from "react-icons/lu";
 import { LuEyeClosed } from "react-icons/lu";
 import { CgSpinner } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { loginUser, registerUser } from '../../features/auth/authThunks';
+import { clearMessages } from '../../features/auth/authSlice';
 
 
 const RegisterForm = ({ type }) => {
@@ -20,24 +21,30 @@ const RegisterForm = ({ type }) => {
     // configure dispatch use to dispatch actions
     const dispatch = useDispatch();
 
+    // configure useSearchParams;
+    const [searchParams] = useSearchParams();
+
     // state variable for storing loding for register page
     const [formLoading, setFormLoading] = useState(false);
 
     // getting required Data from global store using useSelector
     const { loading, successMessage, error, user, isAuthenticated } = useSelector((state) => state.auth);
-    console.log(error);
-    
+
     // state for storing password visibility state
     const [passwordVisible, setPasswordVisible] = useState(false);
 
-    // state for storing for type login or signup comming from props
-    const [formType, setFormType] = useState(type);
+    // state for storing for type login or signup
+    const [formType, setFormType] = useState("login");
 
     // function to toggle between login and register form
     const toggleForm = () => {
 
         // toggle form type and reset form data
-        setFormType(prevType => prevType === 'login' ? 'signup' : 'login')
+        const newType = formType === "login" ? "signup" : "login";
+        navigate(`/register?form=${newType}`);
+
+        // clear backend erros
+        dispatch(clearMessages());
 
         // reset form data to empty string
         setFormData({
@@ -133,11 +140,16 @@ const RegisterForm = ({ type }) => {
         try {
             if (formType === "signup" && validateForm() === 0) {
                 dispatch(registerUser(formData));
+            } else if (formType === "signup" && validateForm() !== 0) {
+                dispatch(clearMessages());
             }
 
             if (formType === "login" && validateForm() === 3) {
                 dispatch(loginUser(formData));
+            } else if (formType === "login" && validateForm() !== 3) {
+                dispatch(clearMessages());
             }
+
         } catch (error) {
             console.error("Error in handleFormSubmit:", error.message);
         } finally {
@@ -145,6 +157,7 @@ const RegisterForm = ({ type }) => {
         }
     };
 
+    // effect to navigate to home 
     useEffect(() => {
 
         // redirecting to home page after sucessful Signup
@@ -153,6 +166,19 @@ const RegisterForm = ({ type }) => {
         }
 
     }, [isAuthenticated, navigate]);
+
+    // effect to set form type
+    useEffect(() => {
+
+        // getting form type login or signup
+        const form = searchParams.get("form");
+
+        // setting form type if data is only login or signup
+        if (form === "login" || form === "signup") {
+            setFormType(form);
+        }
+
+    }, [searchParams]);
 
     return (
         <>
@@ -254,7 +280,7 @@ const RegisterForm = ({ type }) => {
                         </span>
                     </div>
                     {errors.password && (<span className="error_message">{errors.password}</span>)}
-                    {error && error.toLowerCase().includes("invalid username") && (<span className="error_message">{error}</span>)}
+                    {formType === 'login' && error && error.toLowerCase().includes("credentials") && (<span className="error_message">{error}</span>)}
 
                     {/* reset password link */}
                     {formType === 'login' && (

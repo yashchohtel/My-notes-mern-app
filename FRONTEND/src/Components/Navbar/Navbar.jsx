@@ -145,7 +145,7 @@ const Navbar = () => {
 
                     {/* login button only on welcome page */}
                     {isWelcome &&
-                        <button className="button_primary login-btn" onClick={() => navigate('/register')}>
+                        <button className="button_primary login-btn" onClick={() => navigate('/register?form=login')}>
                             Login <LuLogIn />
                         </button>
                     }

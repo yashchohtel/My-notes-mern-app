@@ -27,7 +27,7 @@ const Welcome = () => {
                         — anytime, anywhere. Built for clarity, speed, and simplicity.
                     </p>
 
-                    <button className="button_primary" onClick={() => navigate('/register', { state: { type: 'signup' } })} >
+                    <button className="button_primary" onClick={() => navigate('/register?form=signup', { state: { type: 'signup' } })} >
                         Start For Free
                     </button>
 
