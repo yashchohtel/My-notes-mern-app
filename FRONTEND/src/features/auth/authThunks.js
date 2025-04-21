@@ -58,3 +58,56 @@ export const loadUser = createAsyncThunk('auth/loadUser', async (_, { rejectWith
     }
 
 });
+
+// thunk to logout user
+export const logoutAccount = createAsyncThunk('auth/logoutAccount', async (_, { rejectWithValue }) => {
+
+    try {
+
+        // send post request to logout user
+        const res = await axios.post('http://localhost:3000/api/user/logout', {}, {
+            withCredentials: true,
+        });
+
+        // show success message
+        toast.success(res.data.message); // "Logout successful"
+
+        // return success response
+        return res.data;
+
+    } catch (err) {
+
+        console.log(err);
+
+        // handle error
+        return rejectWithValue(err.response?.data?.message || "Failed to logout");
+    }
+
+});
+
+// thunk to loign user
+export const loginUser = createAsyncThunk('auth/loginUser', async (formData, { rejectWithValue }) => {
+
+    try {
+
+        // send post request to login user
+        const res = await axios.post('http://localhost:3000/api/user/login', formData, {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        // show success message
+        toast.success(res.data.message); // "Login successful"
+
+        // return success response
+        return res.data;
+
+    } catch (err) {
+
+        console.log(err);
+
+        // handle error
+        return rejectWithValue(err.response?.data?.message || "Failed to login");
+    }
+
+});

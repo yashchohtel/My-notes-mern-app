@@ -9,7 +9,7 @@ import { LuEyeClosed } from "react-icons/lu";
 import { CgSpinner } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { registerUser } from '../../features/auth/authThunks';
+import { loginUser, registerUser } from '../../features/auth/authThunks';
 
 
 const RegisterForm = ({ type }) => {
@@ -25,7 +25,8 @@ const RegisterForm = ({ type }) => {
 
     // getting required Data from global store using useSelector
     const { loading, successMessage, error, user, isAuthenticated } = useSelector((state) => state.auth);
-
+    console.log(error);
+    
     // state for storing password visibility state
     const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -116,8 +117,6 @@ const RegisterForm = ({ type }) => {
         // updating errors state with new errors
         setErrors(newErrors);
 
-        console.log("Errors:", newErrors);
-
         // if no errors return true
         // return Object.keys(newErrors).length === 0;
         return Object.keys(newErrors).length;
@@ -133,14 +132,11 @@ const RegisterForm = ({ type }) => {
         setFormLoading(true);
         try {
             if (formType === "signup" && validateForm() === 0) {
-                dispatch(registerUser(formData)); // ✅ await lagaya
+                dispatch(registerUser(formData));
             }
 
             if (formType === "login" && validateForm() === 3) {
-                console.log("Login data:", {
-                    identifier: formData.identifier,
-                    password: formData.password
-                });
+                dispatch(loginUser(formData));
             }
         } catch (error) {
             console.error("Error in handleFormSubmit:", error.message);
@@ -258,6 +254,7 @@ const RegisterForm = ({ type }) => {
                         </span>
                     </div>
                     {errors.password && (<span className="error_message">{errors.password}</span>)}
+                    {error && error.toLowerCase().includes("invalid username") && (<span className="error_message">{error}</span>)}
 
                     {/* reset password link */}
                     {formType === 'login' && (

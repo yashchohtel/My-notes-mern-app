@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Navbar.css'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import SearchBar from '../Searchbar/SearchBar';
+import UserOptions from '../UserOptions/UserOptions';
 
 import { LuLogIn } from "react-icons/lu";
 import { MdLightMode } from "react-icons/md";
@@ -11,7 +13,7 @@ import { PiRecycleBold } from "react-icons/pi";
 import { FaRegStar } from "react-icons/fa6";
 import { FaRegNoteSticky } from "react-icons/fa6";
 import { IoGridOutline } from "react-icons/io5";
-import SearchBar from '../Searchbar/SearchBar';
+
 
 
 const Navbar = () => {
@@ -97,29 +99,16 @@ const Navbar = () => {
                 {/* Right - Buttons */}
                 <div className="navbar__right">
 
-                    {/* user profile button*/}
-                    {isHome &&
-                        <div className="profile_btn nav_btn_container" ref={menuRef}>
-
-                            {/* Toggle Button */}
-                            <div className="navbar_circular_btn" onClick={() => setIsMenuVisible(prev => !prev)}>
-                                <LuUser />
-                            </div>
-
-                            {/* Sub Menu */}
-                            <div className={`${isMenuVisible ? "visible user_profile_sub_menu" : "user_profile_sub_menu"}`}>
-
-                            </div>
-
-                        </div>
-                    }
-
                     {/* All note button */}
                     {isHome &&
                         <div className="allNotes_btn nav_btn_container">
 
-                            {/* star icon */}
-                            <Link to="/home/" className="navbar_circular_btn"> <FaRegNoteSticky /> </Link>
+                            {/* notes icon */}
+                            <NavLink to="/home"
+                                end
+                                className={({ isActive }) => `navbar_circular_btn ${(isActive || location.pathname === "/home") ? 'active' : ''}`}>
+                                <FaRegNoteSticky />
+                            </NavLink>
 
                         </div>
                     }
@@ -129,7 +118,7 @@ const Navbar = () => {
                         <div className="important_btn nav_btn_container">
 
                             {/* star icon */}
-                            <Link to="/home/important-notes" className="navbar_circular_btn"> <FaRegStar /> </Link>
+                            <NavLink to="/home/important-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <FaRegStar /> </NavLink>
 
                         </div>
                     }
@@ -139,7 +128,7 @@ const Navbar = () => {
                         <div className="recycle_btn nav_btn_container">
 
                             {/* bin icon */}
-                            <Link to="/home/deleted-notes" className="navbar_circular_btn"> <PiRecycleBold /> </Link>
+                            <NavLink to="/home/deleted-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <PiRecycleBold /> </NavLink>
 
                         </div>
                     }
@@ -161,7 +150,6 @@ const Navbar = () => {
                         </button>
                     }
 
-
                     {/* theme toggle button */}
                     <div className="theme_toggle nav_btn_container">
 
@@ -169,6 +157,26 @@ const Navbar = () => {
                         <div className="navbar_circular_btn"> <MdOutlineLightMode /> </div>
 
                     </div>
+
+                    {/* user profile button*/}
+                    {isHome &&
+                        <div className="profile_btn nav_btn_container" ref={menuRef}>
+
+                            {/* user button */}
+                            <div className="navbar_circular_btn" onClick={() => setIsMenuVisible(prev => !prev)}>
+                                <LuUser />
+                            </div>
+
+                            {/* Sub Menu */}
+                            <div className={`${isMenuVisible ? "visible user_profile_sub_menu" : "user_profile_sub_menu"}`}>
+
+                                {/* user profile */}
+                                <UserOptions />
+
+                            </div>
+
+                        </div>
+                    }
 
                 </div>
 

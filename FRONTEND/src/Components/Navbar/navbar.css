@@ -76,8 +76,8 @@
     background-color: var(--hover-primary);
 }
 
-.hover_active {
-    background-color: red;
+.navbar_circular_btn.active {
+    border: 1.5px solid var(--text-color-primary-bright);
 }
 
 /* navbar curcular button icons */
@@ -87,23 +87,27 @@
     justify-content: center;
 }
 
-
 /* User profile sub menu */
 .user_profile_sub_menu {
     width: 30rem;
-    height: 10rem;
     overflow: hidden;
     border-radius: 5px;
     box-shadow: var(--box-shadow-primary);
     position: absolute;
     right: 0%;
-    top: 6rem;
+    top: 6.5rem;
     transition: var(--transition);
     z-index: 2;
+    background-color: var(--bg-secondary);
+
     visibility: hidden;
     opacity: 0;
     transform: translateY(1rem);
-    background-color: var(--bg-secondary);
+
+    /* visibility: visible;
+    opacity: 1;
+    transform: translateY(0); */
+
 }
 
 .nav_btn_container:hover .user_profile_sub_menu {

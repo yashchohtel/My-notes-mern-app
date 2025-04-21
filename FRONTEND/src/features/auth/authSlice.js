@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadUser, registerUser } from "./authThunks";
+import { loadUser, registerUser, logoutAccount, loginUser } from "./authThunks";
 
 
 // initial state for auth slice
@@ -9,7 +9,6 @@ const initialState = {
     error: null,
     successMessage: null,
     isAuthenticated: false,
-    isAccountVerified: false,
 };
 
 // creating slice for auth 
@@ -50,7 +49,6 @@ const authSlice = createSlice({
                 state.user = action.payload.user;
                 state.isAuthenticated = true;
                 state.successMessage = action.payload.message;
-                state.isAccountVerified = false;
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
@@ -72,8 +70,44 @@ const authSlice = createSlice({
                 state.isAuthenticated = false;
                 state.user = null;
                 state.error = action.payload;
-            });
+            })
 
+            // logout user
+            .addCase(logoutAccount.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(logoutAccount.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = null;
+                state.isAuthenticated = false;
+                state.successMessage = action.payload.message; // logout successful
+                state.error = null;
+            })
+            .addCase(logoutAccount.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.successMessage = null;
+            })
+
+            // login user
+            .addCase(loginUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload.user;
+                state.isAuthenticated = true;
+                state.successMessage = action.payload.message;
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.isAuthenticated = false;
+            })
     }
 
 });

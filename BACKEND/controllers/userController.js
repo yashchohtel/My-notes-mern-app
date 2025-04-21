@@ -576,6 +576,7 @@ export const getUserData = async (req, res, next) => {
             username: user.username,
             email: user.email,
             isAccountVerified: user.isAccountVerified,
+            role: user.role,
         }
     });
 

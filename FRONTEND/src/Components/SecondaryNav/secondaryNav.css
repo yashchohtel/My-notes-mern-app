@@ -18,6 +18,7 @@
     font-weight: 700;
     text-transform: uppercase;
     color: var(--text-color-secondary-light);
+    border-radius: 5px;
 }
 
 .sec_nav_right {

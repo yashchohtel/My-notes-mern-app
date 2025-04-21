@@ -7,6 +7,7 @@
     /* background colors */
     --bg-primary: #202124;
     --bg-secondary: #3b3c3e;
+    --bg-tettiary: #2b2b2b9c;
 
     --bg-button: #506ef3;
 
@@ -27,6 +28,7 @@
     /* border-color */
     --border-primary: #3b3c3e;
     --border-secondary: #2b2b2b9c;
+    --border-tertiary: #cecece;
 
     /* fonts */
     --font-primary: "Outfit", sans-serif;
@@ -38,7 +40,7 @@
     --box-shadow-primary: 0 10px 15px rgba(0, 0, 0, 0.2);
 
     /* transitions */
-    --transition: all 0.4s ease;
+    --transition: all 0.3s ease;
 }
 
 
