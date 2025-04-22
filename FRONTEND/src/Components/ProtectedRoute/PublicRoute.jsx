@@ -10,7 +10,7 @@ const PublicRoute = ({ children }) => {
     const { isAuthenticated, loading, initialAuthChecked } = useSelector((state) => state.auth);
 
     // is user data loading show loading
-    if (loading) {
+    if (!initialAuthChecked) {
         return (
             <div className="loader_2_container">
                 <span className='loder_2'> <CgSpinner size={75} /> </span>

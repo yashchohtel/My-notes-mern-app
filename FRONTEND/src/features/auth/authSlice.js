@@ -9,7 +9,7 @@ const initialState = {
     error: null,
     successMessage: null,
     isAuthenticated: false,
-    initialAuthChecked: true,
+    initialAuthChecked: false,
 };
 
 // creating slice for auth 
@@ -41,6 +41,24 @@ const authSlice = createSlice({
 
         builder
 
+            // load user data and auth state
+            .addCase(loadUser.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(loadUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.isAuthenticated = true;
+                state.user = action.payload.user;
+                state.initialAuthChecked = true;
+            })
+            .addCase(loadUser.rejected, (state, action) => {
+                state.loading = false;
+                state.isAuthenticated = false;
+                state.user = null;
+                state.error = action.payload;
+                state.initialAuthChecked = true;
+            })
+
             // register user
             .addCase(registerUser.pending, (state) => {
                 state.loading = true;
@@ -59,22 +77,22 @@ const authSlice = createSlice({
                 state.isAuthenticated = false;
             })
 
-            // load user data and auth state
-            .addCase(loadUser.pending, (state) => {
+            // login user
+            .addCase(loginUser.pending, (state) => {
                 state.loading = true;
+                state.error = null;
+                state.successMessage = null;
             })
-            .addCase(loadUser.fulfilled, (state, action) => {
+            .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.isAuthenticated = true;
                 state.user = action.payload.user;
-                state.initialAuthChecked = true;
+                state.isAuthenticated = true;
+                state.successMessage = action.payload.message;
             })
-            .addCase(loadUser.rejected, (state, action) => {
+            .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
-                state.isAuthenticated = false;
-                state.user = null;
                 state.error = action.payload;
-                state.initialAuthChecked = true;
+                state.isAuthenticated = false;
             })
 
             // logout user
@@ -96,23 +114,6 @@ const authSlice = createSlice({
                 state.successMessage = null;
             })
 
-            // login user
-            .addCase(loginUser.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-                state.successMessage = null;
-            })
-            .addCase(loginUser.fulfilled, (state, action) => {
-                state.loading = false;
-                state.user = action.payload.user;
-                state.isAuthenticated = true;
-                state.successMessage = action.payload.message;
-            })
-            .addCase(loginUser.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-                state.isAuthenticated = false;
-            })
     }
 
 });

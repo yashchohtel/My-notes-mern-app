@@ -22,7 +22,6 @@ const UserOptions = () => {
         dispatch(logoutUser())
     };
 
-
     return (
         <>
             <div className="userProfile_container">
