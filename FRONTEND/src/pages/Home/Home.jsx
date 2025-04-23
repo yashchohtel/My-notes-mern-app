@@ -24,7 +24,6 @@ const Home = () => {
     if (isAuthenticated) {
 
       const timer = setTimeout(() => {
-        console.log("clearing messages");
         dispatch(clearMessages());
       }, 3000);
 

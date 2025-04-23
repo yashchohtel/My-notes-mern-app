@@ -228,7 +228,15 @@ img {
 }
 
 .my_toast {
-    font-size: 1.8rem;
-    text-transform: uppercase;
     font-weight: 500;
+    width: auto !important;
+    font-size: 1.7rem;
+    font-family: var(--font-secondary);
+    word-spacing: 0.1rem;
+    letter-spacing: 0.08rem;
+    text-transform: lowercase;
+    color: var(--text-color-primary-dim);
+    padding-top: 2.5rem !important;
+
 }
+

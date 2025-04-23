@@ -262,6 +262,8 @@ export const sendEmailVerifyOtp = async (req, res, next) => {
     // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
     const userId = req.userId;
 
+    console.log(userId);
+
     // Find user by ID in database
     const user = await User.findById(userId);
 

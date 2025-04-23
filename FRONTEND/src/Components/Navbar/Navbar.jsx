@@ -13,6 +13,7 @@ import { PiRecycleBold } from "react-icons/pi";
 import { FaRegStar } from "react-icons/fa6";
 import { FaRegNoteSticky } from "react-icons/fa6";
 import { IoGridOutline } from "react-icons/io5";
+import { IoHomeOutline } from "react-icons/io5";
 
 
 
@@ -37,6 +38,8 @@ const Navbar = () => {
     const isWelcome = location.pathname === "/";
     const isRegister = location.pathname === "/register";
     const isHome = location.pathname.startsWith("/home");
+    const isAccount = location.pathname === "/user-account";
+    const isEmailVerify = location.pathname === "/verify-email";
 
     // state to store sticky navbar status
     const [isSticky, setIsSticky] = useState(false);
@@ -100,7 +103,7 @@ const Navbar = () => {
                 <div className="navbar__right">
 
                     {/* All note button */}
-                    {isHome &&
+                    {(isHome || isAccount) &&
                         <div className="allNotes_btn nav_btn_container">
 
                             {/* notes icon */}
@@ -114,7 +117,7 @@ const Navbar = () => {
                     }
 
                     {/* important note button */}
-                    {isHome &&
+                    {(isHome || isAccount) &&
                         <div className="important_btn nav_btn_container">
 
                             {/* star icon */}
@@ -124,7 +127,7 @@ const Navbar = () => {
                     }
 
                     {/* recucle bin button */}
-                    {isHome &&
+                    {(isHome || isAccount) &&
                         <div className="recycle_btn nav_btn_container">
 
                             {/* bin icon */}
@@ -148,6 +151,16 @@ const Navbar = () => {
                         <button className="button_primary login-btn" onClick={() => navigate('/register?form=login')}>
                             Login <LuLogIn />
                         </button>
+                    }
+
+                    {/* home button */}
+                    {isEmailVerify &&
+                        <NavLink to="/home" className="home_btn nav_btn_container">
+
+                            {/* grid icon */}
+                            <div className="navbar_circular_btn"> <IoHomeOutline /> </div>
+
+                        </NavLink>
                     }
 
                     {/* theme toggle button */}

@@ -89,7 +89,7 @@
 
 /* User profile sub menu */
 .user_profile_sub_menu {
-    width: 30rem;
+    width: 28rem;
     overflow: hidden;
     border-radius: 5px;
     box-shadow: var(--box-shadow-primary);

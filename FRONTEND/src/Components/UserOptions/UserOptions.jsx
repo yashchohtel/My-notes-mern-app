@@ -7,14 +7,24 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { LuLogOut } from "react-icons/lu";
-import { logoutAccount } from '../../features/auth/authThunks';
+import { logoutAccount, sendVerificationOtp } from '../../features/auth/authThunks';
 import { logoutUser } from '../../features/auth/authSlice';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const UserOptions = () => {
 
+    // configure useNavigate to navigate 
+    const navigate = useNavigate();
+
     // configure dispatch use to dispatch actions
     const dispatch = useDispatch();
+
+    // getting required data from global store using useSelector
+    const { user, isAuthenticated } = useSelector((state) => state.auth);
+
+    // descturing values from usre object
+    const { isAccountVerified, role } = user;
 
     // function to handle logout
     const handleLogout = () => {
@@ -26,40 +36,47 @@ const UserOptions = () => {
         <>
             <div className="userProfile_container">
 
-                {/* user details */}
-                <div className="user_details">
+                {/* user account profile */}
+                <Link to="/user-account" className="user_options verify_account">
 
-                    <div className="userInfo">
-                        <span> <FaUserCircle /> </span>
-                        <p>YASH CHOHTEL</p>
-                    </div>
-
-                    <p className='profileLink'> see your account </p>
-
-                </div>
-
-                <div className="user_options verify_account">
-
-                    <span className="optionIcon"> <IoMdCheckmarkCircleOutline /> </span>
+                    <span className="optionIcon"> <FaUserCircle /> </span>
 
                     <div className="optionInfo">
-                        <h3>verify Account</h3>
+                        <h3>Your Account</h3>
                         <span className='optionInfoIcon'> <IoIosArrowForward /> </span>
                     </div>
 
-                </div>
+                </Link>
 
-                <div className="user_options admin_panel">
+                {/* vefify email */}
+                {!isAccountVerified &&
+                    <div className="user_options verify_account" onClick={() => navigate("/verify-email")}>
 
-                    <span className="optionIcon"> <MdAdminPanelSettings /> </span>
+                        <span className="optionIcon"> <IoMdCheckmarkCircleOutline /> </span>
 
-                    <div className="optionInfo">
-                        <h3>admin panel</h3>
-                        <span className='optionInfoIcon'> <IoIosArrowForward /> </span>
+                        <div className="optionInfo">
+                            <h3>verify Account</h3>
+                            <span className='optionInfoIcon'> <IoIosArrowForward /> </span>
+                        </div>
+
                     </div>
+                }
 
-                </div>
+                {/* go to admin page */}
+                {isAuthenticated && role?.includes("admin") &&
+                    <div className="user_options admin_panel">
 
+                        <span className="optionIcon"> <MdAdminPanelSettings /> </span>
+
+                        <div className="optionInfo">
+                            <h3>admin panel</h3>
+                            <span className='optionInfoIcon'> <IoIosArrowForward /> </span>
+                        </div>
+
+                    </div>
+                }
+
+                {/* logout button */}
                 <div className="user_options logout_buttton">
 
                     <button className='button_primary' onClick={() => handleLogout()}>logout <LuLogOut /> </button>

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadUser, registerUser, logoutAccount, loginUser } from "./authThunks";
+import { loadUser, registerUser, logoutAccount, loginUser, sendVerificationOtp, verifyEmailOtp } from "./authThunks";
 
 
 // initial state for auth slice
@@ -109,6 +109,39 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(logoutAccount.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.successMessage = null;
+            })
+
+            // OTP for email verification
+            .addCase(sendVerificationOtp.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(sendVerificationOtp.fulfilled, (state, action) => {
+                state.loading = false;
+                state.successMessage = action.payload.message; // ya jo bhi API se message aaya ho
+            })
+            .addCase(sendVerificationOtp.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload; // error message from rejectWithValue
+            })
+
+            // Verify email
+            .addCase(verifyEmailOtp.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(verifyEmailOtp.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload.user;
+                state.successMessage = action.payload.message;
+                state.isAuthenticated = true;
+            })
+            .addCase(verifyEmailOtp.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 state.successMessage = null;

@@ -62,7 +62,6 @@
 /* ------------ */
 
 .user_options .optionIcon {
-    background: red;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,7 +70,7 @@
     border-radius: 50%;
     font-size: 3rem;
     background: var(--bg-tettiary);
-    color: var(--text-color-primary-dim);
+    color: var(--text-color-primary-light);
 }
 
 .user_options .optionInfo {

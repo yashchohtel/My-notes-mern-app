@@ -94,3 +94,9 @@
     letter-spacing: 0.04rem;
 
 }
+
+.loder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

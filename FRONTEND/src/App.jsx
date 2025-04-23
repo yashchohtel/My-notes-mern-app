@@ -10,6 +10,8 @@ import PublicRoute from "./Components/ProtectedRoute/PublicRoute";
 import AllNotes from "./pages/AllNotes/AllNotes";
 import ImportantNotes from "./pages/ImportentNotes/ImportantNotes";
 import DeletedNotes from "./pages/DeletedNotes.jsx/DeletedNotes";
+import UserAccount from "./pages/UserAccount/UserAccount";
+import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
 
 
 function App() {
@@ -48,6 +50,12 @@ function App() {
           <Route path='deleted-notes' element={<DeletedNotes />} />
 
         </Route>
+
+        {/* Route for user account */}
+        <Route path="/user-account" element={<ProtectedRoute> <UserAccount /> </ProtectedRoute>} />
+
+        {/* Route for verify Email */}
+        <Route path="/verify-email" element={<ProtectedRoute> <VerifyEmail /> </ProtectedRoute>} />
 
       </Routes>
 
