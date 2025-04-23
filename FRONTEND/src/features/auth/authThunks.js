@@ -156,6 +156,8 @@ export const verifyEmailOtp = createAsyncThunk("auth/verifyEmailOtp", async (otp
         toast.success(data.message);
 
         // return response
+        console.log(data);
+
         return data;
     } catch (err) {
 

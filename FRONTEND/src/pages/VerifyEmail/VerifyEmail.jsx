@@ -4,16 +4,21 @@ import Navbar from '../../Components/Navbar/Navbar'
 import { useDispatch, useSelector } from 'react-redux';
 import { sendVerificationOtp, verifyEmailOtp } from '../../features/auth/authThunks';
 import { CgSpinner } from 'react-icons/cg';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const VerifyEmail = () => {
+
+    const location = useLocation();
+    const isEnterOtp = location.pathname === "/verify-email/enter";
+
+    // configure useNavigate to navigate 
+    const navigate = useNavigate();
 
     // getting required Data from global store using useSelector
     const { loading, successMessage, error, user } = useSelector((state) => state.auth);
 
     // descturing values from usre object
     const { isAccountVerified } = user;
-    console.log(isAccountVerified);
-
 
     // configure dispatch use to dispatch actions
     const dispatch = useDispatch();
@@ -21,7 +26,7 @@ const VerifyEmail = () => {
     // send otp -------------------------
 
     // state to store otp send or not
-    const [isOtpSend, setIsOtpSend] = useState(false);
+    const [isOtpSend, setIsOtpSend] = useState(true);
 
     // function to handle send otp button
     const sendOtp = () => {
@@ -51,7 +56,6 @@ const VerifyEmail = () => {
     const handlePaste = (e) => {
         const copiedText = e.clipboardData.getData("text");
         const characters = copiedText.split(""); //  Split into array
-        console.log(characters);
 
         characters.map((elm, index) => {
             if (inputRefs.current[index]) {
@@ -86,12 +90,17 @@ const VerifyEmail = () => {
     useEffect(() => {
         if (successMessage) {
             setIsOtpSend(true);
+            navigate("/verify-email/enter");
         }
 
     }, [successMessage]);
 
     // effect to redire to home page after verification
-
+    useEffect(() => {
+        if (isAccountVerified) {
+            navigate("/home")
+        }
+    }, [user])
 
     return (
         <>
@@ -102,7 +111,7 @@ const VerifyEmail = () => {
                 {/* navbar component */}
                 <Navbar />
 
-                {!isOtpSend ?
+                {!isEnterOtp ?
                     (<>
 
                         {/* send otp comtainer */}

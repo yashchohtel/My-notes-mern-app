@@ -50,7 +50,7 @@ const UserOptions = () => {
 
                 {/* vefify email */}
                 {!isAccountVerified &&
-                    <div className="user_options verify_account" onClick={() => navigate("/verify-email")}>
+                    <div className="user_options verify_account" onClick={() => navigate("/verify-email/send")}>
 
                         <span className="optionIcon"> <IoMdCheckmarkCircleOutline /> </span>
 

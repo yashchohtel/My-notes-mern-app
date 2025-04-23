@@ -54,8 +54,10 @@ function App() {
         {/* Route for user account */}
         <Route path="/user-account" element={<ProtectedRoute> <UserAccount /> </ProtectedRoute>} />
 
-        {/* Route for verify Email */}
-        <Route path="/verify-email" element={<ProtectedRoute> <VerifyEmail /> </ProtectedRoute>} />
+        {/* Route for send verify Email */}
+        <Route path="/verify-email/send" element={<ProtectedRoute> <VerifyEmail /> </ProtectedRoute>} />
+        {/* Route for enter verify Email */}
+        <Route path="/verify-email/enter" element={<ProtectedRoute> <VerifyEmail /> </ProtectedRoute>} />
 
       </Routes>
 

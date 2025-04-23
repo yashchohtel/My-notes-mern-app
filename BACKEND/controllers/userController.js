@@ -384,6 +384,8 @@ export const verifyEmail = async (req, res, next) => {
             fullName: user.fullName,
             username: user.username,
             email: user.email,
+            isAccountVerified: user.isAccountVerified,
+            role: user.role,
         }
     });
 
