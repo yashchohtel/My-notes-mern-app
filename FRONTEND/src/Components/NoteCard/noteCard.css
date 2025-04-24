@@ -1,0 +1,84 @@
+.note_card {
+    background-color: var(--bg-secondary);
+    border-radius: 5px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.note_card .note_heading {
+    color: var(--text-color-secondary-light);
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: 0.05rem;
+}
+
+.note_card .note_desc {
+    font-family: var(--font-four);
+    color: var(--text-color-primary-dim);
+    font-size: 1.6rem;
+    height: 9.5rem;
+    overflow-y: auto;
+    word-wrap: break-word;
+}
+
+.note_card .action_info {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.info {
+    color: var(--text-color-primary-bright);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.note_card .act_buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.act_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 5px;
+    background-color: var(--bg-primary);
+    font-size: 2rem;
+    color: var(--text-color-primary-bright);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.act_btn:hover {
+    color: var(--text-color-primary-dim);
+}
+
+
+/* width */
+.note_desc::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+.note_desc::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+.note_desc::-webkit-scrollbar-thumb {
+    background: var(--bg-primary);
+    border: 1px solid var(--bg-secondary);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.note_desc::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

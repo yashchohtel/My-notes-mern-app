@@ -39,7 +39,7 @@ const Navbar = () => {
     const isRegister = location.pathname === "/register";
     const isHome = location.pathname.startsWith("/home");
     const isAccount = location.pathname === "/user-account";
-    const isEmailVerify = location.pathname === "/verify-email";
+    const isEmailVerify = location.pathname.startsWith("/verify-email");
 
     // state to store sticky navbar status
     const [isSticky, setIsSticky] = useState(false);

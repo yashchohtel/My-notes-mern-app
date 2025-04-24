@@ -12,6 +12,7 @@ import ImportantNotes from "./pages/ImportentNotes/ImportantNotes";
 import DeletedNotes from "./pages/DeletedNotes.jsx/DeletedNotes";
 import UserAccount from "./pages/UserAccount/UserAccount";
 import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
+import { fetchAllNotes } from "./features/notes/notesThunks";
 
 
 function App() {
@@ -28,6 +29,11 @@ function App() {
   // load user data and auth state
   useEffect(() => {
     dispatch(loadUser());
+  }, [dispatch]);
+
+  // effect to load all notes of user
+  useEffect(() => {
+    dispatch(fetchAllNotes());
   }, [dispatch]);
 
   return (

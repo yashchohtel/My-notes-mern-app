@@ -4,6 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 1rem;
 }
 
 .sec_nav_left .notes_count {
@@ -48,6 +49,8 @@
     visibility: hidden;
     opacity: 0;
     transform: translateY(1rem);
+    background-color: var(--bg-primary);
+    border: 1px solid white;
 }
 
 .notes-filter-dropdown:hover .filter-options {

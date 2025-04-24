@@ -16,8 +16,10 @@ const initialState = {
 const authSlice = createSlice({
 
     name: "auth",
+
     initialState,
 
+    // reducer to handle sync actions
     reducers: {
 
         // reducer function to clear error and success message

@@ -17,7 +17,7 @@ createRoot(document.getElementById('root')).render(
 
     <StrictMode>
 
-      <ToastContainer position="top-right" toastClassName="my_toast" autoClose={2000} theme='dark' />
+      <ToastContainer position="bottom-right" toastClassName="my_toast" autoClose={2000} theme='dark' />
 
       <Provider store={store}>
         <App />

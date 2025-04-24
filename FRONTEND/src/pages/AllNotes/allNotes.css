@@ -1,0 +1,11 @@
+.notes_display_sec {
+    height: calc(100vh - 15.5rem);
+    overflow-y: auto;
+    padding: 0 2rem;
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding-bottom: 1rem;
+    align-items: start;
+}

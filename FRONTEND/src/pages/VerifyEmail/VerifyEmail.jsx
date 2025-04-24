@@ -26,7 +26,7 @@ const VerifyEmail = () => {
     // send otp -------------------------
 
     // state to store otp send or not
-    const [isOtpSend, setIsOtpSend] = useState(true);
+    const [isOtpSend, setIsOtpSend] = useState(false);
 
     // function to handle send otp button
     const sendOtp = () => {
@@ -102,6 +102,7 @@ const VerifyEmail = () => {
         }
     }, [user])
 
+
     return (
         <>
 
@@ -167,8 +168,13 @@ const VerifyEmail = () => {
                                     {loading ? (<span className='loder'> <CgSpinner size={25} /> </span>) : "SUBMIT OTP"}
                                 </button>
 
-                            </form>
+                                <p className="otp_description try_again">Didn’t get otp please try after 1 minute
+                                    <span onClick={() => navigate("/verify-email/send")}>RESEND OTP</span>
+                                     
+                                </p>
 
+
+                            </form>
 
                         </div>
 

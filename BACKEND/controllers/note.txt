@@ -1,0 +1,48 @@
+ye hai controller or unke kaam
+
+createNote (create note)
+getAllNotes (get all notes)
+getSingleNote (get signle note)
+markNoteImportant (mark un mark important or unimportant)
+updateNote (update a noet)
+softDeleteNote (mark note as deleted)
+softDeleteAllNotes (mark all note as deleted)
+restoreSoftDeletedNote (restore single note from recycle bin)
+restoreAllSoftDeletedNotes (restore all note from recycle bin)
+deleteNotePermanently (delete single note permanently)
+deleteAllNotesPermanently (delete all notes permanently)
+
+aab mai batata hu ke mere pas kitne page hai notes se related or seprate page pe kya kya kaam ho sakta hai
+
+1. all notes main page 
+kon se note : isme dikhinge saare notes jo mark important hai (isme bhe dikhinge or alag se importnote ke liye page hai waha bhe).
+
+kaaam kya kya hoga: 
+sabse pehle eak button hai jo note add karega
+mark unmark important wala action.
+edit action 
+delete action (delete karne se pehle eak popup aaiga jo confirm karege soft delete ya permanent delete).
+or eak filter ka option hai par uska api se lena dena nahi hai front end pe handle karinge
+or view full screen
+
+2. important note page
+kon se note : sirf wahi note jisme important true hoga 
+
+kaam kya kya hoga 
+wahi mark as unimportant (jaise ye unmark hoga wo yaha se hat jaiga)
+or edit note 
+delete single note (soft or permanenet)
+or delete all notes jitne bhe important notes hai wo delete hoga
+full screen view
+
+3. deleted notes page
+kon se note : sirf jinka isDeleted true hai (wo apne aap permanentaly delete ho jaingne 30 din baad)
+
+kaam kya kya hoga
+view full screen
+delete permanenet single note
+delete all note permanenet
+restore single Note
+restore all note 
+
+ye sab functionality rahinge aab tum batao initial state kya hona chaiye

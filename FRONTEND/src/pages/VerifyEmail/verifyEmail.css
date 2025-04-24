@@ -92,3 +92,14 @@
     letter-spacing: 0.04rem;
     text-align: center;
 }
+
+.otp_description span{
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    color: var(--text-color-primary-bright);
+}
+
+.try_again{
+    color: var(--text-color-secondary-light);
+}

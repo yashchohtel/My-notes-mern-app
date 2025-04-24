@@ -99,6 +99,8 @@ export const register = async (req, res, next) => {
             fullName: savedUser.fullName,
             username: savedUser.username,
             email: savedUser.email,
+            isAccountVerified: savedUser.isAccountVerified,
+            role: savedUser.role,
         }
     });
 
@@ -129,7 +131,7 @@ export const login = async (req, res, next) => {
 
     // flag to check if user is soft deleted or not
     let isDeletedFlag = false;
-    
+
     // Check if user is soft deleted or not
     if (user.isAccountDeleted) {
 
@@ -171,6 +173,8 @@ export const login = async (req, res, next) => {
             fullName: user.fullName,
             username: user.username,
             email: user.email,
+            isAccountVerified: user.isAccountVerified,
+            role: user.role,
         }
     });
 
