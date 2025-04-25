@@ -57,3 +57,29 @@ export const fetchAllNotes = createAsyncThunk('notes/fetchAllNotes', async (_, {
 
     }
 });
+
+// thunk to mark a note as important
+export const markNoteImportant = createAsyncThunk('notes/markNoteImportant', async (noteId, { rejectWithValue }) => {
+
+    try {
+
+        // Sending PATCH request to mark the note as important
+        const response = await axios.patch(`${backendUrl}/api/notes/mark-note-important/${noteId}`, {}, {
+            withCredentials: true,
+        });
+
+        console.log(response);
+
+        toast.success('Note marked as important');
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to mark note as important');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});

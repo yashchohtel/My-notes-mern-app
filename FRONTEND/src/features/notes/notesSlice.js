@@ -65,6 +65,25 @@ const notesSlice = createSlice({
                 state.error = action.payload;
             })
 
+            // MARK NOTE IMPORTANT
+            .addCase(markNoteImportant.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(markNoteImportant.fulfilled, (state, action) => {
+                state.loading = false;
+                const noteIndex = state.notes.findIndex(note => note.id === action.payload.note.id);
+                if (noteIndex !== -1) {
+                    state.notes[noteIndex] = action.payload.note;
+                }
+                state.successMessage = action.payload.message;
+            })
+            .addCase(markNoteImportant.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
     }
 
 })
