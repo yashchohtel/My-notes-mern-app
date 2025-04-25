@@ -1,8 +1,10 @@
 import React from 'react'
 import './SecondaryNav.css'
 import { FiFilter } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
+import { FaPlus } from "react-icons/fa6";
 
-const SecondaryNav = ({ title, count }) => {
+const SecondaryNav = ({ title, count, openModel }) => {
     return (
         <>
             <div className="second_nav">
@@ -14,6 +16,11 @@ const SecondaryNav = ({ title, count }) => {
 
                 {/* secondary nav right */}
                 <div className="sec_nav_right">
+
+                    {/* delete all notes button */}
+                    <button className="button_primary deleteAll-btn" onClick={() => openModel()}>
+                        add note  <FaPlus />
+                    </button>
 
                     {/* filter drop down */}
                     <div className="notes-filter-dropdown">
@@ -35,7 +42,7 @@ const SecondaryNav = ({ title, count }) => {
 
                     {/* delete all notes button */}
                     <button className="button_primary deleteAll-btn">
-                        DELETE ALL
+                        DELETE ALL  <MdDelete />
                     </button>
 
                 </div>

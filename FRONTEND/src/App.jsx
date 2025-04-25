@@ -33,8 +33,10 @@ function App() {
 
   // effect to load all notes of user
   useEffect(() => {
-    dispatch(fetchAllNotes());
-  }, [dispatch]);
+    if (isAuthenticated) {
+      dispatch(fetchAllNotes());
+    }
+  }, [dispatch, isAuthenticated]);
 
   return (
     <>

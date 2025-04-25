@@ -75,6 +75,7 @@ body {
     height: 100%;
     background-color: var(--bg-primary);
     overflow: hidden;
+    position: relative;
 }
 
 /* Headings & Paragraph */

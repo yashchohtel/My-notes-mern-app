@@ -5,6 +5,12 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    height: 22rem;
+    transition: var(--transition);
+}
+
+.note_card:hover {
+    background: var(--hover-primary);
 }
 
 .note_card .note_heading {

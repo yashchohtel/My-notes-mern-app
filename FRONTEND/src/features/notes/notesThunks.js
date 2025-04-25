@@ -5,13 +5,43 @@ import { toast } from 'react-toastify';
 // getting backend url from env
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
+
+// tunk to create notes
+export const createNote = createAsyncThunk('notes/createNote', async (noteFormData, { rejectWithValue }) => {
+
+    try {
+
+        // Sending POST request to create a new note
+        const response = await axios.post(`${backendUrl}/api/notes/create-note`, noteFormData, {
+            withCredentials: true,
+        });
+
+        console.log(response);
+
+        toast.success('Note created successfully');
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to create note');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+
+});
+
 // thunk to load all notes of user
 export const fetchAllNotes = createAsyncThunk('notes/fetchAllNotes', async (_, { rejectWithValue }) => {
 
     try {
 
         // Sending GET request to fetch all notes 
-        const response = await axios.get(`${backendUrl}/api/notes/getAll-notes`);
+        const response = await axios.get(`${backendUrl}/api/notes/getAll-notes`, {
+            withCredentials: true,
+        });
 
         console.log(response)
 
@@ -22,7 +52,7 @@ export const fetchAllNotes = createAsyncThunk('notes/fetchAllNotes', async (_, {
         console.log(error)
 
         // Handling errors and returning a rejected value
-        toast.error(error.response?.data?.message || 'Failed to fetch notes');
+        console.error(error.response?.data?.message || 'Failed to fetch notes');
         return rejectWithValue(error.response?.data || error.message);
 
     }

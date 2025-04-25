@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAllNotes } from "./notesThunks";
+import { createNote, fetchAllNotes } from "./notesThunks";
 
 // initial state
 const initialState = {
@@ -31,6 +31,22 @@ const notesSlice = createSlice({
     // extra reducres to handle async actions
     extraReducers: (builder) => {
         builder
+
+            // CREATE NOTE
+            .addCase(createNote.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(createNote.fulfilled, (state, action) => {
+                state.loading = false;
+                state.notes.push(action.payload.note);
+                state.successMessage = action.payload.message;
+            })
+            .addCase(createNote.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
 
             // FETCH NOTES
             .addCase(fetchAllNotes.pending, (state) => {

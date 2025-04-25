@@ -5,7 +5,97 @@
     margin-top: 2rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 2rem;
     padding-bottom: 1rem;
-    align-items: start;
+    grid-auto-rows: 22rem;
+}
+
+/* add note model */
+.add_note_model {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000000ab;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(4px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+
+}
+
+.notesForm {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 5px;
+    width: 50rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+}
+
+.notesForm input {
+    background: var(--bg-primary);
+    border-radius: 5px;
+    height: 5rem;
+    padding: 0 1rem;
+    color: var(--text-color-secondary-light);
+    font-size: 2rem;
+    font-weight: 400;
+    word-spacing: 0.05rem;
+    letter-spacing: 0.02rem;
+}
+
+.notesForm textarea {
+    background: var(--bg-primary);
+    border-radius: 5px;
+    height: 20rem;
+    width: 100%;
+    padding: 1rem;
+    color: var(--text-color-primary-dim);
+    font-size: 1.7rem;
+    font-weight: 400;
+    word-spacing: 0.07rem;
+    letter-spacing: 0.01rem;
+    resize: none;
+}
+
+.notesForm .close_model {
+    position: absolute;
+    top: -6rem;
+    right: 0;
+    font-size: 2rem;
+    width: 4rem;
+    cursor: pointer;
+    height: 4rem;
+    background: var(--bg-button);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color-secondary-light);
+    font-size: 2rem;
+    transition: var(--transition);
+    border-radius: 5px;
+    border: 2px solid transparent;
+}
+
+.notesForm .close_model:hover {
+    background-color: var(--bg-primary);
+    border-color: var(--border-primary);
+    color: var(--text-color-primary-light);
+}
+
+.no_notes {
+    text-align: center;
+    margin-top: 10rem;
+    font-size: 3rem;
+    color: var(--text-color-secondary-light);
+    font-weight: 600;
+    letter-spacing: 0.05rem;
+    word-spacing: 0.1rem;
 }

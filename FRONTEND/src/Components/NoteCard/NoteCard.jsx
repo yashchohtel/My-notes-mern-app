@@ -7,9 +7,10 @@ import { RiFullscreenLine } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
-const NoteCard = () => {
+const NoteCard = ({ note }) => {
 
-    
+    const { title, description, isImportant, createdAt } = note;
+    const dateObj = new Date(createdAt);
 
     return (
         <>
@@ -17,10 +18,10 @@ const NoteCard = () => {
             <div className="note_card">
 
                 {/* heading */}
-                <h2 className='note_heading'> work till death </h2>
+                <h2 className='note_heading'> {title} </h2>
 
                 {/* description */}
-                <p className='note_desc'>Work plays a vital role in our lives as it gives us purpose, direction, and a sense of accomplishment. It helps us grow personally and professionally, while also contributing to our family and society.</p>
+                <p className='note_desc'> {description} </p>
 
                 {/* action button and info */}
                 <div className="action_info">
@@ -30,7 +31,8 @@ const NoteCard = () => {
 
                         {/* important mark */}
                         <span className='act_btn important'>
-                            <FaRegStar />
+                            {isImportant ? <FaStar /> : <FaRegStar />}
+
                         </span>
 
                         {/*  view full screen */}
@@ -50,7 +52,9 @@ const NoteCard = () => {
 
                     </div>
 
-                    <p className="info">12/23/24</p>
+                    <p className="info">
+                        {`${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`}
+                    </p>
 
                 </div>
 

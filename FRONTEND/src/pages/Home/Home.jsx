@@ -12,7 +12,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   // getting required Data from global store using useSelector
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.notes);
 
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const Home = () => {
         <div className='home_notes_section_container'>
 
           <Outlet />
-          
+
         </div>
 
       </section>
