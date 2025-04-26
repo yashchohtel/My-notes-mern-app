@@ -18,7 +18,7 @@ notesRouter.get('/getAll-notes', userAuth, catchAsyncError(getAllNotes)); // 'ht
 notesRouter.get('/get-note/:noteId', userAuth, catchAsyncError(getSingleNote)); // 'http://localhost:3000/api/notes/get-note/:noteId'
 
 // Mark note important/unimportant route [POST]
-notesRouter.post('/mark-note-important/:noteId', userAuth, catchAsyncError(markNoteImportant)); // 'http://localhost:3000/api/notes/mark-note-important/:noteId'
+notesRouter.patch('/mark-note-important/:noteId', userAuth, catchAsyncError(markNoteImportant)); // 'http://localhost:3000/api/notes/mark-note-important/:noteId'
 
 // Update note route [PATCH]
 notesRouter.patch('/update-note/:noteId', userAuth, catchAsyncError(updateNote)); // 'http://localhost:3000/api/notes/update-note/:noteId'

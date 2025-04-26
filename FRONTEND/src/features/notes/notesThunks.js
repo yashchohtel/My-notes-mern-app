@@ -16,8 +16,6 @@ export const createNote = createAsyncThunk('notes/createNote', async (noteFormDa
             withCredentials: true,
         });
 
-        console.log(response);
-
         toast.success('Note created successfully');
         return response.data; // Returning the data on success
 
@@ -43,7 +41,7 @@ export const fetchAllNotes = createAsyncThunk('notes/fetchAllNotes', async (_, {
             withCredentials: true,
         });
 
-        console.log(response)
+        // console.log(response)
 
         return response.data; // Returning the data on success
 
@@ -68,9 +66,9 @@ export const markNoteImportant = createAsyncThunk('notes/markNoteImportant', asy
             withCredentials: true,
         });
 
-        console.log(response);
+        // console.log(response);
 
-        toast.success('Note marked as important');
+        toast.success(response.data.message);
         return response.data; // Returning the data on success
 
     } catch (error) {
@@ -78,7 +76,7 @@ export const markNoteImportant = createAsyncThunk('notes/markNoteImportant', asy
         console.log(error);
 
         // Handling errors and returning a rejected value
-        console.error(error.response?.data?.message || 'Failed to mark note as important');
+        console.error(error.response?.data?.data || 'Failed to mark note as important');
         return rejectWithValue(error.response?.data || error.message);
 
     }

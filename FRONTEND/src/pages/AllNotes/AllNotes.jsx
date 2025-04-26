@@ -6,12 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { IoClose } from "react-icons/io5";
-import { createNote } from '../../features/notes/notesThunks';
+import { createNote, fetchAllNotes } from '../../features/notes/notesThunks';
+import ViewFullNote from '../../Components/ViewFullNote/ViewFullNote';
 
 const AllNotes = () => {
-
-    // configure useNavigate to navigate 
-    const navigate = useNavigate();
 
     // getting required Data from global store using useSelector
     const { notes } = useSelector((state) => state.notes);
@@ -63,14 +61,36 @@ const AllNotes = () => {
         e.preventDefault();
 
         // dispatch createNote action
-        dispatch(createNote(noteFormData));
+        dispatch(createNote(noteFormData)).then(() => dispatch(fetchAllNotes()))
 
         // close form after submit
         closeModel();
 
-        // gets latest updated notes
-        dispatch(fetchAllNotes());
+    }
 
+    /* ----------- */
+
+    // state to store viewNote modal open and close 
+    const [viewNoteModal, setViewNoteModal] = useState(false);
+
+    // state to store note data for full screen view
+    const [viewNote, setViewNote] = useState(null);
+
+    // function to view note on full screen
+    const viewFullNote = (id) => {
+
+        const noteData = notes.find((note) => note._id === id);
+
+        if (noteData) {
+            setViewNote(noteData);
+            setViewNoteModal(true)
+        }
+
+    }
+
+    // function to close full screen popup
+    const closeViewModal = () => {
+        setViewNoteModal(false)
     }
 
     return (
@@ -81,11 +101,10 @@ const AllNotes = () => {
 
                 {/* popup model to add notes */}
                 {showAddModel &&
-                    <div className="add_note_model">
-
+                    <div className="add_note_model" onClick={() => closeModel()}>
 
                         {/* notes form */}
-                        <form className="notesForm" onSubmit={(e) => addNote(e)}>
+                        <form className="notesForm" onSubmit={(e) => addNote(e)} onClick={(e) => e.stopPropagation()} >
 
                             {/* for title */}
                             <input
@@ -117,9 +136,17 @@ const AllNotes = () => {
                     </div>
                 }
 
+                {/* view full screen note modal */}
+                {viewNoteModal &&
+                    <div className="ViewFullNote" onClick={() => closeViewModal()}>
+                        <ViewFullNote viewNoteData={viewNote} closeViewModal={closeViewModal}/>
+                    </div>
+                }
+
                 {/* secondary nav */}
                 <SecondaryNav title="All Notes" count={notes.length} openModel={openModel} />
 
+                {/* displaying notes */}
                 {notes.length === 0 ?
 
                     <p className="no_notes">ADD YOUR NOTES AND TASKS</p>
@@ -130,15 +157,12 @@ const AllNotes = () => {
 
                         {/* note card */}
                         {notes && notes.map((note) => (
-                            <NoteCard key={note._id} note={note} />
+                            <NoteCard key={note._id} note={note} viewFullNote={viewFullNote} />
                         ))}
 
                     </div>)
 
                 }
-
-
-
 
             </div>
 

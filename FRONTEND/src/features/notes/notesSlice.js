@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNote, fetchAllNotes } from "./notesThunks";
+import { createNote, fetchAllNotes, markNoteImportant } from "./notesThunks";
 
 // initial state
 const initialState = {
@@ -40,7 +40,7 @@ const notesSlice = createSlice({
             })
             .addCase(createNote.fulfilled, (state, action) => {
                 state.loading = false;
-                state.notes.push(action.payload.note);
+                state.notes.unshift(action.payload.note);
                 state.successMessage = action.payload.message;
             })
             .addCase(createNote.rejected, (state, action) => {
@@ -58,7 +58,7 @@ const notesSlice = createSlice({
                 state.loading = false;
                 state.notes = action.payload.notes;
                 state.successMessage = action.payload.message;
-                console.log(action.payload);
+                // console.log(action.payload);
             })
             .addCase(fetchAllNotes.rejected, (state, action) => {
                 state.loading = false;
@@ -73,7 +73,7 @@ const notesSlice = createSlice({
             })
             .addCase(markNoteImportant.fulfilled, (state, action) => {
                 state.loading = false;
-                const noteIndex = state.notes.findIndex(note => note.id === action.payload.note.id);
+                const noteIndex = state.notes.findIndex(note => note._id === action.payload.note._id);
                 if (noteIndex !== -1) {
                     state.notes[noteIndex] = action.payload.note;
                 }

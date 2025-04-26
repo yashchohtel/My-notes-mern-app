@@ -29,12 +29,14 @@ function App() {
   // load user data and auth state
   useEffect(() => {
     dispatch(loadUser());
-  }, [dispatch]);
+  }, [dispatch, ]);
 
   // effect to load all notes of user
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchAllNotes());
+      console.log("fetched");
+      
     }
   }, [dispatch, isAuthenticated]);
 

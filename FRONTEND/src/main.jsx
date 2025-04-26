@@ -15,15 +15,11 @@ createRoot(document.getElementById('root')).render(
 
   <BrowserRouter>
 
-    <StrictMode>
+    <ToastContainer position="bottom-right" toastClassName="my_toast" autoClose={2000} theme='dark' />
 
-      <ToastContainer position="bottom-right" toastClassName="my_toast" autoClose={2000} theme='dark' />
-
-      <Provider store={store}>
-        <App />
-      </Provider>
-
-    </StrictMode>,
+    <Provider store={store}>
+      <App />
+    </Provider>
 
   </BrowserRouter>
 
