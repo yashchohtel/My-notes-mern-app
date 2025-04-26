@@ -35,8 +35,6 @@ function App() {
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchAllNotes());
-      console.log("fetched");
-      
     }
   }, [dispatch, isAuthenticated]);
 

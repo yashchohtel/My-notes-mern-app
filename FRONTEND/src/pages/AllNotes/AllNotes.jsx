@@ -54,6 +54,8 @@ const AllNotes = () => {
 
     };
 
+    /* ----------- create note */ 
+
     // for handling form submit 
     const addNote = (e) => {
 
@@ -68,21 +70,23 @@ const AllNotes = () => {
 
     }
 
-    /* ----------- */
+    /* ----------- mark note important */
+
+
+    /* ----------- view note full screen*/
 
     // state to store viewNote modal open and close 
     const [viewNoteModal, setViewNoteModal] = useState(false);
 
     // state to store note data for full screen view
-    const [viewNote, setViewNote] = useState(null);
+    const [fullvViewNoteId, setFullViewNoteId] = useState(null);
 
     // function to view note on full screen
     const viewFullNote = (id) => {
 
-        const noteData = notes.find((note) => note._id === id);
-
-        if (noteData) {
-            setViewNote(noteData);
+        // send note id to fetch latest data in viewFullNote component
+        if (id) {
+            setFullViewNoteId(id);
             setViewNoteModal(true)
         }
 
@@ -139,7 +143,7 @@ const AllNotes = () => {
                 {/* view full screen note modal */}
                 {viewNoteModal &&
                     <div className="ViewFullNote" onClick={() => closeViewModal()}>
-                        <ViewFullNote viewNoteData={viewNote} closeViewModal={closeViewModal}/>
+                        <ViewFullNote fullvViewNoteId={fullvViewNoteId} closeViewModal={closeViewModal} />
                     </div>
                 }
 

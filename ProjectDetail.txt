@@ -88,3 +88,6 @@ These features need coordination between frontend and backend.
 ---
 This document provides a clear breakdown of features needed for the Notes App. The next step is to design the API structure for implementing these features.
 
+
+
+
