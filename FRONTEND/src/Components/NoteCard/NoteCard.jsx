@@ -6,23 +6,12 @@ import { FaStar } from "react-icons/fa";
 import { RiFullscreenLine } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-import { fetchAllNotes, markNoteImportant } from '../../features/notes/notesThunks';
-import { useDispatch } from 'react-redux';
 
-const NoteCard = ({ note, viewFullNote }) => {
-
-    // configure dispatch use to dispatch actions
-    const dispatch = useDispatch();
+const NoteCard = ({ note, viewFullNote, markImportant, openNoteFormEdit, moveNoteToBin }) => {
 
     // desctructring notes
     const { _id, title, description, isImportant, createdAt } = note;
     const dateObj = new Date(createdAt);
-
-    // function to mark unmark note as important
-    const markImportant = (id) => {
-        dispatch(markNoteImportant(id))
-        dispatch(fetchAllNotes())
-    }
 
     return (
         <>
@@ -52,12 +41,12 @@ const NoteCard = ({ note, viewFullNote }) => {
                         </span>
 
                         {/* edit note */}
-                        <span className='act_btn edit'>
+                        <span className='act_btn edit' onClick={() => openNoteFormEdit(_id)}>
                             <MdEdit />
                         </span>
 
                         {/* delete notes */}
-                        <span className='act_btn delete'>
+                        <span className='act_btn delete' onClick={() => moveNoteToBin(_id)}>
                             <MdDelete />
                         </span>
 

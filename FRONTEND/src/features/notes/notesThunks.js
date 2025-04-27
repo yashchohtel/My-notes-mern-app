@@ -81,3 +81,51 @@ export const markNoteImportant = createAsyncThunk('notes/markNoteImportant', asy
 
     }
 });
+
+// thunk to update a note
+export const updateNote = createAsyncThunk('notes/updateNote', async ({ editNoteId, noteFormData }, { rejectWithValue }) => {
+
+    try {
+
+        // Sending PATCH request to update the note
+        const response = await axios.patch(`${backendUrl}/api/notes/update-note/${editNoteId}`, noteFormData, {
+            withCredentials: true,
+        });
+
+        toast.success(response.data.message);
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to update note');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});
+
+// thunk to soft delete a note
+export const softDeleteNote = createAsyncThunk('notes/softDeleteNote', async (noteId, { rejectWithValue }) => {
+
+    try {
+
+        // Sending DELETE request to soft delete the note
+        const response = await axios.delete(`${backendUrl}/api/notes/soft-delete-note/${noteId}`, {
+            withCredentials: true,
+        });
+
+        toast.success(response.data.message);
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to delete note');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});

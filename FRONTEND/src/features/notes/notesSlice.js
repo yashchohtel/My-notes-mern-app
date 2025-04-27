@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNote, fetchAllNotes, markNoteImportant } from "./notesThunks";
+import { createNote, fetchAllNotes, markNoteImportant, softDeleteNote, updateNote } from "./notesThunks";
+import { act } from "react";
 
 // initial state
 const initialState = {
@@ -80,6 +81,45 @@ const notesSlice = createSlice({
                 state.successMessage = action.payload.message;
             })
             .addCase(markNoteImportant.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // UPDATE NOTE
+            .addCase(updateNote.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(updateNote.fulfilled, (state, action) => {
+                state.loading = false;
+                const noteIndex = state.notes.findIndex(note => note._id === action.payload.note._id);
+                if (noteIndex !== -1) {
+                    state.notes[noteIndex] = action.payload.note;
+                }
+                state.successMessage = action.payload.message;
+            })
+            .addCase(updateNote.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // SOFT DELETE NOTE
+            .addCase(softDeleteNote.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(softDeleteNote.fulfilled, (state, action) => {
+                console.log(action.payload);
+                
+                state.loading = false;
+                state.notes = state.notes.filter(note => note._id !== action.payload.noteId);
+                console.log(state.notes);
+                
+                state.successMessage = action.payload.message;
+            })
+            .addCase(softDeleteNote.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

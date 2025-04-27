@@ -4,7 +4,7 @@ import { FiFilter } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 
-const SecondaryNav = ({ title, count, openModel }) => {
+const SecondaryNav = ({ title, count, openNoteFormCreate }) => {
     return (
         <>
             <div className="second_nav">
@@ -18,7 +18,7 @@ const SecondaryNav = ({ title, count, openModel }) => {
                 <div className="sec_nav_right">
 
                     {/* delete all notes button */}
-                    <button className="button_primary deleteAll-btn" onClick={() => openModel()}>
+                    <button className="button_primary deleteAll-btn" onClick={() => openNoteFormCreate()}>
                         add note  <FaPlus />
                     </button>
 

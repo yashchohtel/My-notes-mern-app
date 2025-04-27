@@ -162,7 +162,7 @@ export const updateNote = async (req, res, next) => {
     const userId = req.userId;
 
     // Extract note data from the request body
-    const { updatedTitle, updatedDescription } = req.body;
+    const { title, description } = req.body;
 
     // Find the note that matches the ID, belongs to the user, and is not deleted
     const note = await Notes.findOne({ _id: noteId, user: userId, isDeleted: false }).populate("user", "fullName email");
@@ -173,13 +173,13 @@ export const updateNote = async (req, res, next) => {
     }
 
     // If no updates are provided, return an error
-    if (!updatedTitle && !updatedDescription) {
+    if (!title && !description) {
         return next(new ErrorHandler("Please provide at least one field to update.", 400));
     }
 
     // Update the note with new data
-    note.title = updatedTitle;
-    note.description = updatedDescription;
+    note.title = title;
+    note.description = description;
 
     // save the updated note
     const updatedNote = await note.save();

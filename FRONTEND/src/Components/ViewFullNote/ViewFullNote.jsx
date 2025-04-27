@@ -6,36 +6,22 @@ import { MdEdit } from "react-icons/md";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import { fetchAllNotes, markNoteImportant } from '../../features/notes/notesThunks';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-const ViewFullNote = ({ fullvViewNoteId, closeViewModal }) => {
-
-    // configure dispatch use to dispatch actions
-    const dispatch = useDispatch();
+const ViewFullNote = ({ fullvViewNoteId, closeViewModal, markImportant, openNoteFormEdit, moveNoteToBin }) => {
 
     // getting required Data from global store using useSelector
     const { notes } = useSelector((state) => state.notes);
 
     // getting note via id to display full screen
-    const noteData = notes.find((note) => note._id === fullvViewNoteId);
+    const noteDataToFullView = notes.find((note) => note._id === fullvViewNoteId);
 
     // desctructring notes
-    const { _id, title, description, isImportant, createdAt, updatedAt } = noteData;
+    const { _id, title, description, isImportant, createdAt, updatedAt } = noteDataToFullView;
 
     // creating date object to show date accordingly
     const dateObjCreated = new Date(createdAt);
     const dateObjUpdated = new Date(updatedAt);
-
-    // getting only date to chekc if both are equal or not
-    const onlyDateCreated = createdAt.split('T')[0];
-    const onlyDateUpdated = updatedAt.split('T')[0];
-
-    // function to mark unmark note as important
-    const markImportant = (id) => {
-        dispatch(markNoteImportant(id))
-        dispatch(fetchAllNotes())
-    }
 
     return (
         <>
@@ -55,7 +41,7 @@ const ViewFullNote = ({ fullvViewNoteId, closeViewModal }) => {
                     </p>
 
                     <p className="updatedAt">
-                        {onlyDateCreated !== onlyDateUpdated &&
+                        {createdAt !== updatedAt &&
                             ("Last Updated: " + `${dateObjUpdated.getDate()}/${dateObjUpdated.getMonth() + 1}/${dateObjUpdated.getFullYear()}`)
                         }
                     </p>
@@ -69,11 +55,11 @@ const ViewFullNote = ({ fullvViewNoteId, closeViewModal }) => {
                         {isImportant ? <FaStar /> : <FaRegStar />}
                     </span>
 
-                    <span className='action edit'>
+                    <span className='action edit' onClick={() => openNoteFormEdit(_id)}>
                         <MdEdit />
                     </span>
 
-                    <span className='action delete'>
+                    <span className='action delete' onClick={() => moveNoteToBin(_id)}>
                         <MdDelete />
                     </span>
 

@@ -5,9 +5,9 @@ import NoteCard from '../../Components/NoteCard/NoteCard';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { IoClose } from "react-icons/io5";
-import { createNote, fetchAllNotes } from '../../features/notes/notesThunks';
+import { createNote, fetchAllNotes, markNoteImportant, softDeleteNote, updateNote } from '../../features/notes/notesThunks';
 import ViewFullNote from '../../Components/ViewFullNote/ViewFullNote';
+import NoteForm from '../../Components/NoteForm/NoteForm';
 
 const AllNotes = () => {
 
@@ -20,19 +20,22 @@ const AllNotes = () => {
     // state to store show hide add note model status
     const [showAddModel, setShowAddModel] = useState(false)
 
-    // function to open notes enter model
-    const openModel = () => {
-        setShowAddModel(true)
+    // function to open note form to create note
+    const openNoteFormCreate = () => {
+        setShowAddModel(true) // open note form for create note
     }
 
-    // function to close model
-    const closeModel = () => {
+    // function to close model for create and edit 
+    const closeNoteFormModel = () => {
 
-        setShowAddModel(false)
+        setShowAddModel(false) // close model
+        setIsEditing(false) // close editin
 
         setNoteFormData({ title: "", description: "" })
 
     }
+
+    /* ----------- create note */
 
     // state for storing form data
     const [noteFormData, setNoteFormData] = useState({
@@ -54,24 +57,40 @@ const AllNotes = () => {
 
     };
 
-    /* ----------- create note */ 
-
     // for handling form submit 
-    const addNote = (e) => {
+    const submitNoteForm = (e,) => {
 
         // preventing default form submission
         e.preventDefault();
 
-        // dispatch createNote action
-        dispatch(createNote(noteFormData)).then(() => dispatch(fetchAllNotes()))
+        console.log(editNoteId);
+        console.log(noteFormData);
+
+
+        // performing task according to create or edit
+        if (!isEditing) {
+
+            // dispatch createNote action 
+            dispatch(createNote(noteFormData)).then(() => dispatch(fetchAllNotes()))
+
+        } else {
+
+            // dispatch updateNote action
+            dispatch(updateNote({ editNoteId, noteFormData })).then(() => dispatch(fetchAllNotes()))
+
+        }
 
         // close form after submit
-        closeModel();
+        closeNoteFormModel();
 
     }
 
     /* ----------- mark note important */
 
+    // function to mark unmark note as important
+    const markImportant = (id) => {
+        dispatch(markNoteImportant(id)).then(() => dispatch(fetchAllNotes()))
+    }
 
     /* ----------- view note full screen*/
 
@@ -97,58 +116,81 @@ const AllNotes = () => {
         setViewNoteModal(false)
     }
 
+    /* ----------- edit note */
+
+    // state to store editing status
+    const [isEditing, setIsEditing] = useState(false);
+
+    // state to store note id to edit
+    const [editNoteId, setEditNoteId] = useState(null);
+
+    // function to open note form to edit note
+    const openNoteFormEdit = (id) => {
+
+        // show modal
+        setShowAddModel(true)
+
+        // set editing status true
+        setIsEditing(true)
+
+        // set id of note to edit
+        setEditNoteId(id)
+
+        // close view mode if click button click on view full note
+        closeViewModal()
+
+        // getting note via id to display full screen
+        const noteToEdit = notes.find((note) => note._id === id);
+
+        setNoteFormData({
+            title: noteToEdit?.title,
+            description: noteToEdit?.description,
+        })
+
+    }
+
+    /* ----------- delete note */
+
+    // function to soft delete (move to recycle bin)
+    const moveNoteToBin = (id) => {
+        dispatch(softDeleteNote(id)).then(() => dispatch(fetchAllNotes()))
+    }
+
+
     return (
         <>
 
             {/* all notes container */}
             <div className="allNotesContainer">
 
-                {/* popup model to add notes */}
+                {/* model to add notes */}
                 {showAddModel &&
-                    <div className="add_note_model" onClick={() => closeModel()}>
-
-                        {/* notes form */}
-                        <form className="notesForm" onSubmit={(e) => addNote(e)} onClick={(e) => e.stopPropagation()} >
-
-                            {/* for title */}
-                            <input
-                                type="text"
-                                placeholder='Enter your note title...'
-                                name='title'
-                                required
-                                value={noteFormData.title}
-                                onChange={handleInputChange}
-                            />
-
-                            {/* for description */}
-                            <textarea
-                                placeholder='Write your note here...'
-                                name="description"
-                                required
-                                value={noteFormData.description}
-                                onChange={handleInputChange}
-                            />
-
-                            {/* submit button */}
-                            <button type='submit' className="button_primary"> ADD NOTE </button>
-
-                            {/* popup close btn */}
-                            <span className="close_model" onClick={() => closeModel()}> <IoClose /> </span>
-
-                        </form>
-
-                    </div>
+                    <NoteForm
+                        noteFormData={noteFormData} // note data (create)
+                        handleInputChange={handleInputChange} // handle input change (create / edit)
+                        submitNoteForm={submitNoteForm} // submit note form (create / edit)
+                        closeNoteFormModel={closeNoteFormModel} // close note form (create)
+                        isEditing={isEditing} // editing status (edit)
+                    />
                 }
 
-                {/* view full screen note modal */}
+                {/* view full screen note  modal */}
                 {viewNoteModal &&
                     <div className="ViewFullNote" onClick={() => closeViewModal()}>
-                        <ViewFullNote fullvViewNoteId={fullvViewNoteId} closeViewModal={closeViewModal} />
+                        <ViewFullNote
+                            fullvViewNoteId={fullvViewNoteId}
+                            closeViewModal={closeViewModal}
+                            markImportant={markImportant}
+                            openNoteFormEdit={openNoteFormEdit}
+                            moveNoteToBin={moveNoteToBin}
+                        />
                     </div>
                 }
 
+                {/* modal to edit note */}
+
                 {/* secondary nav */}
-                <SecondaryNav title="All Notes" count={notes.length} openModel={openModel} />
+                <SecondaryNav title="All Notes" count={notes.length} openNoteFormCreate={openNoteFormCreate} />
 
                 {/* displaying notes */}
                 {notes.length === 0 ?
@@ -161,7 +203,14 @@ const AllNotes = () => {
 
                         {/* note card */}
                         {notes && notes.map((note) => (
-                            <NoteCard key={note._id} note={note} viewFullNote={viewFullNote} />
+                            <NoteCard
+                                key={note._id}
+                                note={note} // each note data
+                                viewFullNote={viewFullNote} // to open note full pre view
+                                markImportant={markImportant} // to mark note important
+                                openNoteFormEdit={openNoteFormEdit} // to open note form for editing
+                                moveNoteToBin={moveNoteToBin} // to soft delete note
+                            />
                         ))}
 
                     </div>)
