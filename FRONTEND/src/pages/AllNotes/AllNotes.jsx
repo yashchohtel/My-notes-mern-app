@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react'
+import React, { useState } from 'react'
 import SecondaryNav from '../../Components/SecondaryNav/SecondaryNav'
 import "./allNotes.css";
 import NoteCard from '../../Components/NoteCard/NoteCard';
@@ -17,6 +17,8 @@ const AllNotes = () => {
     // configure dispatch use to dispatch actions
     const dispatch = useDispatch();
 
+    /* ----------- create note ------------------------------- */
+
     // state to store show hide add note model status
     const [showAddModel, setShowAddModel] = useState(false)
 
@@ -34,8 +36,6 @@ const AllNotes = () => {
         setNoteFormData({ title: "", description: "" })
 
     }
-
-    /* ----------- create note */
 
     // state for storing form data
     const [noteFormData, setNoteFormData] = useState({
@@ -57,15 +57,11 @@ const AllNotes = () => {
 
     };
 
-    // for handling form submit 
-    const submitNoteForm = (e,) => {
+    // for handling form submit for create and edit
+    const submitNoteForm = (e) => {
 
         // preventing default form submission
         e.preventDefault();
-
-        console.log(editNoteId);
-        console.log(noteFormData);
-
 
         // performing task according to create or edit
         if (!isEditing) {
@@ -78,6 +74,11 @@ const AllNotes = () => {
             // dispatch updateNote action
             dispatch(updateNote({ editNoteId, noteFormData })).then(() => dispatch(fetchAllNotes()))
 
+            // show note full preview after edit
+            if (viewNoteModalEdit) {
+                viewFullNote(editNoteId);
+            }
+
         }
 
         // close form after submit
@@ -85,38 +86,7 @@ const AllNotes = () => {
 
     }
 
-    /* ----------- mark note important */
-
-    // function to mark unmark note as important
-    const markImportant = (id) => {
-        dispatch(markNoteImportant(id)).then(() => dispatch(fetchAllNotes()))
-    }
-
-    /* ----------- view note full screen*/
-
-    // state to store viewNote modal open and close 
-    const [viewNoteModal, setViewNoteModal] = useState(false);
-
-    // state to store note data for full screen view
-    const [fullvViewNoteId, setFullViewNoteId] = useState(null);
-
-    // function to view note on full screen
-    const viewFullNote = (id) => {
-
-        // send note id to fetch latest data in viewFullNote component
-        if (id) {
-            setFullViewNoteId(id);
-            setViewNoteModal(true)
-        }
-
-    }
-
-    // function to close full screen popup
-    const closeViewModal = () => {
-        setViewNoteModal(false)
-    }
-
-    /* ----------- edit note */
+    /* ----------- edit note ------------------------------- */
 
     // state to store editing status
     const [isEditing, setIsEditing] = useState(false);
@@ -139,7 +109,7 @@ const AllNotes = () => {
         // close view mode if click button click on view full note
         closeViewModal()
 
-        // getting note via id to display full screen
+        // getting note via id to edit 
         const noteToEdit = notes.find((note) => note._id === id);
 
         setNoteFormData({
@@ -149,13 +119,58 @@ const AllNotes = () => {
 
     }
 
-    /* ----------- delete note */
+    /* ----------- mark note important ------------------------------- */
 
-    // function to soft delete (move to recycle bin)
-    const moveNoteToBin = (id) => {
-        dispatch(softDeleteNote(id)).then(() => dispatch(fetchAllNotes()))
+    // function to mark unmark note as important
+    const markImportant = (id) => {
+        dispatch(markNoteImportant(id)).then(() => dispatch(fetchAllNotes()))
     }
 
+    /* ----------- view note full screen -------------------------------*/
+
+    // state to store viewNote modal open and close 
+    const [viewNoteModal, setViewNoteModal] = useState(false);
+
+    // state to open model if edited via full Preview
+    const [viewNoteModalEdit, setViewNoteModalEdit] = useState(false);
+
+    // state to store note data for full screen view
+    const [fullViewNoteId, setFullViewNoteId] = useState(null);
+
+    // function to view note on full screen
+    const viewFullNote = (id) => {
+
+        // send note id to fetch latest data in viewFullNote component
+        if (id) {
+            setFullViewNoteId(id);
+            setViewNoteModal(true)
+            setViewNoteModalEdit(true)
+        }
+    }
+
+    // function to close full screen popup
+    const closeViewModal = () => {
+        setViewNoteModal(false)
+    }
+
+    /* ----------- soft delete one note ------------------------------- */
+
+    // function to soft delete (move to recycle bin)
+    const moveOneNoteToBin = (id) => {
+
+        dispatch(softDeleteNote(id)).then(() => dispatch(fetchAllNotes()));
+
+        // close note view model if note is delete from view full note
+        closeViewModal();
+
+    }
+
+    /* ----------- soft delete all note ------------------------------- */
+
+    // function to soft delete all note at once
+    const moveAllNoteToBin = () => {
+        
+    }
 
     return (
         <>
@@ -169,7 +184,7 @@ const AllNotes = () => {
                         noteFormData={noteFormData} // note data (create)
                         handleInputChange={handleInputChange} // handle input change (create / edit)
                         submitNoteForm={submitNoteForm} // submit note form (create / edit)
-                        closeNoteFormModel={closeNoteFormModel} // close note form (create)
+                        closeNoteFormModel={closeNoteFormModel} // close note form (create / edit)
                         isEditing={isEditing} // editing status (edit)
                     />
                 }
@@ -178,11 +193,11 @@ const AllNotes = () => {
                 {viewNoteModal &&
                     <div className="ViewFullNote" onClick={() => closeViewModal()}>
                         <ViewFullNote
-                            fullvViewNoteId={fullvViewNoteId}
-                            closeViewModal={closeViewModal}
-                            markImportant={markImportant}
-                            openNoteFormEdit={openNoteFormEdit}
-                            moveNoteToBin={moveNoteToBin}
+                            fullViewNoteId={fullViewNoteId} // id of note 
+                            closeViewModal={closeViewModal} // modal close function
+                            markImportant={markImportant} // mark important functon
+                            openNoteFormEdit={openNoteFormEdit} // open edit form function
+                            moveOneNoteToBin={moveOneNoteToBin} // soft delete note function
                         />
                     </div>
                 }
@@ -209,7 +224,7 @@ const AllNotes = () => {
                                 viewFullNote={viewFullNote} // to open note full pre view
                                 markImportant={markImportant} // to mark note important
                                 openNoteFormEdit={openNoteFormEdit} // to open note form for editing
-                                moveNoteToBin={moveNoteToBin} // to soft delete note
+                                moveOneNoteToBin={moveOneNoteToBin} // to soft delete note
                             />
                         ))}
 

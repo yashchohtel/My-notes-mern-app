@@ -7,7 +7,7 @@ import { RiFullscreenLine } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
-const NoteCard = ({ note, viewFullNote, markImportant, openNoteFormEdit, moveNoteToBin }) => {
+const NoteCard = ({ note, viewFullNote, markImportant, openNoteFormEdit, moveOneNoteToBin }) => {
 
     // desctructring notes
     const { _id, title, description, isImportant, createdAt } = note;
@@ -46,7 +46,7 @@ const NoteCard = ({ note, viewFullNote, markImportant, openNoteFormEdit, moveNot
                         </span>
 
                         {/* delete notes */}
-                        <span className='act_btn delete' onClick={() => moveNoteToBin(_id)}>
+                        <span className='act_btn delete' onClick={() => moveOneNoteToBin(_id)}>
                             <MdDelete />
                         </span>
 

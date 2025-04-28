@@ -8,13 +8,13 @@ import { FaStar } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useSelector } from 'react-redux';
 
-const ViewFullNote = ({ fullvViewNoteId, closeViewModal, markImportant, openNoteFormEdit, moveNoteToBin }) => {
+const ViewFullNote = ({ fullViewNoteId, closeViewModal, markImportant, openNoteFormEdit, moveOneNoteToBin }) => {
 
     // getting required Data from global store using useSelector
     const { notes } = useSelector((state) => state.notes);
 
     // getting note via id to display full screen
-    const noteDataToFullView = notes.find((note) => note._id === fullvViewNoteId);
+    const noteDataToFullView = notes.find((note) => note._id === fullViewNoteId);
 
     // desctructring notes
     const { _id, title, description, isImportant, createdAt, updatedAt } = noteDataToFullView;
@@ -59,7 +59,7 @@ const ViewFullNote = ({ fullvViewNoteId, closeViewModal, markImportant, openNote
                         <MdEdit />
                     </span>
 
-                    <span className='action delete' onClick={() => moveNoteToBin(_id)}>
+                    <span className='action delete' onClick={() => moveOneNoteToBin(_id)}>
                         <MdDelete />
                     </span>
 

@@ -59,11 +59,13 @@ const notesSlice = createSlice({
                 state.loading = false;
                 state.notes = action.payload.notes;
                 state.successMessage = action.payload.message;
-                // console.log(action.payload);
             })
             .addCase(fetchAllNotes.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+                if(action.payload.message === "No notes found."){
+                    state.notes = []
+                }
             })
 
             // MARK NOTE IMPORTANT
@@ -111,28 +113,14 @@ const notesSlice = createSlice({
                 state.successMessage = null;
             })
             .addCase(softDeleteNote.fulfilled, (state, action) => {
-                console.log(action.payload);
-                
                 state.loading = false;
-                state.notes = state.notes.filter(note => note._id !== action.payload.noteId);
-                console.log(state.notes);
-                
+                state.notes = state.notes.filter(note => note._id !== action.payload.note._id);
                 state.successMessage = action.payload.message;
             })
             .addCase(softDeleteNote.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
-
-
-
-
-
-
-
-
-
-            
 
     }
 
