@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNote, fetchAllNotes, markNoteImportant, softDeleteNote, updateNote } from "./notesThunks";
+import { createNote, fetchAllNotes, markNoteImportant, softDeleteAllNotes, softDeleteNote, updateNote } from "./notesThunks";
 import { act } from "react";
 
 // initial state
@@ -63,7 +63,7 @@ const notesSlice = createSlice({
             .addCase(fetchAllNotes.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                if(action.payload.message === "No notes found."){
+                if (action.payload.message === "No notes found.") {
                     state.notes = []
                 }
             })
@@ -118,6 +118,22 @@ const notesSlice = createSlice({
                 state.successMessage = action.payload.message;
             })
             .addCase(softDeleteNote.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // SOFT DELETE ALL NOTES
+            .addCase(softDeleteAllNotes.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(softDeleteAllNotes.fulfilled, (state, action) => {
+                state.loading = false;
+                state.notes = [];
+                state.successMessage = action.payload.message;
+            })
+            .addCase(softDeleteAllNotes.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

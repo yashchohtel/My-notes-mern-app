@@ -9,7 +9,7 @@
     --bg-secondary: #3b3c3e;
     --bg-tettiary: #2b2b2b9c;
 
-    --bg-button: #506ef3;
+    --bg-button: #113cff;
 
     /* colors */
     --text-color-primary-light: #ffffff;
@@ -144,7 +144,6 @@ img {
     -webkit-user-select: none;
     touch-action: manipulation;
     font-family: var(--font-primary);
-    font-size: 1.5rem;
     color: var(--text-color-primary-light);
     font-weight: 600;
     letter-spacing: 0.1rem;
@@ -155,7 +154,8 @@ img {
     justify-content: center;
     gap: 0.5rem;
     padding: 0 1.5rem;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
+    font-family: var(--font-four);
 }
 
 .button_primary:hover {
@@ -163,6 +163,11 @@ img {
     border-color: var(--border-primary);
     color: var(--text-color-primary-light);
 }
+
+.button_primary:disabled {
+    cursor: not-allowed;
+    opacity: 0.6; /* halka light dikhane ke liye */
+  }
 
 
 .loder {

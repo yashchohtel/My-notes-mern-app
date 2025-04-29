@@ -1,10 +1,22 @@
 import React from 'react'
 import './SecondaryNav.css'
 import { FiFilter } from "react-icons/fi";
+import { FaFilter } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
+import { useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const SecondaryNav = ({ title, count, openNoteFormCreate }) => {
+const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
+
+    // configure navigator
+    const navigate = useNavigate();
+
+    // configure useLocation
+    const location = useLocation();
+
+    // getting required Data from global store using useSelector
+    const { notes } = useSelector((state) => state.notes);
 
     return (
         <>
@@ -18,17 +30,17 @@ const SecondaryNav = ({ title, count, openNoteFormCreate }) => {
                 {/* secondary nav right */}
                 <div className="sec_nav_right">
 
-                    {/* delete all notes button */}
+                    {/* add task button */}
                     <button className="button_primary deleteAll-btn" onClick={() => openNoteFormCreate()}>
                         add note  <FaPlus />
                     </button>
 
                     {/* filter drop down */}
-                    <div className="notes-filter-dropdown">
+                    <div className={`notes-filter-dropdown ${notes.length !== 0 ? 'notes-filter-dropdown-hover' : ''}`}>
 
                         {/* filter drop down button */}
-                        <button className="button_primary">
-                            Filter by <FiFilter className="filter-icon" />
+                        <button className="button_primary" disabled={notes.length === 0}>
+                            Filter by <FaFilter className="filter-icon" />
                         </button>
 
                         {/* filter drop down option */}
@@ -42,7 +54,9 @@ const SecondaryNav = ({ title, count, openNoteFormCreate }) => {
                     </div>
 
                     {/* delete all notes button */}
-                    <button className="button_primary deleteAll-btn">
+                    <button className="button_primary deleteAll-btn"
+                        onClick={() => openConfirmBox(null, "secondaryNavDeleteAllNote")}
+                        disabled={notes.length === 0}>
                         DELETE ALL  <MdDelete />
                     </button>
 

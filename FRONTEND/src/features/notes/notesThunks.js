@@ -129,3 +129,29 @@ export const softDeleteNote = createAsyncThunk('notes/softDeleteNote', async (no
 
     }
 });
+
+// thunk to soft delete all notes
+export const softDeleteAllNotes = createAsyncThunk('notes/softDeleteAllNotes', async (_, { rejectWithValue }) => {
+
+    try {
+
+        // Sending DELETE request to soft delete all notes
+        const response = await axios.delete(`${backendUrl}/api/notes/soft-delete-all-notes`, {
+            withCredentials: true,
+        });
+
+        toast.success(response.data.message);
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to delete all notes');
+        toast.success(error.response.data.message);
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});
+

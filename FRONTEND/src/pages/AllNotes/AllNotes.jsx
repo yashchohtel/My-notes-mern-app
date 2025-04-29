@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SecondaryNav from '../../Components/SecondaryNav/SecondaryNav'
 import "./allNotes.css";
 import NoteCard from '../../Components/NoteCard/NoteCard';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { createNote, fetchAllNotes, markNoteImportant, softDeleteNote, updateNote } from '../../features/notes/notesThunks';
+import { createNote, fetchAllNotes, markNoteImportant, softDeleteAllNotes, softDeleteNote, updateNote } from '../../features/notes/notesThunks';
 import ViewFullNote from '../../Components/ViewFullNote/ViewFullNote';
 import NoteForm from '../../Components/NoteForm/NoteForm';
+import ConfirmBox from '../../Components/ConfirmBox/ConfirmBox';
 
 const AllNotes = () => {
 
@@ -19,7 +20,7 @@ const AllNotes = () => {
 
     /* ----------- create note ------------------------------- */
 
-    // state to store show hide add note model status
+    // state to store show hide add note model status for add and edit
     const [showAddModel, setShowAddModel] = useState(false)
 
     // function to open note form to create note
@@ -37,13 +38,13 @@ const AllNotes = () => {
 
     }
 
-    // state for storing form data
+    // state for storing form data for create and edit
     const [noteFormData, setNoteFormData] = useState({
         title: "",
         description: ""
     });
 
-    // function to handle form data change
+    // function to handle form data change for create and edit
     const handleInputChange = (e) => {
 
         // destructuring name and value from event target
@@ -155,7 +156,7 @@ const AllNotes = () => {
 
     /* ----------- soft delete one note ------------------------------- */
 
-    // function to soft delete (move to recycle bin)
+    // function to soft delete one note (move to recycle bin)
     const moveOneNoteToBin = (id) => {
 
         dispatch(softDeleteNote(id)).then(() => dispatch(fetchAllNotes()));
@@ -169,8 +170,72 @@ const AllNotes = () => {
 
     // function to soft delete all note at once
     const moveAllNoteToBin = () => {
-        
+
+        dispatch(softDeleteAllNotes()).then(() => dispatch(fetchAllNotes()));
+
     }
+
+    /* ----------- confirmation of delete ---------------------------  */
+
+    // state to store confirm box open close status
+    const [confirmBoxOpen, setConfirmBoxOpen] = useState(false);
+
+    // state to store note id which is to be deleted
+    const [noteIdToDelete, setNoteIdToDelete] = useState(null);
+
+    // state to store from which part the delete action performed
+    const [whichPart, setWhichPart] = useState(null);
+
+    // function to open confirm box
+    const openConfirmBox = (id, part) => {
+
+        // set confirmbox open true
+        setConfirmBoxOpen(true);
+
+        // setting the node id
+        setNoteIdToDelete(id)
+
+        // setting the which part the delete comming from
+        setWhichPart(part)
+
+    }
+
+    // function to close confirm box
+    const closeConfirmBox = () => {
+
+        // set confirmbox open false
+        setConfirmBoxOpen(false);
+
+        // setting the note id to null if cancle confirmation
+        setNoteIdToDelete(null)
+
+        // setting which part to null if cancle confirmation
+        setWhichPart(null)
+
+    }
+
+    // handle confirmation action
+    const handleConfirmAction = (confirmAction) => {
+
+        // request from note card (delete single note)
+        if (whichPart === "noteCard" && confirmAction) {
+            // deleteing single note
+            moveOneNoteToBin(noteIdToDelete)
+        }
+        
+        // request from full view (delete single note)
+        if (whichPart === "fullPreview" && confirmAction) {
+            // deleteing single note
+            moveOneNoteToBin(noteIdToDelete)
+        }
+
+        // request from secondary nav (delete all note)
+        if(whichPart === "secondaryNavDeleteAllNote" && confirmAction){
+            // deletin all notes
+            moveAllNoteToBin();
+        }
+
+    };
 
     return (
         <>
@@ -178,7 +243,7 @@ const AllNotes = () => {
             {/* all notes container */}
             <div className="allNotesContainer">
 
-                {/* model to add notes */}
+                {/* model to add notes and edit note */}
                 {showAddModel &&
                     <NoteForm
                         noteFormData={noteFormData} // note data (create)
@@ -189,7 +254,7 @@ const AllNotes = () => {
                     />
                 }
 
-                {/* view full screen note  modal */}
+                {/* view full screen note modal */}
                 {viewNoteModal &&
                     <div className="ViewFullNote" onClick={() => closeViewModal()}>
                         <ViewFullNote
@@ -197,19 +262,40 @@ const AllNotes = () => {
                             closeViewModal={closeViewModal} // modal close function
                             markImportant={markImportant} // mark important functon
                             openNoteFormEdit={openNoteFormEdit} // open edit form function
-                            moveOneNoteToBin={moveOneNoteToBin} // soft delete note function
+                            openConfirmBox={openConfirmBox} // function to open confirm box
                         />
                     </div>
                 }
 
-                {/* modal to edit note */}
+                {/* confirmation box modal (to confirm execution of task) */}
+                {confirmBoxOpen &&
+                    <div className="ConfirmBox_container" onClick={() => closeConfirmBox()}>
+
+                        <div className="confirm_box">
+
+                            <ConfirmBox
+                                closeConfirmBox={closeConfirmBox} // function to close confirm box
+                                handleConfirmAction={handleConfirmAction} // function to handle action confirmation
+                                whichPart={whichPart} // confirmation box msg
+                            />
+
+                        </div>
+
+                    </div>
+                }
 
                 {/* secondary nav */}
-                <SecondaryNav title="All Notes" count={notes.length} openNoteFormCreate={openNoteFormCreate} />
+                <SecondaryNav
+                    title="All Notes" // note title for diffrent page
+                    count={notes.length} // notes length for different page
+                    openNoteFormCreate={openNoteFormCreate} // open create note function
+                    openConfirmBox={openConfirmBox} // function to open confirm box
+                />
 
                 {/* displaying notes */}
                 {notes.length === 0 ?
 
+                    // if no note to display
                     <p className="no_notes">ADD YOUR NOTES AND TASKS</p>
 
                     :
@@ -221,10 +307,10 @@ const AllNotes = () => {
                             <NoteCard
                                 key={note._id}
                                 note={note} // each note data
-                                viewFullNote={viewFullNote} // to open note full pre view
-                                markImportant={markImportant} // to mark note important
-                                openNoteFormEdit={openNoteFormEdit} // to open note form for editing
-                                moveOneNoteToBin={moveOneNoteToBin} // to soft delete note
+                                viewFullNote={viewFullNote} // function to open note full pre view
+                                markImportant={markImportant} // function to mark note important
+                                openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
+                                openConfirmBox={openConfirmBox} // function to open confirm box
                             />
                         ))}
 

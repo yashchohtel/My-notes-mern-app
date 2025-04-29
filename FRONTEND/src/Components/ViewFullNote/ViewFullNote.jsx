@@ -8,7 +8,7 @@ import { FaStar } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useSelector } from 'react-redux';
 
-const ViewFullNote = ({ fullViewNoteId, closeViewModal, markImportant, openNoteFormEdit, moveOneNoteToBin }) => {
+const ViewFullNote = ({ fullViewNoteId, closeViewModal, markImportant, openNoteFormEdit, openConfirmBox }) => {
 
     // getting required Data from global store using useSelector
     const { notes } = useSelector((state) => state.notes);
@@ -59,7 +59,7 @@ const ViewFullNote = ({ fullViewNoteId, closeViewModal, markImportant, openNoteF
                         <MdEdit />
                     </span>
 
-                    <span className='action delete' onClick={() => moveOneNoteToBin(_id)}>
+                    <span className='action delete' onClick={() => openConfirmBox(_id, "fullPreview")}>
                         <MdDelete />
                     </span>
 

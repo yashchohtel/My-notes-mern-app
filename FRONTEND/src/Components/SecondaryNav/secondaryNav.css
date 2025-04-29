@@ -53,7 +53,7 @@
     border: 1px solid white;
 }
 
-.notes-filter-dropdown:hover .filter-options {
+.notes-filter-dropdown-hover:hover .filter-options {
     visibility: visible;
     opacity: 1;
     transform: translateY(0);

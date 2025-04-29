@@ -1,0 +1,46 @@
+.confirm_box_content {
+    background: var(--bg-primary);
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border-radius: 5px;
+    padding: 2rem;
+}
+
+.confirm_box_content .confirm_msg {
+    color: var(--text-color-secondary-light);
+    font-size: 2rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: var(--font-four);
+    letter-spacing: 0.02rem;
+    word-spacing: 0.02rem;
+}
+
+.buttons_div {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.buttons_div .delete {
+    background-color: red;
+}
+
+.buttons_div .delete:hover {
+    background-color: var(--bg-primary);
+    border-color: var(--border-primary);
+    color: var(--text-color-primary-light);
+}
+
+.buttons_div .cancle {
+    background-color: green;
+}
+
+.buttons_div .cancle:hover {
+    background-color: var(--bg-primary);
+    border-color: var(--border-primary);
+    color: var(--text-color-primary-light);
+}
