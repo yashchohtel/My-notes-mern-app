@@ -1,19 +1,23 @@
 import React from 'react'
 import './SecondaryNav.css'
-import { FiFilter } from "react-icons/fi";
 import { FaFilter } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 
 const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
 
-    // configure navigator
-    const navigate = useNavigate();
-
     // configure useLocation
     const location = useLocation();
+
+    // setting page locations
+    const isWelcome = location.pathname === "/";
+    const isRegister = location.pathname === "/register";
+    const isHome = location.pathname === "/home";
+    const isAccount = location.pathname === "/user-account";
+    const isEmailVerify = location.pathname.startsWith("/verify-email");
 
     // getting required Data from global store using useSelector
     const { notes } = useSelector((state) => state.notes);
@@ -31,11 +35,16 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                 <div className="sec_nav_right">
 
                     {/* add task button */}
-                    <button className="button_primary deleteAll-btn" onClick={() => openNoteFormCreate()}>
-                        add note  <FaPlus />
-                    </button>
+                    {isHome &&
+                        <button className="button_primary deleteAll-btn" onClick={() => openNoteFormCreate()}>
+                            add note  <FaPlus />
+                        </button>
+                    }
 
                     {/* filter drop down */}
+                    {
+                        
+                    }
                     <div className={`notes-filter-dropdown ${notes.length !== 0 ? 'notes-filter-dropdown-hover' : ''}`}>
 
                         {/* filter drop down button */}
