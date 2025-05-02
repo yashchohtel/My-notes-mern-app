@@ -40,21 +40,15 @@ const AllNotes = () => {
         // related to mark note important
         markImportant,
 
-        // related to soft delte one note
-        moveOneNoteToBin,
-
-        // related to soft delete all notes
-        moveAllNoteToBin,
-
         // related to confirmation actions
         confirmBoxOpen,
         whichPart,
+        deleteWhat,
         openConfirmBox,
         closeConfirmBox,
         handleConfirmAction,
 
     } = useNoteAction();
-
 
     return (
         <>

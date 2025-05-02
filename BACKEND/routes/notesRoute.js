@@ -1,7 +1,7 @@
 import express from 'express'; // Importing express framework
 import userAuth from '../middleware/userAuthMiddleware.js';// Importing user authentication middleware
 import catchAsyncError from '../middleware/catchAsyncError.js'; // Importing catchAsyncError middleware
-import { createNote, deleteAllNotesPermanently, deleteNotePermanently, getAllNotes, getSingleNote, markNoteImportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllNotes, softDeleteNote, updateNote } from '../controllers/notesController.js'; // Importing the Controller function from notesController
+import { createNote, deleteAllNotesPermanently, deleteNotePermanently, getAllDeletedNotes, getAllNotes, getSingleNote, markNoteImportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllImportantNotes, softDeleteAllNotes, softDeleteNote, updateNote } from '../controllers/notesController.js'; // Importing the Controller function from notesController
 
 const notesRouter = express.Router(); // Creating an instance of Express Router
 
@@ -13,6 +13,9 @@ notesRouter.post('/create-note', userAuth, catchAsyncError(createNote)); // 'htt
 
 // Get all notes route [GET]
 notesRouter.get('/getAll-notes', userAuth, catchAsyncError(getAllNotes)); // 'http://localhost:3000/api/notes/getAll-notes'
+
+// Get all notes route [GET]
+notesRouter.get('/getAllDel-notes', userAuth, catchAsyncError(getAllDeletedNotes)); // 'http://localhost:3000/api/notes/getAllDel-notes'
 
 // Get single note route [GET]
 notesRouter.get('/get-note/:noteId', userAuth, catchAsyncError(getSingleNote)); // 'http://localhost:3000/api/notes/get-note/:noteId'
@@ -28,6 +31,9 @@ notesRouter.delete('/soft-delete-note/:noteId', userAuth, catchAsyncError(softDe
 
 // Soft delete all notes route [DELETE]
 notesRouter.delete('/soft-delete-all-notes', userAuth, catchAsyncError(softDeleteAllNotes)); // 'http://localhost:3000/api/notes/soft-delete-all-notes'
+
+// Soft delete all important notes route [DELETE]
+notesRouter.delete('/soft-delete-all-imp-notes', userAuth, catchAsyncError(softDeleteAllImportantNotes)); // 'http://localhost:3000/api/notes/soft-delete-all-imp-notes'
 
 // Restore soft deleted note route [POST]
 notesRouter.post('/restore-soft-del-note/:noteId', userAuth, catchAsyncError(restoreSoftDeletedNote)); // 'http://localhost:3000/api/notes/restore-soft-del-note/:noteId'

@@ -280,6 +280,43 @@ export const softDeleteAllNotes = async (req, res, next) => {
 
 }
 
+// SOFT DELETE ALL IMPORTANT NOTES CONTROLLER ------------------------ //
+
+export const softDeleteAllImportantNotes = async (req, res, next) => {
+    const userId = req.userId;
+
+    // Find all important notes that are not deleted
+    const notes = await Notes.find({
+        user: userId,
+        isDeleted: false,
+        isImportant: true
+    });
+
+    // If no such notes found
+    if (notes.length === 0) {
+        return next(new ErrorHandler("No important notes found to delete.", 404));
+    }
+
+    // Soft delete important notes
+    await Notes.updateMany(
+        { user: userId, isDeleted: false, isImportant: true },
+        { isDeleted: true, deletedAt: new Date() }
+    );
+
+    // Logs (remove in production)
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- softDeleteAllImportantNotes controller ---↓');
+        console.log("userId : " + userId);
+        console.log("important notes : ", notes);
+        console.log("↑--- softDeleteAllImportantNotes controller ---↑");
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "All important notes moved to Recycle Bin successfully.",
+    });
+};
+
 // RESTORE DATA FROM BIN CONTROLLER ------------------------ //
 
 export const restoreSoftDeletedNote = async (req, res, next) => {
@@ -317,7 +354,7 @@ export const restoreSoftDeletedNote = async (req, res, next) => {
     return res.status(200).json({
         success: true,
         message: "Note restored successfully.",
-        note
+        note,
     });
 
 }
@@ -354,7 +391,7 @@ export const restoreAllSoftDeletedNotes = async (req, res, next) => {
     // Return success response
     return res.status(200).json({
         success: true,
-        message: "All soft deleted notes have been restored successfully."
+        message: "All deleted notes restored successfully."
     });
 
 }
@@ -391,7 +428,8 @@ export const deleteNotePermanently = async (req, res, next) => {
     // Return success response
     return res.status(200).json({
         success: true,
-        message: "Note permanently deleted."
+        message: "Note permanently deleted.",
+        note,
     });
 
 }
@@ -429,5 +467,39 @@ export const deleteAllNotesPermanently = async (req, res, next) => {
     });
 
 }
+
+// GET ALL DELETED NOTE CONTROLLER ------------------------ //
+
+export const getAllDeletedNotes = async (req, res, next) => {
+
+    // Extract user ID from the request (sent by auth middleware)
+    const userId = req.userId;
+
+    // Fetch only deleted notes for the authenticated user
+    const deletedNotes = await Notes.find({ user: userId, isDeleted: true })
+        .sort({ deletedAt: -1 }) // Optional: sort by deleted time
+        .populate("user", "fullName email");
+
+    // If no deleted notes found
+    if (deletedNotes.length === 0) {
+        return next(new ErrorHandler("No deleted notes found.", 404));
+    }
+
+    // Logs for development
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- getAllDeletedNotes controller ---↓');
+        console.log("userId : " + userId);
+        console.log(`Deleted Notes fetched: ${deletedNotes.length}`);
+        console.log('↑--- getAllDeletedNotes controller ---↑');
+    }
+
+    // Send response
+    return res.status(200).json({
+        success: true,
+        message: "Deleted notes fetched successfully.",
+        notes: deletedNotes,
+    });
+};
+
 
 // END OF FILE 

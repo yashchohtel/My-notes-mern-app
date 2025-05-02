@@ -155,3 +155,149 @@ export const softDeleteAllNotes = createAsyncThunk('notes/softDeleteAllNotes', a
     }
 });
 
+// thunk to soft delete all important notes
+export const softDeleteAllImportantNotes = createAsyncThunk('notes/softDeleteAllImportantNotes', async (_, { rejectWithValue }) => {
+
+    try {
+
+        // Sending DELETE request to soft delete all important notes
+        const response = await axios.delete(`${backendUrl}/api/notes/soft-delete-all-imp-notes`, {
+            withCredentials: true,
+        });
+
+        toast.success(response.data.message);
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to delete all important notes');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});
+
+// thunk to fetch all deleted notes
+export const fetchAllDeletedNotes = createAsyncThunk('notes/fetchAllDeletedNotes', async (_, { rejectWithValue }) => {
+
+    try {
+
+        // Sending GET request to fetch all deleted notes
+        const response = await axios.get(`${backendUrl}/api/notes/getAllDel-notes`, {
+            withCredentials: true,
+        });
+
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to fetch deleted notes');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});
+
+// thunk to restore all soft-deleted notes
+export const restoreAllSoftDeletedNotes = createAsyncThunk('notes/restoreAllSoftDeletedNotes', async (_, { rejectWithValue }) => {
+
+    try {
+
+        // Sending PATCH request to restore all soft-deleted notes
+        const response = await axios.post(`${backendUrl}/api/notes/restore-all-soft-deleted-notes`, {}, {
+            withCredentials: true,
+        });
+
+        toast.success(response.data.message);
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to restore all soft-deleted notes');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});
+
+// thunk to permanently delete all notes
+export const deleteAllNotesPermanently = createAsyncThunk('notes/deleteAllNotesPermanently', async (_, { rejectWithValue }) => {
+
+    try {
+
+        // Sending DELETE request to permanently delete all notes
+        const response = await axios.delete(`${backendUrl}/api/notes/delete-all-note-permanentaly`, {
+            withCredentials: true,
+        });
+
+        toast.success(response.data.message);
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to permanently delete all notes');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});
+
+// thunk to permanently delete a note
+export const deleteNotePermanently = createAsyncThunk('notes/deleteNotePermanently', async (noteId, { rejectWithValue }) => {
+
+    try {
+
+        console.log(noteId)
+
+        // Sending DELETE request to permanently delete the note
+        const response = await axios.delete(`${backendUrl}/api/notes/delete-note-permanentaly/${noteId}`, {
+            withCredentials: true,
+        });
+
+        toast.success(response.data.message);
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to permanently delete note');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});
+
+// thunk to restore a soft-deleted note
+export const restoreSoftDeletedNote = createAsyncThunk('notes/restoreSoftDeletedNote', async (noteId, { rejectWithValue }) => {
+
+    try {
+
+        // Sending PATCH request to restore a soft-deleted note
+        const response = await axios.post(`${backendUrl}/api/notes/restore-soft-del-note/${noteId}`, {}, {
+            withCredentials: true,
+        });
+
+        console.log(response);
+        
+        toast.success(response.data.message);
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to restore soft-deleted note');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});

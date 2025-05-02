@@ -71,3 +71,7 @@
 .filter-options li:hover {
     background-color: var(--hover-primary);
 }
+
+.button-icon {
+    font-family: 2rem;
+}

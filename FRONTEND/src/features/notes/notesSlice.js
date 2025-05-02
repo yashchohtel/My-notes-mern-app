@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNote, fetchAllNotes, markNoteImportant, softDeleteAllNotes, softDeleteNote, updateNote } from "./notesThunks";
+import { createNote, deleteAllNotesPermanently, deleteNotePermanently, fetchAllDeletedNotes, fetchAllNotes, markNoteImportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllImportantNotes, softDeleteAllNotes, softDeleteNote, updateNote } from "./notesThunks";
 import { act } from "react";
 
 // initial state
 const initialState = {
     notes: [],
+    deletedNotes: [],
     loading: false,
     error: null,
     successMessage: null
 };
-
 
 // creating the slice for notes
 const notesSlice = createSlice({
@@ -134,6 +134,103 @@ const notesSlice = createSlice({
                 state.successMessage = action.payload.message;
             })
             .addCase(softDeleteAllNotes.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // SOFT DELETE ALL IMPORTANT NOTES
+            .addCase(softDeleteAllImportantNotes.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(softDeleteAllImportantNotes.fulfilled, (state, action) => {
+                state.loading = false;
+                state.notes = state.notes.filter(note => !note.isImportant);
+                state.successMessage = action.payload.message;
+            })
+            .addCase(softDeleteAllImportantNotes.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // FETCH ALL DELETED NOTES
+            .addCase(fetchAllDeletedNotes.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(fetchAllDeletedNotes.fulfilled, (state, action) => {                
+                state.loading = false;
+                state.deletedNotes = action.payload.notes;
+                state.successMessage = action.payload.message;
+            })
+            .addCase(fetchAllDeletedNotes.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // RESTORE ALL SOFT DELETED NOTES
+            .addCase(restoreAllSoftDeletedNotes.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(restoreAllSoftDeletedNotes.fulfilled, (state, action) => {
+                state.loading = false;
+                state.deletedNotes = [];
+                state.successMessage = action.payload.message;
+            })
+            .addCase(restoreAllSoftDeletedNotes.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // DELETE ALL NOTES PERMANENTLY
+            .addCase(deleteAllNotesPermanently.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(deleteAllNotesPermanently.fulfilled, (state, action) => {
+                state.loading = false;
+                state.deletedNotes = [];
+                state.successMessage = action.payload.message;
+            })
+            .addCase(deleteAllNotesPermanently.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // DELETE NOTE PERMANENTLY
+            .addCase(deleteNotePermanently.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(deleteNotePermanently.fulfilled, (state, action) => {
+                state.loading = false;
+                state.deletedNotes = state.deletedNotes.filter(note => note._id !== action.payload.note._id);
+                state.successMessage = action.payload.message;
+            })
+            .addCase(deleteNotePermanently.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // RESTORE SOFT DELETED NOTE
+            .addCase(restoreSoftDeletedNote.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(restoreSoftDeletedNote.fulfilled, (state, action) => {
+                state.loading = false;
+                state.deletedNotes = state.deletedNotes.filter(note => note._id !== action.payload.note._id);
+                state.notes.unshift(action.payload.note);
+                state.successMessage = action.payload.message;
+            })
+            .addCase(restoreSoftDeletedNote.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

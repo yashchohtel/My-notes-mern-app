@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createNote, fetchAllNotes, markNoteImportant, softDeleteAllNotes, softDeleteNote, updateNote } from "../features/notes/notesThunks";
+import { createNote, deleteAllNotesPermanently, deleteNotePermanently, fetchAllDeletedNotes, fetchAllNotes, markNoteImportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllImportantNotes, softDeleteAllNotes, softDeleteNote, updateNote } from "../features/notes/notesThunks";
 
 
 // useNoteAction custoom hook to reuse functionality
@@ -76,6 +76,9 @@ const useNoteAction = () => {
 
             // dispatch createNote action 
             dispatch(createNote(noteFormData)).then(() => dispatch(fetchAllNotes()))
+
+            // navigate to home page
+            navigate("/home")
 
         } else {
 
@@ -169,6 +172,14 @@ const useNoteAction = () => {
 
     }
 
+    // function to soft delete all important notes at once
+    const moveAllImpNoteToBin = () => {
+
+        dispatch(softDeleteAllImportantNotes()).then(() => dispatch(fetchAllNotes()));
+
+    }
+
+
     /* -------- 6. CONFIRMATION ON ACTIONS ---------------------------  */
 
     // state to store confirm box open close status
@@ -179,6 +190,8 @@ const useNoteAction = () => {
 
     // state to store from which part the delete action performed
     const [whichPart, setWhichPart] = useState(null);
+    console.log(whichPart);
+    console.log(noteIdToDelete);
 
     // function to open confirm box
     const openConfirmBox = (id, part) => {
@@ -211,22 +224,39 @@ const useNoteAction = () => {
     // handle confirmation action
     const handleConfirmAction = (confirmAction) => {
 
-        // request from note card (delete single note)
-        if (whichPart === "noteCard" && confirmAction) {
-            // deleteing single note
-            moveOneNoteToBin(noteIdToDelete)
-        }
-
-        // request from note full preview (delete single note)
-        if (whichPart === "fullPreview" && confirmAction) {
-            // deleteing single note
-            moveOneNoteToBin(noteIdToDelete)
+        // request from note card and note full preview (delete single note)
+        if ((whichPart === "noteCard" || whichPart === "fullPreview") && confirmAction) {
+            moveOneNoteToBin(noteIdToDelete);
         }
 
         // request from secondary nav (delete all note)
         if (whichPart === "secondaryNavDeleteAllNote" && confirmAction) {
             // deletin all notes
             moveAllNoteToBin();
+        }
+
+        // reqest from important note (delete all important note)
+        if (whichPart === "secondaryNavDeleteAllImpNote" && confirmAction) {
+            // delete all importent notes 
+            moveAllImpNoteToBin();
+        }
+
+        if (whichPart === "secondaryNavResAll" && confirmAction) {
+            dispatch(restoreAllSoftDeletedNotes()).then(() => dispatch(fetchAllNotes()));
+        }
+
+        if (whichPart === "secondaryNavPermDelAllNote" && confirmAction) {
+            dispatch(deleteAllNotesPermanently()).then(() => dispatch(fetchAllNotes()));
+            console.log("deleted permanentaly");
+        }
+
+        if (whichPart === "permDelNote" && confirmAction) {
+            dispatch(deleteNotePermanently(noteIdToDelete)).then(() => dispatch(fetchAllNotes()));
+            console.log("deleted permanentaly");
+        }
+
+        if (whichPart === "restoreNote" && confirmAction) {
+            dispatch(restoreSoftDeletedNote(noteIdToDelete)).then(() => dispatch(fetchAllNotes()));
         }
 
     };

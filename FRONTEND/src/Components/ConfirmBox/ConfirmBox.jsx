@@ -1,7 +1,7 @@
 import React from 'react'
 import "./confirmBox.css"
-import { MdDelete } from "react-icons/md";
-import { MdOutlineCancel } from "react-icons/md";
+import { HiMiniXCircle } from "react-icons/hi2";
+import { IoCheckmarkCircle } from "react-icons/io5";
 
 const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart }) => {
 
@@ -20,6 +20,26 @@ const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart }) => {
                     <p className="confirm_msg">Sure you want to delete all notes? </p>
                 }
 
+                {(whichPart === "secondaryNavDeleteAllImpNote") &&
+                    <p className="confirm_msg">Sure you want to delete all important notes? </p>
+                }
+                
+                {(whichPart === "secondaryNavPermDelAllNote") &&
+                    <p className="confirm_msg">Sure you want empty recycle bin? </p>
+                }
+
+                {(whichPart === "secondaryNavResAll") &&
+                    <p className="confirm_msg">Sure you want to restore all notes? </p>
+                }
+
+                {(whichPart === "permDelNote") &&
+                    <p className="confirm_msg">Delete notes permanentaly? </p>
+                }
+
+                {(whichPart === "restoreNote") &&
+                    <p className="confirm_msg">Rstore note? </p>
+                }
+
                 <div className="buttons_div">
 
                     {/* delete button */}
@@ -29,7 +49,7 @@ const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart }) => {
                             handleConfirmAction(true) // pass confirm action true if we want to complete action
                             closeConfirmBox() // close confirm box
                         }}>
-                        Delete  <MdDelete />
+                        YES  <IoCheckmarkCircle />
                     </button>
 
                     {/* cancel button */}
@@ -40,7 +60,7 @@ const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart }) => {
                             closeConfirmBox() // close confirm box
                         }}>
 
-                        Cancel <MdOutlineCancel />
+                        Cancel <HiMiniXCircle />
                     </button>
 
                 </div>
