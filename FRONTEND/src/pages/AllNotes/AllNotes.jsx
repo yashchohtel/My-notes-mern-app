@@ -9,11 +9,13 @@ import ViewFullNote from '../../Components/ViewFullNote/ViewFullNote';
 import NoteForm from '../../Components/NoteForm/NoteForm';
 import ConfirmBox from '../../Components/ConfirmBox/ConfirmBox';
 import useNoteAction from '../../hooks/useNoteAction';
+import CardSkletenLoading from '../../Components/CardSkletenLoading/CardSkletenLoading';
 
 const AllNotes = () => {
 
     // getting required Data from global store using useSelector
-    const { notes } = useSelector((state) => state.notes);
+    const { notes, loading: notesLoading } = useSelector((state) => state.notes);
+    const { loading: authLoading } = useSelector((state) => state.auth);
 
     // configure dispatch use to dispatch actions
     const dispatch = useDispatch();
@@ -116,16 +118,22 @@ const AllNotes = () => {
                     (<div className="notes_display_sec">
 
                         {/* note card */}
-                        {notes && notes.map((note) => (
-                            <NoteCard
-                                key={note._id}
-                                note={note} // each note data
-                                viewFullNote={viewFullNote} // function to open note full pre view
-                                markImportant={markImportant} // function to mark note important
-                                openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
-                                openConfirmBox={openConfirmBox} // function to open confirm box
-                            />
-                        ))}
+                        {(notesLoading || authLoading) ? (
+                            [...Array(6)].map((_, index) => (
+                                <CardSkletenLoading key={index} />
+                            ))
+                        ) : (
+                            notes.map((note) => (
+                                <NoteCard
+                                    key={note._id}
+                                    note={note}
+                                    viewFullNote={viewFullNote}
+                                    markImportant={markImportant}
+                                    openNoteFormEdit={openNoteFormEdit}
+                                    openConfirmBox={openConfirmBox}
+                                />
+                            ))
+                        )}
 
                     </div>)
 

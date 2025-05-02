@@ -190,9 +190,7 @@ const useNoteAction = () => {
 
     // state to store from which part the delete action performed
     const [whichPart, setWhichPart] = useState(null);
-    console.log(whichPart);
-    console.log(noteIdToDelete);
-
+    
     // function to open confirm box
     const openConfirmBox = (id, part) => {
 

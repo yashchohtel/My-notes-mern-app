@@ -1,0 +1,79 @@
+.note-card-skeleton {
+    padding: 16px;
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+    height: 22rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background: #161616;
+}
+
+.skeleton {
+    background: linear-gradient(90deg,
+            #2c2c2c 25%,
+            #3c3c3c 50%,
+            #2c2c2c 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.skeleton-title {
+    width: 40%;
+    height: 16px;
+}
+
+.skeleton-line {
+    width: 100%;
+    height: 12px;
+}
+
+.skeleton-line.short {
+    width: 80%;
+}
+
+.skeleton-line.shorter {
+    width: 60%;
+}
+
+.skeleton-line.tiny {
+    width: 40%;
+}
+
+.skeleton-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+}
+
+.skeleton-icon-group {
+    display: flex;
+    gap: 8px;
+}
+
+.skeleton-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+}
+
+.skeleton-date {
+    width: 60px;
+    height: 12px;
+    border-radius: 4px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}

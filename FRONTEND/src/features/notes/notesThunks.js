@@ -285,15 +285,11 @@ export const restoreSoftDeletedNote = createAsyncThunk('notes/restoreSoftDeleted
         const response = await axios.post(`${backendUrl}/api/notes/restore-soft-del-note/${noteId}`, {}, {
             withCredentials: true,
         });
-
-        console.log(response);
         
         toast.success(response.data.message);
         return response.data; // Returning the data on success
 
     } catch (error) {
-
-        console.log(error);
 
         // Handling errors and returning a rejected value
         console.error(error.response?.data?.message || 'Failed to restore soft-deleted note');

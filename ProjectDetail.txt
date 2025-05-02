@@ -91,3 +91,27 @@ This document provides a clear breakdown of features needed for the Notes App. T
 
 
 
+                {notes.length === 0 ?
+
+                    // if no note to display
+                    <p className="no_notes">ADD YOUR NOTES AND TASKS</p>
+
+                    :
+
+                    (<div className="notes_display_sec">
+
+                        {/* note card */}
+                        {notes && notes.map((note) => (
+                            <NoteCard
+                                key={note._id}
+                                note={note} // each note data
+                                viewFullNote={viewFullNote} // function to open note full pre view
+                                markImportant={markImportant} // function to mark note important
+                                openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
+                                openConfirmBox={openConfirmBox} // function to open confirm box
+                            />
+                        ))}
+
+                    </div>)
+
+                }

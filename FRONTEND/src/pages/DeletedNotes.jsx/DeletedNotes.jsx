@@ -6,6 +6,7 @@ import NoteCard from '../../Components/NoteCard/NoteCard';
 import { fetchAllDeletedNotes } from '../../features/notes/notesThunks';
 import ConfirmBox from '../../Components/ConfirmBox/ConfirmBox';
 import NoteForm from '../../Components/NoteForm/NoteForm';
+import CardSkletenLoading from '../../Components/CardSkletenLoading/CardSkletenLoading';
 
 const DeletedNotes = () => {
 
@@ -13,7 +14,7 @@ const DeletedNotes = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   // getting required Data from global store using useSelector
-  const { notes, deletedNotes } = useSelector((state) => state.notes);
+  const { notes, deletedNotes, loading: notesLoading } = useSelector((state) => state.notes);
 
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();
@@ -115,7 +116,11 @@ const DeletedNotes = () => {
           (<div className="notes_display_sec">
 
             {/* note card */}
-            {deletedNotes && deletedNotes.map((note) => (
+            {(notesLoading) ? (
+              [...Array(6)].map((_, index) => (
+                <CardSkletenLoading key={index} />
+              ))
+            ) : deletedNotes && deletedNotes.map((note) => (
               <NoteCard
                 key={note._id}
                 note={note} // each note data
@@ -124,7 +129,21 @@ const DeletedNotes = () => {
                 openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
                 openConfirmBox={openConfirmBox} // function to open confirm box
               />
-            ))}
+            ))
+
+            }
+
+            {/* note card */}
+            {/* {deletedNotes && deletedNotes.map((note) => (
+              <NoteCard
+                key={note._id}
+                note={note} // each note data
+                viewFullNote={viewFullNote} // function to open note full pre view
+                markImportant={markImportant} // function to mark note important
+                openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
+                openConfirmBox={openConfirmBox} // function to open confirm box
+              />
+            ))} */}
 
           </div>)
 

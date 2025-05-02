@@ -7,11 +7,13 @@ import NoteCard from '../../Components/NoteCard/NoteCard';
 import NoteForm from '../../Components/NoteForm/NoteForm';
 import ViewFullNote from '../../Components/ViewFullNote/ViewFullNote';
 import ConfirmBox from '../../Components/ConfirmBox/ConfirmBox';
+import CardSkletenLoading from '../../Components/CardSkletenLoading/CardSkletenLoading';
 
 const ImportantNotes = () => {
 
   // getting required Data from global store using useSelector
-  const { notes } = useSelector((state) => state.notes);
+  const { notes, loading: notesLoading } = useSelector((state) => state.notes);
+  const { loading: authLoading } = useSelector((state) => state.auth);
 
   // extrecting all notes which is important
   const importantNotes = notes.filter(note => note.isImportant === true);
@@ -118,7 +120,11 @@ const ImportantNotes = () => {
           (<div className="notes_display_sec">
 
             {/* note card */}
-            {importantNotes && importantNotes.map((note) => (
+            {(notesLoading || authLoading) ? (
+              [...Array(6)].map((_, index) => (
+                <CardSkletenLoading key={index} />
+              ))
+            ) : (importantNotes && importantNotes.map((note) => (
               <NoteCard
                 key={note._id}
                 note={note} // each note data
@@ -127,7 +133,9 @@ const ImportantNotes = () => {
                 openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
                 openConfirmBox={openConfirmBox} // function to open confirm box
               />
-            ))}
+            )))
+
+            }
 
           </div>)
 
