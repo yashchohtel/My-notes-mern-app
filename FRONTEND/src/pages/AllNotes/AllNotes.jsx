@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import SecondaryNav from '../../Components/SecondaryNav/SecondaryNav'
 import "./allNotes.css";
 import NoteCard from '../../Components/NoteCard/NoteCard';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ViewFullNote from '../../Components/ViewFullNote/ViewFullNote';
@@ -15,10 +15,6 @@ const AllNotes = () => {
 
     // getting required Data from global store using useSelector
     const { notes, loading: notesLoading } = useSelector((state) => state.notes);
-    const { loading: authLoading } = useSelector((state) => state.auth);
-
-    // configure dispatch use to dispatch actions
-    const dispatch = useDispatch();
 
     // getting all required state and actions functions to perform actions
     const {
@@ -45,13 +41,22 @@ const AllNotes = () => {
         // related to confirmation actions
         confirmBoxOpen,
         whichPart,
-        deleteWhat,
         openConfirmBox,
         closeConfirmBox,
         handleConfirmAction,
 
     } = useNoteAction();
 
+    // search query variable comming from home page via outlet using useOutletContent
+    const { searchQuery } = useOutletContext();
+
+    // notes filtered on the basis of searched
+    const searchedNotes = notes.filter((note) =>
+        note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        note.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    
     return (
         <>
 
@@ -117,23 +122,32 @@ const AllNotes = () => {
 
                     (<div className="notes_display_sec">
 
-                        {/* note card */}
-                        {(notesLoading || authLoading) ? (
-                            [...Array(6)].map((_, index) => (
-                                <CardSkletenLoading key={index} />
-                            ))
-                        ) : (
-                            notes.map((note) => (
-                                <NoteCard
-                                    key={note._id}
-                                    note={note}
-                                    viewFullNote={viewFullNote}
-                                    markImportant={markImportant}
-                                    openNoteFormEdit={openNoteFormEdit}
-                                    openConfirmBox={openConfirmBox}
-                                />
-                            ))
-                        )}
+                        {/* note card skleton loading*/}
+                        {notesLoading ?
+
+                            (
+                                [...Array(6)].map((_, index) => (
+                                    <CardSkletenLoading key={index} />
+                                ))
+                            )
+
+                            :
+
+                            (
+                                searchedNotes.map((note) => (
+                                    // note card
+                                    <NoteCard
+                                        key={note._id}
+                                        note={note}
+                                        viewFullNote={viewFullNote}
+                                        markImportant={markImportant}
+                                        openNoteFormEdit={openNoteFormEdit}
+                                        openConfirmBox={openConfirmBox}
+                                    />
+                                ))
+                            )
+
+                        }
 
                     </div>)
 

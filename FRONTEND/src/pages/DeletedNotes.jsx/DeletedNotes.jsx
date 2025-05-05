@@ -7,6 +7,7 @@ import { fetchAllDeletedNotes } from '../../features/notes/notesThunks';
 import ConfirmBox from '../../Components/ConfirmBox/ConfirmBox';
 import NoteForm from '../../Components/NoteForm/NoteForm';
 import CardSkletenLoading from '../../Components/CardSkletenLoading/CardSkletenLoading';
+import { useOutletContext } from 'react-router-dom';
 
 const DeletedNotes = () => {
 
@@ -19,30 +20,16 @@ const DeletedNotes = () => {
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();
 
-  // extrecting all notes which is important
-  const importantNotes = notes.filter(note => note.isImportant === true);
-
   // getting all required state and actions functions to perform actions
   const {
 
-    // related to create and edit
+    // related to create 
     showFormModel,
     noteFormData,
-    isEditing,
     openNoteFormCreate,
     closeNoteFormModel,
     handleInputChange,
     submitNoteForm,
-    openNoteFormEdit,
-
-    // related to full screen note preview
-    viewNoteModal,
-    fullViewNoteId,
-    viewFullNote,
-    closeViewModal,
-
-    // related to mark note important
-    markImportant,
 
     // related to confirmation actions
     confirmBoxOpen,
@@ -53,11 +40,19 @@ const DeletedNotes = () => {
 
   } = useNoteAction();
 
+  // search query variable comming from home page via outlet using useOutletContent
+  const { searchQuery } = useOutletContext();
+
+  // notes filtered on the basis of searched
+  const searchedNotes = deletedNotes.filter((note) =>
+    note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    note.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // effect to fetch all deleted note
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchAllDeletedNotes());
-      console.log("yes fetch del note");
-
     }
   }, [dispatch, isAuthenticated]);
 
@@ -73,7 +68,6 @@ const DeletedNotes = () => {
             handleInputChange={handleInputChange} // handle input change (create / edit)
             submitNoteForm={submitNoteForm} // submit note form (create / edit)
             closeNoteFormModel={closeNoteFormModel} // close note form (create / edit)
-            isEditing={isEditing} // editing status (edit)
           />
         }
 
@@ -116,40 +110,29 @@ const DeletedNotes = () => {
           (<div className="notes_display_sec">
 
             {/* note card */}
-            {(notesLoading) ? (
-              [...Array(6)].map((_, index) => (
-                <CardSkletenLoading key={index} />
+            {notesLoading ?
+              (
+                [...Array(6)].map((_, index) => (
+                  <CardSkletenLoading key={index} />
+                ))
+              )
+              :
+              searchedNotes && searchedNotes.map((note) => (
+                <NoteCard
+                  key={note._id}
+                  note={note} // each note data
+                  openConfirmBox={openConfirmBox} // function to open confirm box
+                />
               ))
-            ) : deletedNotes && deletedNotes.map((note) => (
-              <NoteCard
-                key={note._id}
-                note={note} // each note data
-                viewFullNote={viewFullNote} // function to open note full pre view
-                markImportant={markImportant} // function to mark note important
-                openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
-                openConfirmBox={openConfirmBox} // function to open confirm box
-              />
-            ))
 
             }
-
-            {/* note card */}
-            {/* {deletedNotes && deletedNotes.map((note) => (
-              <NoteCard
-                key={note._id}
-                note={note} // each note data
-                viewFullNote={viewFullNote} // function to open note full pre view
-                markImportant={markImportant} // function to mark note important
-                openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
-                openConfirmBox={openConfirmBox} // function to open confirm box
-              />
-            ))} */}
 
           </div>)
 
         }
 
-      </div></>
+      </div>
+    </>
   )
 }
 

@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { MdRestoreFromTrash } from "react-icons/md";
 
-
 const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
 
     // configure useLocation

@@ -17,7 +17,7 @@ import { IoHomeOutline } from "react-icons/io5";
 
 
 
-const Navbar = () => {
+const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     // configure navigator
     const navigate = useNavigate();
@@ -94,7 +94,7 @@ const Navbar = () => {
                     <div className="Search_Bar_Container">
 
                         {/* searchbar component */}
-                        <SearchBar />
+                        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
                     </div>
                 }

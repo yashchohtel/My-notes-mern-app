@@ -179,7 +179,6 @@ const useNoteAction = () => {
 
     }
 
-
     /* -------- 6. CONFIRMATION ON ACTIONS ---------------------------  */
 
     // state to store confirm box open close status
@@ -293,7 +292,6 @@ const useNoteAction = () => {
         openConfirmBox,
         closeConfirmBox,
         handleConfirmAction,
-
 
     }
 

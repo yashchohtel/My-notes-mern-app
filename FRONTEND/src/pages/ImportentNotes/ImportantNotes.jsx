@@ -1,6 +1,6 @@
 import React from 'react'
 import SecondaryNav from '../../Components/SecondaryNav/SecondaryNav'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useOutletContext } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useNoteAction from '../../hooks/useNoteAction';
 import NoteCard from '../../Components/NoteCard/NoteCard';
@@ -49,6 +49,14 @@ const ImportantNotes = () => {
 
   } = useNoteAction();
 
+  // search query variable comming from home page via outlet using useOutletContent
+  const { searchQuery } = useOutletContext();
+
+  // notes filtered on the basis of searched
+  const searchedNotes = importantNotes.filter((note) =>
+    note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    note.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
 
   return (
@@ -119,21 +127,28 @@ const ImportantNotes = () => {
 
           (<div className="notes_display_sec">
 
-            {/* note card */}
-            {(notesLoading || authLoading) ? (
-              [...Array(6)].map((_, index) => (
-                <CardSkletenLoading key={index} />
-              ))
-            ) : (importantNotes && importantNotes.map((note) => (
-              <NoteCard
-                key={note._id}
-                note={note} // each note data
-                viewFullNote={viewFullNote} // function to open note full pre view
-                markImportant={markImportant} // function to mark note important
-                openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
-                openConfirmBox={openConfirmBox} // function to open confirm box
-              />
-            )))
+            {/* note card skleton loading*/}
+            {notesLoading ?
+
+              (
+                [...Array(6)].map((_, index) => (
+                  <CardSkletenLoading key={index} />
+                ))
+              )
+
+              :
+
+              (searchedNotes && searchedNotes.map((note) => (
+                // node card
+                <NoteCard
+                  key={note._id}
+                  note={note} // each note data
+                  viewFullNote={viewFullNote} // function to open note full pre view
+                  markImportant={markImportant} // function to mark note important
+                  openNoteFormEdit={openNoteFormEdit} // function to open note form for editing
+                  openConfirmBox={openConfirmBox} // function to open confirm box
+                />
+              )))
 
             }
 

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Home.css';
 import { clearMessages } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
 import AllNotes from '../AllNotes/AllNotes';
 
@@ -17,7 +17,13 @@ const Home = () => {
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();
 
+  // configure useLocation to get page logation
+  const location = useLocation();
 
+  // state to store search Query
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // effect to clear messages after authentication
   useEffect(() => {
 
     // clearing the messages to store next messages
@@ -33,17 +39,23 @@ const Home = () => {
 
   }, [isAuthenticated, dispatch]);
 
+  // effect to clear search bar on page change
+  useEffect(() => {
+    // Clear search query on every route change
+    setSearchQuery("");
+  }, [location.pathname]);
+
   return (
     <>
       <section className='home_section_container'>
 
         {/* navbar Component */}
-        <Navbar />
+        <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
         {/* home notes section (all notes, important notes, deleted notes) */}
         <div className='home_notes_section_container'>
 
-          <Outlet />
+          <Outlet context={{ searchQuery }} />
 
         </div>
 
