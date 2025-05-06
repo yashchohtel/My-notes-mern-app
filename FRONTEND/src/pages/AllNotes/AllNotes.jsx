@@ -14,7 +14,10 @@ import CardSkletenLoading from '../../Components/CardSkletenLoading/CardSkletenL
 const AllNotes = () => {
 
     // getting required Data from global store using useSelector
-    const { notes, loading: notesLoading } = useSelector((state) => state.notes);
+    const { notes, loading: notesLoading, filteredNote } = useSelector((state) => state.notes);
+    const { noteViewType } = useSelector((state) => state.theme);
+
+    console.log(filteredNote);
 
     // getting all required state and actions functions to perform actions
     const {
@@ -47,6 +50,7 @@ const AllNotes = () => {
 
     } = useNoteAction();
 
+
     // search query variable comming from home page via outlet using useOutletContent
     const { searchQuery } = useOutletContext();
 
@@ -56,7 +60,6 @@ const AllNotes = () => {
         note.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    
     return (
         <>
 
@@ -120,7 +123,7 @@ const AllNotes = () => {
 
                     :
 
-                    (<div className="notes_display_sec">
+                    (<div className={`notes_display_sec ${noteViewType ? "line_view" : ""}`}>
 
                         {/* note card skleton loading*/}
                         {notesLoading ?

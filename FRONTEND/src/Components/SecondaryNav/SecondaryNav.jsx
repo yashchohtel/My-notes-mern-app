@@ -3,14 +3,18 @@ import './SecondaryNav.css'
 import { MdFilterAlt } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { MdRestoreFromTrash } from "react-icons/md";
+import { filterNote } from '../../features/notes/notesSlice';
 
 const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
 
     // configure useLocation
     const location = useLocation();
+
+    // initilize use dispatch 
+    const dispatch = useDispatch();
 
     // getting required Data from global store using useSelector
     const { notes, deletedNotes } = useSelector((state) => state.notes);
@@ -22,7 +26,6 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
     const isHome = location.pathname === "/home";
     const isImportant = location.pathname === '/home/important-notes'
     const isDeleted = location.pathname === '/home/deleted-notes'
-
 
     // function to handle different request of delete all notes
     const handleAllDelete = () => {
@@ -41,6 +44,11 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
         if (isDeleted) {
             return openConfirmBox(null, "secondaryNavDeleteAllDelNote")
         }
+    }
+
+    // function to handle filter note
+    const handleNoteFilter = (filterType) => {
+        dispatch(filterNote(filterType))
     }
 
     return (
@@ -75,10 +83,18 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                             </button>
 
                             <ul className="filter-options">
-                                <li>Newest First</li>
-                                <li>Oldest First</li>
-                                <li>Last 7 Days</li>
-                                <li>Last 30 Days</li>
+                                <li onClick={() => handleNoteFilter("newFirst")} >
+                                    Newest First
+                                </li>
+                                <li onClick={() => handleNoteFilter("OldFirst")} >
+                                    Oldest First
+                                </li>
+                                <li onClick={() => handleNoteFilter("last7")} >
+                                    Last 7 Days
+                                </li>
+                                <li onClick={() => handleNoteFilter("last30")} >
+                                    Last 30 Days
+                                </li>
                             </ul>
                         </div>
                     )}

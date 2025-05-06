@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+'../AllNotes/allNotes.css'
 import SecondaryNav from '../../Components/SecondaryNav/SecondaryNav'
 import { useDispatch, useSelector } from 'react-redux';
 import useNoteAction from '../../hooks/useNoteAction';
@@ -16,6 +17,7 @@ const DeletedNotes = () => {
 
   // getting required Data from global store using useSelector
   const { notes, deletedNotes, loading: notesLoading } = useSelector((state) => state.notes);
+  const { noteViewType } = useSelector((state) => state.theme);
 
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();
@@ -107,7 +109,7 @@ const DeletedNotes = () => {
 
           :
 
-          (<div className="notes_display_sec">
+          (<div className={`notes_display_sec ${noteViewType ? "line_view" : ""}`}>
 
             {/* note card */}
             {notesLoading ?

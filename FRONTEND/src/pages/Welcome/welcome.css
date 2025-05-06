@@ -6,6 +6,7 @@
         linear-gradient(to right, var(--border-secondary) 1px, transparent 1px),
         linear-gradient(to bottom, var(--border-secondary) 1px, transparent 1px);
     background-size: 30px 30px;
+    user-select: none;
 
     display: flex;
     align-items: center;
@@ -13,7 +14,6 @@
     padding-top: 3rem;
 
 }
-
 
 .welcomePage__content {
     display: flex;

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
 import AllNotes from '../AllNotes/AllNotes';
+import useNoteAction from '../../hooks/useNoteAction';
 
 const Home = () => {
 
@@ -22,6 +23,15 @@ const Home = () => {
 
   // state to store search Query
   const [searchQuery, setSearchQuery] = useState("");
+
+  // getting all required state and actions functions to perform actions
+  const {
+
+    // related to note display type
+    noteViewType,
+    changeNoteViewType
+
+  } = useNoteAction();
 
   // effect to clear messages after authentication
   useEffect(() => {
@@ -50,7 +60,12 @@ const Home = () => {
       <section className='home_section_container'>
 
         {/* navbar Component */}
-        <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <Navbar 
+        searchQuery={searchQuery} 
+        setSearchQuery={setSearchQuery} 
+        noteViewType={noteViewType}
+        changeNoteViewType={changeNoteViewType}
+        />
 
         {/* home notes section (all notes, important notes, deleted notes) */}
         <div className='home_notes_section_container'>

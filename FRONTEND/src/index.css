@@ -20,7 +20,7 @@
 
     --text-color-primary-dim: #cecece;
 
-    --text-color-primary-dark: #000000;
+    --text-color-white: #ffffff;
 
     /* hover colors */
     --hover-primary: #4a4a4a;
@@ -46,12 +46,21 @@
 
 body.light-mode {
 
-    /* background colors */
-    --bg-primary: #202124;
-    --bg-secondary: #3b3c3e;
+    --bg-primary: #f4f4f4;
+    --bg-secondary: #d3d3d3;
+    --bg-tettiary: #dcdcdc9c;
+    --bg-button: #434343;
+    --text-color-primary-light: #000000;
+    --text-color-secondary-light: #4a4a4a;
+    --text-color-tertiary-light: #353535;
+    --text-color-primary-bright: #525252;
+    --text-color-primary-dim: #161616;
+    --text-color-white: #ffffff;
+    --hover-primary: #c5c5c5;
+    --border-primary: #3b3c3e;
+    --border-secondary: #e4e4e4;
+    --border-tertiary: #cecece;
 
-    /* colors */
-    --text-color-tertiary: #dfdfdf;
 }
 
 
@@ -144,7 +153,7 @@ img {
     -webkit-user-select: none;
     touch-action: manipulation;
     font-family: var(--font-primary);
-    color: var(--text-color-primary-light);
+    color: var(--text-color-white);
     font-weight: 600;
     letter-spacing: 0.1rem;
     border: 0.2rem solid transparent;
@@ -166,8 +175,9 @@ img {
 
 .button_primary:disabled {
     cursor: not-allowed;
-    opacity: 0.6; /* halka light dikhane ke liye */
-  }
+    opacity: 0.6;
+    /* halka light dikhane ke liye */
+}
 
 
 .loder {
@@ -245,3 +255,25 @@ img {
     padding-top: 2.5rem !important;
 
 }
+
+/* 
+
+
+    --bg-primary: #f4f4f4;
+    --bg-secondary: #d3d3d3;
+    --bg-tettiary: #dcdcdc9c;
+    --bg-button: #434343;
+    --text-color-primary-light: #000000;
+    --text-color-secondary-light: #4a4a4a;
+    --text-color-tertiary-light: #353535;
+    --text-color-primary-bright: #525252;
+    --text-color-primary-dim: #161616;
+    --text-color-white: #ffffff;
+    --hover-primary: #c5c5c5;
+    --border-primary: #3b3c3e;
+    --border-secondary: #e4e4e4;
+    --border-tertiary: #cecece;
+
+
+
+*/

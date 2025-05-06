@@ -2,7 +2,6 @@ import React from 'react'
 import "./noteForm.css"
 
 import { IoClose } from "react-icons/io5";
-import { useSelector } from 'react-redux';
 
 const NoteForm = ({ noteFormData, handleInputChange, submitNoteForm, closeNoteFormModel, isEditing }) => {
 

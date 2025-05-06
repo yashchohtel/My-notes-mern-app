@@ -1,4 +1,5 @@
 import React from 'react'
+import '../AllNotes/allNotes.css'
 import SecondaryNav from '../../Components/SecondaryNav/SecondaryNav'
 import { useLocation, useOutletContext } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -13,7 +14,7 @@ const ImportantNotes = () => {
 
   // getting required Data from global store using useSelector
   const { notes, loading: notesLoading } = useSelector((state) => state.notes);
-  const { loading: authLoading } = useSelector((state) => state.auth);
+  const { noteViewType } = useSelector((state) => state.theme);
 
   // extrecting all notes which is important
   const importantNotes = notes.filter(note => note.isImportant === true);
@@ -125,7 +126,7 @@ const ImportantNotes = () => {
 
           :
 
-          (<div className="notes_display_sec">
+          (<div className={`notes_display_sec ${noteViewType ? "line_view" : ""}`}>
 
             {/* note card skleton loading*/}
             {notesLoading ?

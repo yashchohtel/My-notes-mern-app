@@ -8,7 +8,8 @@ const initialState = {
     deletedNotes: [],
     loading: false,
     error: null,
-    successMessage: null
+    successMessage: null,
+    filteredNote: []
 };
 
 // creating the slice for notes
@@ -26,6 +27,15 @@ const notesSlice = createSlice({
             state.error = null;
             state.successMessage = null;
         },
+
+        // reducer to filter notes
+        filterNote: (state, action) => {
+
+            if(action.payload === "newFirst"){
+                state.filteredNote = state.notes
+            }
+
+        }
 
     },
 
@@ -240,7 +250,7 @@ const notesSlice = createSlice({
 })
 
 // export reducers functions
-export const { clearMessages } = notesSlice.actions;
+export const { clearMessages, filterNote } = notesSlice.actions;
 
 // export notesSlice reducer
 export default notesSlice.reducer;

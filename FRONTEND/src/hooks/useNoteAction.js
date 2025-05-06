@@ -292,7 +292,6 @@ const useNoteAction = () => {
         openConfirmBox,
         closeConfirmBox,
         handleConfirmAction,
-
     }
 
 }

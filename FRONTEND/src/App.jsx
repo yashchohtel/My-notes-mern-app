@@ -22,6 +22,7 @@ function App() {
 
   // getting required Data from global store using useSelector
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { themeType } = useSelector((state) => state.theme);
 
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ function App() {
   // load user data and auth state
   useEffect(() => {
     dispatch(loadUser());
-  }, [dispatch, ]);
+  }, [dispatch]);
 
   // effect to load all notes of user
   useEffect(() => {
@@ -37,6 +38,16 @@ function App() {
       dispatch(fetchAllNotes());
     }
   }, [dispatch, isAuthenticated]);
+
+  // effect to change app theme
+  useEffect(() => {
+
+    if(themeType === "light"){
+      document.body.classList.remove("light-mode")
+    } else{
+      document.body.classList.add("light-mode")
+    }
+  }, [themeType]);
 
   return (
     <>

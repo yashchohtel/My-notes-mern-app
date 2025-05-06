@@ -1,20 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Navbar.css'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../Searchbar/SearchBar';
 import UserOptions from '../UserOptions/UserOptions';
 
-import { LuLogIn } from "react-icons/lu";
-import { MdLightMode } from "react-icons/md";
-import { MdOutlineLightMode } from "react-icons/md";
-import { LuUser } from "react-icons/lu";
+import { MdSunny } from "react-icons/md";
+import { IoMdMoon } from "react-icons/io";
+import { LuLogIn, LuUser } from "react-icons/lu";
 import { PiRecycleBold } from "react-icons/pi";
 import { FaRegStar } from "react-icons/fa6";
 import { FaRegNoteSticky } from "react-icons/fa6";
 import { IoGridOutline } from "react-icons/io5";
 import { IoHomeOutline } from "react-icons/io5";
-
+import { HiMiniBars2 } from "react-icons/hi2";
+import { changeNoteViewType, toggleAppTheme } from '../../features/theme/themeSlice';
 
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
@@ -24,6 +24,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     // configure useLocation
     const location = useLocation();
+
+    // initilize use dispatch 
+    const dispatch = useDispatch();
 
     // state to store profile sub menu visible status
     const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -43,6 +46,23 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
     // state to store sticky navbar status
     const [isSticky, setIsSticky] = useState(false);
+
+    // getting required Data from global store using useSelector
+    const { noteViewType, themeType } = useSelector((state) => state.theme);
+
+    // toggle nove view type list or grid
+    const handleNoteViewTypeToggle = () => {
+        dispatch(changeNoteViewType(!noteViewType))
+    }
+
+    // toggle app theme dark or light
+    const handleThemeToggle = () => {
+        if (themeType === "dark") {
+            dispatch(toggleAppTheme("light"))
+        } else {
+            dispatch(toggleAppTheme("dark"))
+        }
+    }
 
     // use effect ho handle show hide of scroll bar
     useEffect(() => {
@@ -138,10 +158,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                     {/* layout button */}
                     {isHome &&
-                        <div className="layout_btn nav_btn_container">
+                        <div className="layout_btn nav_btn_container" onClick={() => handleNoteViewTypeToggle()}>
 
                             {/* grid icon */}
-                            <div className="navbar_circular_btn"> <IoGridOutline /> </div>
+                            <div className="navbar_circular_btn">
+                                {noteViewType ? <HiMiniBars2 /> : <IoGridOutline />}
+
+                            </div>
 
                         </div>
                     }
@@ -164,10 +187,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                     }
 
                     {/* theme toggle button */}
-                    <div className="theme_toggle nav_btn_container">
+                    <div className="theme_toggle nav_btn_container" onClick={() => handleThemeToggle()}>
 
                         {/* sun/moon icon */}
-                        <div className="navbar_circular_btn"> <MdOutlineLightMode /> </div>
+                        <div className="navbar_circular_btn">
+
+                            {themeType === "dark" ? <IoMdMoon /> : <MdSunny />}
+
+                        </div>
 
                     </div>
 

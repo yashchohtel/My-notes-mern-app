@@ -80,7 +80,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--text-color-secondary-light);
+    color: var(--text-color-white);
     font-size: 2rem;
     transition: var(--transition);
     border-radius: 5px;

@@ -10,6 +10,7 @@ const VerifyEmail = () => {
 
     const location = useLocation();
     const isEnterOtp = location.pathname === "/verify-email/enter";
+    const isSendOtp = location.pathname === "/verify-email/send";
 
     // configure useNavigate to navigate 
     const navigate = useNavigate();
@@ -81,14 +82,15 @@ const VerifyEmail = () => {
 
     // effect to focus on first input on load
     useEffect(() => {
-        if (inputRefs.current[0]) {
+        // Jab path /verify-email/enter ho aur input fields DOM pe render ho chuki ho
+        if (location.pathname === "/verify-email/enter" && inputRefs.current[0]) {
             inputRefs.current[0].focus();
         }
-    }, [isOtpSend]);
+    }, [location.pathname]);
 
     // effect to load the inputfield after otp success
     useEffect(() => {
-        if (successMessage) {
+        if (successMessage === "OTP sent to your registered email") {
             setIsOtpSend(true);
             navigate("/verify-email/enter");
         }
@@ -112,7 +114,7 @@ const VerifyEmail = () => {
                 {/* navbar component */}
                 <Navbar />
 
-                {!isEnterOtp ?
+                {isSendOtp ?
                     (<>
 
                         {/* send otp comtainer */}
@@ -170,7 +172,7 @@ const VerifyEmail = () => {
 
                                 <p className="otp_description try_again">Didn’t get otp please try after 1 minute
                                     <span onClick={() => navigate("/verify-email/send")}>RESEND OTP</span>
-                                     
+
                                 </p>
 
 
