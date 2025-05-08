@@ -82,6 +82,30 @@ export const markNoteImportant = createAsyncThunk('notes/markNoteImportant', asy
     }
 });
 
+// thunk to mark a note as unimportant
+export const markNoteUnimportant = createAsyncThunk('notes/markNoteUnimportant', async (_, { rejectWithValue }) => {
+
+    try {
+
+        // Sending PATCH request to mark the note as unimportant
+        const response = await axios.patch(`${backendUrl}/api/notes/mark-note-un-important`, {}, {
+            withCredentials: true,
+        });
+
+        toast.success(response.data.message);
+        return response.data; // Returning the data on success
+
+    } catch (error) {
+
+        console.log(error);
+
+        // Handling errors and returning a rejected value
+        console.error(error.response?.data?.message || 'Failed to mark note as unimportant');
+        return rejectWithValue(error.response?.data || error.message);
+
+    }
+});
+
 // thunk to update a note
 export const updateNote = createAsyncThunk('notes/updateNote', async ({ editNoteId, noteFormData }, { rejectWithValue }) => {
 

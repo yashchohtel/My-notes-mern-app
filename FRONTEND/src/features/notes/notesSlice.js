@@ -1,15 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNote, deleteAllNotesPermanently, deleteNotePermanently, fetchAllDeletedNotes, fetchAllNotes, markNoteImportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllImportantNotes, softDeleteAllNotes, softDeleteNote, updateNote } from "./notesThunks";
+import { createNote, deleteAllNotesPermanently, deleteNotePermanently, fetchAllDeletedNotes, fetchAllNotes, markNoteImportant, markNoteUnimportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllImportantNotes, softDeleteAllNotes, softDeleteNote, updateNote } from "./notesThunks";
 import { act } from "react";
+import { toast } from "react-toastify";
 
 // initial state
 const initialState = {
+
+    // to store notes
     notes: [],
     deletedNotes: [],
+
+    // loading
     loading: false,
+
+    // messages
     error: null,
     successMessage: null,
-    filteredNote: []
+
+    // related to filter
+    filteredNote: [],
+    isFilterActive: false,
 };
 
 // creating the slice for notes
@@ -31,10 +41,77 @@ const notesSlice = createSlice({
         // reducer to filter notes
         filterNote: (state, action) => {
 
-            if(action.payload === "newFirst"){
-                state.filteredNote = state.notes
+            // sorting type for note
+            const sortType = action.payload.filterType;
+
+            // filter status
+            const filterStatus = action.payload.filterActive;
+
+            // variable to store filtered note
+            let result;
+
+            // all Notes means no filtred note
+            if (sortType === "allNotes") {
+                state.filteredNote = []
+                state.isFilterActive = filterStatus
+                if (action.payload.whereAction !== "searchBar") {
+                    toast.info("All Notes");
+                }
             }
 
+            // new note first
+            if (sortType === "newFirst") {
+                result = [...state.notes].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                state.isFilterActive = filterStatus
+                state.filteredNote = result;
+                toast.info("New Note First");
+            }
+
+            // oldest note first
+            if (sortType === "OldFirst") {
+                result = [...state.notes].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                state.isFilterActive = filterStatus
+                state.filteredNote = result;
+                toast.info("Oldest Note First");
+            }
+
+            // for last seven days
+            if (sortType === "last7") {
+
+                const today = new Date();
+
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(today.getDate() - 7);
+
+                result = [...state.notes].filter(note => {
+                    const createdDate = new Date(note.createdAt);
+                    return createdDate >= sevenDaysAgo && createdDate <= today;
+                });
+
+                state.isFilterActive = filterStatus
+                state.filteredNote = result;
+                toast.info("Last 7 Days Notes");
+            }
+
+            // for last thirty days
+            if (sortType === "last30") {
+
+                // today date 
+                const today = new Date();
+
+                // thirty day ago date
+                const thirtyDaysAgo = new Date();
+                thirtyDaysAgo.setDate(today.getDate() - 30);
+
+                result = [...state.notes].filter(note => {
+                    const createdDate = new Date(note.createdAt);
+                    return createdDate >= thirtyDaysAgo && createdDate <= today;
+                });
+
+                state.isFilterActive = filterStatus
+                state.filteredNote = result;
+                toast.info("Last 30 Days Notes");
+            }
         }
 
     },
@@ -93,6 +170,21 @@ const notesSlice = createSlice({
                 state.successMessage = action.payload.message;
             })
             .addCase(markNoteImportant.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // MARK NOTE UNIMPORTANT
+            .addCase(markNoteUnimportant.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(markNoteUnimportant.fulfilled, (state, action) => {
+                state.loading = false;
+                state.successMessage = action.payload.message;
+            })
+            .addCase(markNoteUnimportant.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
@@ -170,7 +262,7 @@ const notesSlice = createSlice({
                 state.error = null;
                 state.successMessage = null;
             })
-            .addCase(fetchAllDeletedNotes.fulfilled, (state, action) => {                
+            .addCase(fetchAllDeletedNotes.fulfilled, (state, action) => {
                 state.loading = false;
                 state.deletedNotes = action.payload.notes;
                 state.successMessage = action.payload.message;

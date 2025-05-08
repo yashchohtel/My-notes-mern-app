@@ -1,7 +1,7 @@
 import express from 'express'; // Importing express framework
 import userAuth from '../middleware/userAuthMiddleware.js';// Importing user authentication middleware
 import catchAsyncError from '../middleware/catchAsyncError.js'; // Importing catchAsyncError middleware
-import { createNote, deleteAllNotesPermanently, deleteNotePermanently, getAllDeletedNotes, getAllNotes, getSingleNote, markNoteImportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllImportantNotes, softDeleteAllNotes, softDeleteNote, updateNote } from '../controllers/notesController.js'; // Importing the Controller function from notesController
+import { createNote, deleteAllNotesPermanently, deleteNotePermanently, getAllDeletedNotes, getAllNotes, getSingleNote, markAllNotesUnimportant, markNoteImportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllImportantNotes, softDeleteAllNotes, softDeleteNote, updateNote } from '../controllers/notesController.js'; // Importing the Controller function from notesController
 
 const notesRouter = express.Router(); // Creating an instance of Express Router
 
@@ -22,6 +22,9 @@ notesRouter.get('/get-note/:noteId', userAuth, catchAsyncError(getSingleNote)); 
 
 // Mark note important/unimportant route [POST]
 notesRouter.patch('/mark-note-important/:noteId', userAuth, catchAsyncError(markNoteImportant)); // 'http://localhost:3000/api/notes/mark-note-important/:noteId'
+
+// Mark note unimportant at once route [POST]
+notesRouter.patch('/mark-note-un-important', userAuth, catchAsyncError(markAllNotesUnimportant)); // 'http://localhost:3000/api/notes/mark-note-un-important'
 
 // Update note route [PATCH]
 notesRouter.patch('/update-note/:noteId', userAuth, catchAsyncError(updateNote)); // 'http://localhost:3000/api/notes/update-note/:noteId'

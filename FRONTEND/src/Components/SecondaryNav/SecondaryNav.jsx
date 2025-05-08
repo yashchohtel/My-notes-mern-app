@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { MdRestoreFromTrash } from "react-icons/md";
 import { filterNote } from '../../features/notes/notesSlice';
+import { IoBookmarkSharp } from "react-icons/io5";
 
 const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
 
@@ -47,8 +48,8 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
     }
 
     // function to handle filter note
-    const handleNoteFilter = (filterType) => {
-        dispatch(filterNote(filterType))
+    const handleNoteFilter = (filterType, filterActive) => {
+        dispatch(filterNote({ filterType, filterActive }))
     }
 
     return (
@@ -70,10 +71,11 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                         </button>
                     )}
 
-                    {(notes.length > 0 && !isDeleted) && (
+                    {/* button to fillter note */}
+                    {(notes.length > 0 && isHome) && (
                         <div
                             className={`notes-filter-dropdown 
-                                ${isHome || (isImportant && importantNotes.length > 0) ? 'notes-filter-dropdown-hover' : ''}`}
+                                ${isHome ? 'notes-filter-dropdown-hover' : ''}`}
                         >
                             <button
                                 className="button_primary"
@@ -83,20 +85,34 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                             </button>
 
                             <ul className="filter-options">
-                                <li onClick={() => handleNoteFilter("newFirst")} >
+                                <li onClick={() => handleNoteFilter("allNotes", false)} >
+                                    All Notes
+                                </li>
+                                <li onClick={() => handleNoteFilter("newFirst", true)} >
                                     Newest First
                                 </li>
-                                <li onClick={() => handleNoteFilter("OldFirst")} >
+                                <li onClick={() => handleNoteFilter("OldFirst", true)} >
                                     Oldest First
                                 </li>
-                                <li onClick={() => handleNoteFilter("last7")} >
+                                <li onClick={() => handleNoteFilter("last7", true)} >
                                     Last 7 Days
                                 </li>
-                                <li onClick={() => handleNoteFilter("last30")} >
+                                <li onClick={() => handleNoteFilter("last30", true)} >
                                     Last 30 Days
                                 </li>
                             </ul>
                         </div>
+                    )}
+
+                    {/* button to un mark all notes as importent */}
+                    {(notes.length >= 2 && isImportant) && (
+                        <button
+                            className="button_primary deleteAll-btn"
+                            onClick={() => openConfirmBox(null, "unmark-imp")}
+                            disabled={isImportant && importantNotes.length < 2}
+                        >
+                            UNMARK ALL <IoBookmarkSharp className="button-icon" />
+                        </button>
                     )}
 
                     {/*soft delete all note button */}
@@ -137,4 +153,4 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
     )
 }
 
-export default SecondaryNav
+export default SecondaryNav;

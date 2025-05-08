@@ -102,6 +102,10 @@
     font-weight: 600;
     letter-spacing: 0.05rem;
     word-spacing: 0.1rem;
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    text-transform: uppercase;
 }
 
 /* view full note modal */

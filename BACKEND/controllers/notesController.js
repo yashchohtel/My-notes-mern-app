@@ -151,6 +151,46 @@ export const markNoteImportant = async (req, res, next) => {
 
 }
 
+// MARK ALL NOTES UNIMPORTANT CONTROLLER ------------------------ //
+
+export const markAllNotesUnimportant = async (req, res, next) => {
+
+    // Extract user ID from auth middleware
+    const userId = req.userId;
+
+    // Find all important notes that are not deleted
+    const notes = await Notes.find({
+        user: userId,
+        isDeleted: false,
+        isImportant: true
+    });
+
+    // If no important notes found
+    if (notes.length === 0) {
+        return next(new ErrorHandler("No important notes found to unmark.", 404));
+    }
+
+    // Update all important notes to unimportant
+    await Notes.updateMany(
+        { user: userId, isDeleted: false, isImportant: true },
+        { isImportant: false }
+    );
+
+    // Logs for debugging (remove in production)
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- markAllNotesUnimportant controller ---↓');
+        console.log("userId : " + userId);
+        console.log("Unmarked important notes count: ", notes.length);
+        console.log("↑--- markAllNotesUnimportant controller ---↑");
+    }
+
+    // Send success response
+    return res.status(200).json({
+        success: true,
+        message: "All important notes have been unmarked successfully.",
+    });
+};
+
 // UPDATE NOTE CONTROLLER ----------------------------------- //
 
 export const updateNote = async (req, res, next) => {

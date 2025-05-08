@@ -14,6 +14,8 @@ import UserAccount from "./pages/UserAccount/UserAccount";
 import VerifyEmail from "./pages/VerifyEmail/VerifyEmail";
 import { fetchAllNotes } from "./features/notes/notesThunks";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
@@ -42,15 +44,17 @@ function App() {
   // effect to change app theme
   useEffect(() => {
 
-    if(themeType === "light"){
+    if (themeType === "light") {
       document.body.classList.remove("light-mode")
-    } else{
+    } else {
       document.body.classList.add("light-mode")
     }
   }, [themeType]);
 
   return (
     <>
+
+      <ToastContainer position="bottom-right" toastClassName="my_toast" autoClose={2000} theme='dark' />
 
       <Routes>
 

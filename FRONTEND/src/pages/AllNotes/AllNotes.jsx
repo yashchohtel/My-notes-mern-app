@@ -14,10 +14,8 @@ import CardSkletenLoading from '../../Components/CardSkletenLoading/CardSkletenL
 const AllNotes = () => {
 
     // getting required Data from global store using useSelector
-    const { notes, loading: notesLoading, filteredNote } = useSelector((state) => state.notes);
+    const { notes, loading: notesLoading, filteredNote, isFilterActive } = useSelector((state) => state.notes);
     const { noteViewType } = useSelector((state) => state.theme);
-
-    console.log(filteredNote);
 
     // getting all required state and actions functions to perform actions
     const {
@@ -129,7 +127,7 @@ const AllNotes = () => {
                         {notesLoading ?
 
                             (
-                                [...Array(6)].map((_, index) => (
+                                notes.map((_, index) => (
                                     <CardSkletenLoading key={index} />
                                 ))
                             )
@@ -137,17 +135,20 @@ const AllNotes = () => {
                             :
 
                             (
-                                searchedNotes.map((note) => (
-                                    // note card
-                                    <NoteCard
-                                        key={note._id}
-                                        note={note}
-                                        viewFullNote={viewFullNote}
-                                        markImportant={markImportant}
-                                        openNoteFormEdit={openNoteFormEdit}
-                                        openConfirmBox={openConfirmBox}
-                                    />
-                                ))
+                                (isFilterActive ? filteredNote : searchedNotes).length === 0 ? (
+                                    <p className="no_notes">No such note found</p>
+                                ) : (
+                                    (isFilterActive ? filteredNote : searchedNotes).map((note) => (
+                                        <NoteCard
+                                            key={note._id}
+                                            note={note}
+                                            viewFullNote={viewFullNote}
+                                            markImportant={markImportant}
+                                            openNoteFormEdit={openNoteFormEdit}
+                                            openConfirmBox={openConfirmBox}
+                                        />
+                                    ))
+                                )
                             )
 
                         }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createNote, deleteAllNotesPermanently, deleteNotePermanently, fetchAllDeletedNotes, fetchAllNotes, markNoteImportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllImportantNotes, softDeleteAllNotes, softDeleteNote, updateNote } from "../features/notes/notesThunks";
+import { createNote, deleteAllNotesPermanently, deleteNotePermanently, fetchAllDeletedNotes, fetchAllNotes, markNoteImportant, markNoteUnimportant, restoreAllSoftDeletedNotes, restoreSoftDeletedNote, softDeleteAllImportantNotes, softDeleteAllNotes, softDeleteNote, updateNote } from "../features/notes/notesThunks";
 
 
 // useNoteAction custoom hook to reuse functionality
@@ -254,6 +254,10 @@ const useNoteAction = () => {
 
         if (whichPart === "restoreNote" && confirmAction) {
             dispatch(restoreSoftDeletedNote(noteIdToDelete)).then(() => dispatch(fetchAllNotes()));
+        }
+        
+        if (whichPart === "unmark-imp" && confirmAction) {
+            dispatch(markNoteUnimportant()).then(() => dispatch(fetchAllNotes()));
         }
 
     };

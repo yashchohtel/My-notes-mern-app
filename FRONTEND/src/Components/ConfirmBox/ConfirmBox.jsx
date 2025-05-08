@@ -40,6 +40,10 @@ const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart }) => {
                     <p className="confirm_msg">Rstore note? </p>
                 }
 
+                {(whichPart === "unmark-imp") &&
+                    <p className="confirm_msg">Mark all notes un-importent? </p>
+                }
+
                 <div className="buttons_div">
 
                     {/* delete button */}
