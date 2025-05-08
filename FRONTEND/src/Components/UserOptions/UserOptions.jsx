@@ -64,7 +64,7 @@ const UserOptions = () => {
 
                 {/* go to admin page */}
                 {isAuthenticated && role?.includes("admin") &&
-                    <div className="user_options admin_panel">
+                    <div className="user_options admin_panel" onClick={() => navigate("/admin-page")}>
 
                         <span className="optionIcon"> <MdAdminPanelSettings /> </span>
 

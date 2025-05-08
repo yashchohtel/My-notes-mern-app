@@ -16,6 +16,8 @@ import { fetchAllNotes } from "./features/notes/notesThunks";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Admin from "./pages/Admin/Admin";
+import AdminRoute from "./Components/ProtectedRoute/AdminRoute";
 
 function App() {
 
@@ -23,8 +25,8 @@ function App() {
   const navigate = useNavigate();
 
   // getting required Data from global store using useSelector
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const { themeType } = useSelector((state) => state.theme);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { themeType } = useSelector((state) => state.theme);  
 
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();
@@ -54,6 +56,7 @@ function App() {
   return (
     <>
 
+      {/* to show toast notification */}
       <ToastContainer position="bottom-right" toastClassName="my_toast" autoClose={2000} theme='dark' />
 
       <Routes>
@@ -79,8 +82,12 @@ function App() {
 
         {/* Route for send verify Email */}
         <Route path="/verify-email/send" element={<ProtectedRoute> <VerifyEmail /> </ProtectedRoute>} />
+
         {/* Route for enter verify Email */}
         <Route path="/verify-email/enter" element={<ProtectedRoute> <VerifyEmail /> </ProtectedRoute>} />
+
+        {/* route for admin page */}
+        <Route path="/admin-page" element={<AdminRoute> <Admin /> </AdminRoute>} />
 
       </Routes>
 
