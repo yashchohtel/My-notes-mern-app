@@ -29,6 +29,7 @@
     --border-primary: #3b3c3e;
     --border-secondary: #2b2b2b9c;
     --border-tertiary: #cecece;
+    --border-dark: #5a5a5a;
 
     /* fonts */
     --font-primary: "Outfit", sans-serif;
@@ -49,17 +50,22 @@ body.light-mode {
     --bg-primary: #f4f4f4;
     --bg-secondary: #d3d3d3;
     --bg-tettiary: #dcdcdc9c;
+
     --bg-button: #434343;
+
     --text-color-primary-light: #000000;
     --text-color-secondary-light: #4a4a4a;
     --text-color-tertiary-light: #353535;
     --text-color-primary-bright: #525252;
     --text-color-primary-dim: #161616;
     --text-color-white: #ffffff;
+
     --hover-primary: #c5c5c5;
+
     --border-primary: #3b3c3e;
     --border-secondary: #e4e4e4;
-    --border-tertiary: #cecece;
+    --border-tertiary: #3d3d3d;;
+    --border-dark: #7b7b7b;
 
 }
 

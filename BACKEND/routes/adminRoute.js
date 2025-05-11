@@ -9,10 +9,7 @@ const adminRouter = express.Router(); // Creating an instance of Express Router
 // ADMIN OPERATION ROUTES -------------------- //
 
 // Get all users data route [GET]
-adminRouter.get('/get-all-users', userAuth, authorizeRoles("admin", "superadmin"), catchAsyncError(getAllUsersData)); 
+adminRouter.get('/get-all-users', userAuth, authorizeRoles("admin", "superadmin"), catchAsyncError(getAllUsersData));
 // 'http://localhost:3000/api/admin/get-all-users'
-
-
-
 
 export default adminRouter; // Exporting the adminRouter instance

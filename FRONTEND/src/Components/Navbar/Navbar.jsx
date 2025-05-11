@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../Searchbar/SearchBar';
 import UserOptions from '../UserOptions/UserOptions';
 
-import { MdSunny } from "react-icons/md";
-import { IoMdMoon } from "react-icons/io";
+import { FiSun } from "react-icons/fi";
+import { IoMoonOutline } from "react-icons/io5";
 import { LuLogIn, LuUser } from "react-icons/lu";
 import { PiRecycleBold } from "react-icons/pi";
 import { FaRegStar } from "react-icons/fa6";
@@ -43,6 +43,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     const isHome = location.pathname.startsWith("/home");
     const isAccount = location.pathname === "/user-account";
     const isEmailVerify = location.pathname.startsWith("/verify-email");
+    const isAdmin = location.pathname === "/admin-page";
+
 
     // state to store sticky navbar status
     const [isSticky, setIsSticky] = useState(false);
@@ -110,7 +112,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 </div>
 
                 {/* searchBar */}
-                {isHome &&
+                {(isHome || isAdmin) &&
                     <div className="Search_Bar_Container">
 
                         {/* searchbar component */}
@@ -123,7 +125,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 <div className="navbar__right">
 
                     {/* All note button */}
-                    {(isHome || isAccount) &&
+                    {isHome &&
                         <div className="allNotes_btn nav_btn_container">
 
                             {/* notes icon */}
@@ -137,7 +139,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                     }
 
                     {/* important note button */}
-                    {(isHome || isAccount) &&
+                    {isHome &&
                         <div className="important_btn nav_btn_container">
 
                             {/* star icon */}
@@ -147,7 +149,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                     }
 
                     {/* recucle bin button */}
-                    {(isHome || isAccount) &&
+                    {isHome &&
                         <div className="recycle_btn nav_btn_container">
 
                             {/* bin icon */}
@@ -177,7 +179,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                     }
 
                     {/* home button */}
-                    {isEmailVerify &&
+                    {(isEmailVerify || isAdmin || isAccount) &&
                         <NavLink to="/home" className="home_btn nav_btn_container">
 
                             {/* grid icon */}
@@ -192,14 +194,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                         {/* sun/moon icon */}
                         <div className="navbar_circular_btn">
 
-                            {themeType === "dark" ? <IoMdMoon /> : <MdSunny />}
+                            {themeType === "dark" ? <IoMoonOutline /> : <FiSun />}
 
                         </div>
 
                     </div>
 
                     {/* user profile button*/}
-                    {isHome &&
+                    {(isHome || isAdmin || isAccount) &&
                         <div className="profile_btn nav_btn_container" ref={menuRef}>
 
                             {/* user button */}

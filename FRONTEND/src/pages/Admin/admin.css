@@ -1,3 +1,106 @@
-.admin{
-    background-color: red;
+.admin_section_container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    background-color: var(--bg-primary);
+    background-image: linear-gradient(to right, var(--border-secondary) 1px, transparent 1px), linear-gradient(to bottom, var(--border-secondary) 1px, transparent 1px);
+    background-size: 30px 30px;
 }
+
+.userTable_display_sec {
+    height: calc(100% - 8rem);
+    width: 100%;
+    overflow: hidden;
+    border-top: 2px solid var(--border-primary);
+}
+
+.admin_heading {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--text-color-primary-light);
+    font-family: var(--font-four);
+    font-weight: 500;
+    letter-spacing: 0.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* table container */
+.table_section {
+    margin-top: 2rem;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 8rem;
+}
+
+
+/* border on table th and td */
+.table_section table {
+    width: 100%;
+    table-layout: auto;
+    border-spacing: 2px;
+    border: none;
+    padding: 0 0.5rem;
+}
+
+.table_section th,
+.table_section td {
+    border: 1px solid var(--border-dark);
+    padding: 8px;
+}
+
+.table_section thead th {
+    font-size: 2rem;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--bg-secondary);
+    color: var(--text-color-tertiary-light);
+    text-align: left;
+}
+
+.table_section thead th.th-action {
+    text-align: center;
+}
+
+.table_section tbody tr td {
+    color: var(--text-color-secondary-light);
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.05rem;
+    font-family: var(--font-four);
+}
+
+/* action buttons */
+.table_section .button_primary {
+    height: 3rem;
+    padding: 0 1rem;
+    font-size: 1.3rem;
+}
+
+.td-btn-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.table_section tbody tr:nth-child(even) {
+    /* background-color: var(--bg-secondary); */
+    background: var(--bg-tettiary);
+}
+
+.table_section tbody tr:nth-child(odd) {
+    background: var(--bg-tettiary);
+    /* background-color: var(--bg-secondary); */
+}
+
+/* 

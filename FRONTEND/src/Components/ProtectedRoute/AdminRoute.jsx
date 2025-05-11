@@ -17,8 +17,13 @@ const AdminRoute = ({ children }) => {
         )
     }
 
-    // check if user is Authenticated or not
-    if (isAuthenticated && !user.role.includes("admin")) {
+    // If not authenticated, redirect to login
+    if (!isAuthenticated) {
+        return <Navigate to="/" replace />;
+    }
+
+    // If authenticated but not admin, redirect to home
+    if (!user?.role?.includes("admin")) {
         return <Navigate to="/home" replace />;
     }
 
