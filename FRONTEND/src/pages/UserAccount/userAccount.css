@@ -2,12 +2,32 @@
     height: 100vh;
     width: 100%;
     display: flex;
+    align-items: flex-end;
     justify-content: center;
-    align-items: center;
-
     background-color: var(--bg-primary);
     background-image:
         linear-gradient(to right, var(--border-secondary) 1px, transparent 1px),
         linear-gradient(to bottom, var(--border-secondary) 1px, transparent 1px);
     background-size: 30px 30px;
+}
+
+.userPrifile_section {
+    height: calc(100vh - 8rem);
+    overflow-y: auto;
+    padding: 0 2rem;
+    border-top: 2px solid var(--border-primary);
+    width: 100%;
+}
+
+.user_profile_heading {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text-color-secondary-light);
+    text-transform: uppercase;
+    font-size: 3rem;
+    font-family: var(--font-four);
+}
+
+.user_acount_container span{
+    
 }

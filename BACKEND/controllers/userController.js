@@ -629,13 +629,13 @@ export const uploadUserProfile = async (req, res, next) => {
     }
 
     // 5. Save new image info in user
-    user.avatar = {
-        public_id: result.public_id,
-        url: result.secure_url,
-    };
+    user.profileImage = result.secure_url;
+    user.cloudinaryPublicId = result.public_id;
 
+    // save the image detail
     await user.save();
 
+    // return respoinse
     res.status(200).json({
         success: true,
         message: "Profile photo uploaded successfully",
