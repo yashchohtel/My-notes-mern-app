@@ -7,6 +7,7 @@
     background-color: var(--bg-primary);
     background-image: linear-gradient(to right, var(--border-secondary) 1px, transparent 1px), linear-gradient(to bottom, var(--border-secondary) 1px, transparent 1px);
     background-size: 30px 30px;
+    position: relative;
 }
 
 .userTable_display_sec {
@@ -45,7 +46,7 @@
 .table_section table {
     width: 100%;
     table-layout: auto;
-    border-spacing: 2px;
+    border-spacing: 1.5px;
     border: none;
     padding: 0 0.5rem;
 }
@@ -103,4 +104,76 @@
     /* background-color: var(--bg-secondary); */
 }
 
-/* 
+/* admin optoion */
+.adminOption_container {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    background: var(--bg-primary);
+    box-shadow: var(--box-shadow-primary);
+    padding: 1rem 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(1px);
+    background-color: #000000ba;
+}
+
+.adminOption_container .adminOption {
+    background: var(--bg-secondary);
+    padding: 1rem 0;
+    position: relative;
+}
+
+.admin_section_container .adminOption .option {
+    font-size: 1.5rem;
+    padding: 1rem;
+    text-transform: uppercase;
+    color: var(--text-color-primary-light);
+    font-family: var(--font-four);
+    font-weight: 700;
+    letter-spacing: 0.05rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.admin_section_container .adminOption .option:hover {
+    background: var(--border-secondary);
+}
+
+.adminOption .close_model {
+    position: absolute;
+    top: -6rem;
+    right: 0;
+    font-size: 2rem;
+    width: 4rem;
+    cursor: pointer;
+    height: 4rem;
+    background: var(--bg-button);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color-white);
+    font-size: 2rem;
+    transition: var(--transition);
+    border-radius: 5px;
+    border: 2px solid transparent;
+}
+
+.adminOption .close_model:hover {
+    background-color: var(--bg-primary);
+    border-color: var(--border-primary);
+    color: var(--text-color-primary-light);
+}
+
+.option span {
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

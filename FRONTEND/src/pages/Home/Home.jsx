@@ -4,8 +4,7 @@ import { clearMessages } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
-import AllNotes from '../AllNotes/AllNotes';
-import useNoteAction from '../../hooks/useNoteAction';
+import useSearch from '../../hooks/useSearch';
 
 const Home = () => {
 
@@ -21,17 +20,13 @@ const Home = () => {
   // configure useLocation to get page logation
   const location = useLocation();
 
-  // state to store search Query
-  const [searchQuery, setSearchQuery] = useState("");
-
-  // getting all required state and actions functions to perform actions
+  // state to store search Query getting from useSearch hook
   const {
+    searchQuery,
+    setSearchQuery
 
-    // related to note display type
-    noteViewType,
-    changeNoteViewType
-
-  } = useNoteAction();
+  } = useSearch()
+  
 
   // effect to clear messages after authentication
   useEffect(() => {
@@ -60,11 +55,9 @@ const Home = () => {
       <section className='home_section_container'>
 
         {/* navbar Component */}
-        <Navbar 
-        searchQuery={searchQuery} 
-        setSearchQuery={setSearchQuery} 
-        noteViewType={noteViewType}
-        changeNoteViewType={changeNoteViewType}
+        <Navbar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
         />
 
         {/* home notes section (all notes, important notes, deleted notes) */}

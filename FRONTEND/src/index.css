@@ -29,7 +29,13 @@
     --border-primary: #3b3c3e;
     --border-secondary: #2b2b2b9c;
     --border-tertiary: #cecece;
-    --border-dark: #5a5a5a;
+    --border-dark: #979797;
+
+    /* loading color */
+    --loading-primary: #151515;
+    --loading-secondary: #2c2c2c;
+    --loading-tertiary: #3c3c3c;
+    --loading-four: #2c2c2c;
 
     /* fonts */
     --font-primary: "Outfit", sans-serif;
@@ -64,8 +70,14 @@ body.light-mode {
 
     --border-primary: #3b3c3e;
     --border-secondary: #e4e4e4;
-    --border-tertiary: #3d3d3d;;
+    --border-tertiary: #3d3d3d;
+
     --border-dark: #7b7b7b;
+
+    --loading-primary: #afafaf;
+    --loading-secondary: #a8a2a2;
+    --loading-tertiary: #968f8f;
+    --loading-four: #9e9191 ;
 
 }
 

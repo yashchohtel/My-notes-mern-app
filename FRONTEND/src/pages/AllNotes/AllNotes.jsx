@@ -10,6 +10,7 @@ import NoteForm from '../../Components/NoteForm/NoteForm';
 import ConfirmBox from '../../Components/ConfirmBox/ConfirmBox';
 import useNoteAction from '../../hooks/useNoteAction';
 import CardSkletenLoading from '../../Components/CardSkletenLoading/CardSkletenLoading';
+import useSearch from '../../hooks/useSearch';
 
 const AllNotes = () => {
 
@@ -48,10 +49,9 @@ const AllNotes = () => {
 
     } = useNoteAction();
 
-
     // search query variable comming from home page via outlet using useOutletContent
     const { searchQuery } = useOutletContext();
-
+    
     // notes filtered on the basis of searched
     const searchedNotes = notes.filter((note) =>
         note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

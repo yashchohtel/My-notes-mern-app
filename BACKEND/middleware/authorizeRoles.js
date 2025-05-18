@@ -8,8 +8,6 @@ const authorizeRoles = (...allowedRoles) => {
 
         try {
 
-            console.log(req.userId);
-
             // Check if userId is present in request
             if (!req.userId) {
                 return next(new ErrorHandler("Unauthorized! Please login again.", 401));

@@ -4,6 +4,7 @@ import transporter from "../Config/emailService.js";  // Import email service fo
 import dotenv from "dotenv"; // Import dotenv to use environment variables
 import User from "../models/User.js"; // Import User model 
 import ErrorHandler from "../utils/errorHandler.js"; // Import custom error handler
+import cloudinary from "../Config/cloudinary.js";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -589,6 +590,78 @@ export const getUserData = async (req, res, next) => {
     });
 
 }
+
+// UPLOAD PROFILE PICTURE ---------------- //
+export const uploadUserProfile = async (req, res, next) => {
+
+    // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
+    const userId = req.userId;
+
+    // 1. Agar file nahi hai
+    if (!req.file) {
+        return next(new ErrorHandler("No file uploaded", 400));
+    }
+
+    // 2. Upload to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+
+        cloudinary.uploader.upload_stream({ folder: "NOTENEST_profile_photos", resource_type: "image", }, (error, result) => {
+
+            // if error
+            if (error) return reject(error);
+
+            // if success
+            resolve(result);
+
+        }).end(req.file.buffer); // Multer ne memory me image rakhi hoti hai
+
+    });
+
+    // 3. Find user
+    const user = await User.findById(userId);
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // 4. (Optional) Purani image delete karo agar ho to
+    if (user.avatar && user.avatar.public_id) {
+        await cloudinary.uploader.destroy(user.avatar.public_id);
+    }
+
+    // 5. Save new image info in user
+    user.avatar = {
+        public_id: result.public_id,
+        url: result.secure_url,
+    };
+
+    await user.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Profile photo uploaded successfully",
+        avatar: user.avatar,
+    });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -34,10 +34,12 @@
     font-size: 3.4rem;
     letter-spacing: 0.03rem;
     word-spacing: 0.1rem;
-    font-weight: 600;
     text-transform: uppercase;
     font-family: var(--font-teritary);
     word-spacing: 0.5rem;
+    font-weight: 600;
+    -webkit-text-stroke: 1px var(--text-color-tertiary-light);
+
 }
 
 .welcomePage__content p {

@@ -1,6 +1,8 @@
 .userProfile_container {
     height: auto;
     padding: 1.5rem 1rem;
+    border: 2px solid var(--border-dark);
+    border-radius: 5px;
 }
 
 .user_options {
@@ -97,6 +99,6 @@
     color: var(--text-color-secondary-light);
 }
 
-.logout_buttton .button_primary{
+.logout_buttton .button_primary {
     width: 100%;
 }

@@ -3,6 +3,11 @@ import mongoose from "mongoose"; // Import mongoose
 // Create a user schema
 const userSchema = new mongoose.Schema({
 
+    profileImage: {
+        type: String,
+        default: "",
+    },
+
     fullName: {
         type: String,
         required: [true, "Full Name is required"],

@@ -104,7 +104,7 @@ const DeletedNotes = () => {
           // if no note to display
           <p className="no_notes">
             {(deletedNotes.length === 0 && notes.length === 0) && "ADD YOUR NOTES AND TASKS"}
-            {(deletedNotes.length === 0 && notes.length > 0) && "RECYCLE BIN IN EMPTY"}
+            {(deletedNotes.length === 0 && notes.length > 0) && "RECYCLE BIN IS EMPTY"}
           </p>
 
           :

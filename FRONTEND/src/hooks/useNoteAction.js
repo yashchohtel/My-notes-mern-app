@@ -184,20 +184,20 @@ const useNoteAction = () => {
     // state to store confirm box open close status
     const [confirmBoxOpen, setConfirmBoxOpen] = useState(false);
 
-    // state to store note id which is to be deleted
-    const [noteIdToDelete, setNoteIdToDelete] = useState(null);
+    // state to store id to perform act on that
+    const [idToActOn, setIdToActOn] = useState(null);
 
     // state to store from which part the delete action performed
     const [whichPart, setWhichPart] = useState(null);
-    
+
     // function to open confirm box
     const openConfirmBox = (id, part) => {
 
         // set confirmbox open true
         setConfirmBoxOpen(true);
 
-        // setting the note id
-        setNoteIdToDelete(id)
+        // setting the act id
+        setIdToActOn(id)
 
         // setting the which part the delete request comming from
         setWhichPart(part)
@@ -210,8 +210,8 @@ const useNoteAction = () => {
         // set confirmbox open false
         setConfirmBoxOpen(false);
 
-        // setting the note id to null if cancle confirmation
-        setNoteIdToDelete(null)
+        // setting the id to null if cancle confirmation
+        setIdToActOn(null)
 
         // setting which part to null if cancle confirmation
         setWhichPart(null)
@@ -223,7 +223,7 @@ const useNoteAction = () => {
 
         // request from note card and note full preview (delete single note)
         if ((whichPart === "noteCard" || whichPart === "fullPreview") && confirmAction) {
-            moveOneNoteToBin(noteIdToDelete);
+            moveOneNoteToBin(idToActOn);
         }
 
         // request from secondary nav (delete all note)
@@ -232,32 +232,37 @@ const useNoteAction = () => {
             moveAllNoteToBin();
         }
 
+        // request from importent note (mark all note um importent)
+        if (whichPart === "unmark-imp" && confirmAction) {
+            dispatch(markNoteUnimportant()).then(() => dispatch(fetchAllNotes()));
+        }
+
         // reqest from important note (delete all important note)
         if (whichPart === "secondaryNavDeleteAllImpNote" && confirmAction) {
             // delete all importent notes 
             moveAllImpNoteToBin();
         }
 
+        // request from deleteed note (restore all note)
         if (whichPart === "secondaryNavResAll" && confirmAction) {
             dispatch(restoreAllSoftDeletedNotes()).then(() => dispatch(fetchAllNotes()));
         }
 
+        // request from deleted note (delte all not permanently)
         if (whichPart === "secondaryNavPermDelAllNote" && confirmAction) {
             dispatch(deleteAllNotesPermanently()).then(() => dispatch(fetchAllNotes()));
             console.log("deleted permanentaly");
         }
 
+        // request from deleted note (delte single not permanently) 
         if (whichPart === "permDelNote" && confirmAction) {
-            dispatch(deleteNotePermanently(noteIdToDelete)).then(() => dispatch(fetchAllNotes()));
+            dispatch(deleteNotePermanently(idToActOn)).then(() => dispatch(fetchAllNotes()));
             console.log("deleted permanentaly");
         }
 
+        // request from deleteed note (restore single note)        
         if (whichPart === "restoreNote" && confirmAction) {
-            dispatch(restoreSoftDeletedNote(noteIdToDelete)).then(() => dispatch(fetchAllNotes()));
-        }
-        
-        if (whichPart === "unmark-imp" && confirmAction) {
-            dispatch(markNoteUnimportant()).then(() => dispatch(fetchAllNotes()));
+            dispatch(restoreSoftDeletedNote(idToActOn)).then(() => dispatch(fetchAllNotes()));
         }
 
     };
@@ -293,6 +298,7 @@ const useNoteAction = () => {
         // related to confirmation actions
         confirmBoxOpen,
         whichPart,
+        idToActOn,
         openConfirmBox,
         closeConfirmBox,
         handleConfirmAction,

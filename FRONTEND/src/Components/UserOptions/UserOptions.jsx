@@ -48,7 +48,7 @@ const UserOptions = () => {
         <>
             <div className="userProfile_container">
 
-                {/* user account profile */}``
+                {/* user account profile */}
                 {!isAccount &&
                     <Link to="/user-account" className="user_options verify_account">
 

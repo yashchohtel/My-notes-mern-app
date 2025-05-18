@@ -1,6 +1,7 @@
 import User from "../models/User.js"; // Importing User model
 import Notes from "../models/Notes.js"; // Importing Notes model
 import ErrorHandler from "../utils/errorHandler.js"; // Importing ErrorHandler
+import transporter from "../Config/emailService.js";
 
 
 // GET ALL NOTES CONTROLLER ---------------------------------- //
@@ -8,8 +9,10 @@ import ErrorHandler from "../utils/errorHandler.js"; // Importing ErrorHandler
 export const getAllUsersData = async (req, res) => {
 
     // get all users data from database
-    const users = await User.find().select("fullName username email role");
+    const users = await User.find().select("fullName username email role isAccountVerified");
 
+    console.log(users);
+    
     // creating notes stats for each user
     const usersWithNoteStats = await Promise.all(
 
@@ -28,6 +31,7 @@ export const getAllUsersData = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 role: user.role,
+                isAccountVerified: user.isAccountVerified,
                 activeNotes: activeNotesCount,
                 deletedNotes: deletedNotesCount,
             };
@@ -69,6 +73,10 @@ export const promoteUserToAdmin = async (req, res, next) => {
         return next(new ErrorHandler("User not found", 404));
     }
 
+    if (user.isAccountVerified === false) {
+        return next(new ErrorHandler(`Cannot promote ${user.fullName}, account not verified`, 400));
+    }
+
     // Check if user is already an admin
     if (user.role.includes("admin")) {
         return next(new ErrorHandler(`${user.fullName} is already an admin`, 400));
@@ -89,12 +97,12 @@ export const promoteUserToAdmin = async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: `User ${user.fullName} promoted to admin successfully.`,
+        message: `${user.fullName} promoted to admin successfully.`,
     });
 
 };
 
-// PROMOTE USER TO ADMIN CONTROLLER -------------------------- //
+// PROMOTE USER TO SUPER ADMIN CONTROLLER -------------------------- //
 
 export const promoteUserToSuperAdmin = async (req, res, next) => {
 
@@ -111,6 +119,10 @@ export const promoteUserToSuperAdmin = async (req, res, next) => {
 
     if (!user) {
         return next(new ErrorHandler("User not found", 404));
+    }
+
+    if (user.isAccountVerified === false) {
+        return next(new ErrorHandler(`Cannot promote ${user.fullName}, account not verified`, 400));
     }
 
     // Check if user is already a superadmin
@@ -133,7 +145,7 @@ export const promoteUserToSuperAdmin = async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: `User ${user.fullName} promoted to SUPERADMIN successfully.`,
+        message: `${user.fullName} promoted to SUPERADMIN successfully.`,
     });
 
 };
@@ -164,7 +176,7 @@ export const demoteAdminToUser = async (req, res, next) => {
 
     // Check if user is superadmin or not
     if (user.role.includes("superadmin")) {
-        return next(new ErrorHandler(`${user.fullName} cannot be demoted because they are a SUPER ADMIN`, 400));
+        return next(new ErrorHandler(`${user.fullName} is a SUPER ADMIN and can't be demoted`, 400));
     }
 
     // demote the user by removing admin and superadmin role
@@ -256,7 +268,7 @@ export const deleteUserAccount = async (req, res, next) => {
 
     // Check if user is already a superadmin
     if (user.role.includes("superadmin")) {
-        return next(new ErrorHandler(`You can't delete ${user.fullName} because they are a Super Admin`, 400));
+        return next(new ErrorHandler(`Cannot delete Super Admin ${user.fullName}`, 400))
     }
 
     // Delete the user 

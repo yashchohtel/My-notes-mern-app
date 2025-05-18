@@ -3,7 +3,7 @@ import "./confirmBox.css"
 import { HiMiniXCircle } from "react-icons/hi2";
 import { IoCheckmarkCircle } from "react-icons/io5";
 
-const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart }) => {
+const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart, closeUserOption }) => {
 
     return (
         <>
@@ -13,35 +13,51 @@ const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart }) => {
 
                 {/* setting heading of confirm box according to the confirmation request */}
                 {(whichPart === "noteCard" || whichPart === "fullPreview") &&
-                    <p className="confirm_msg">Sure you want to delete? </p>
+                    <p className="confirm_msg">Sure you want to delete ? </p>
                 }
 
                 {(whichPart === "secondaryNavDeleteAllNote") &&
-                    <p className="confirm_msg">Sure you want to delete all notes? </p>
+                    <p className="confirm_msg">Sure you want to delete all notes ? </p>
                 }
 
                 {(whichPart === "secondaryNavDeleteAllImpNote") &&
-                    <p className="confirm_msg">Sure you want to delete all important notes? </p>
+                    <p className="confirm_msg">Sure you want to delete all important notes ? </p>
                 }
-                
+
                 {(whichPart === "secondaryNavPermDelAllNote") &&
-                    <p className="confirm_msg">Sure you want empty recycle bin? </p>
+                    <p className="confirm_msg">Sure you want empty recycle bin ? </p>
                 }
 
                 {(whichPart === "secondaryNavResAll") &&
-                    <p className="confirm_msg">Sure you want to restore all notes? </p>
+                    <p className="confirm_msg">Sure you want to restore all notes ? </p>
                 }
 
                 {(whichPart === "permDelNote") &&
-                    <p className="confirm_msg">Delete notes permanentaly? </p>
+                    <p className="confirm_msg">Delete notes permanentaly ? </p>
                 }
 
                 {(whichPart === "restoreNote") &&
-                    <p className="confirm_msg">Rstore note? </p>
+                    <p className="confirm_msg">Rstore note ? </p>
                 }
 
                 {(whichPart === "unmark-imp") &&
-                    <p className="confirm_msg">Mark all notes un-importent? </p>
+                    <p className="confirm_msg">Mark all notes un-importent ? </p>
+                }
+
+                {(whichPart === "proUserToAdmin") &&
+                    <p className="confirm_msg">Promote User to Admin ? </p>
+                }
+
+                {(whichPart === "proUserToSupAdmin") &&
+                    <p className="confirm_msg">Promote User to Super Admin ? </p>
+                }
+
+                {(whichPart === "demAdminToUser") &&
+                    <p className="confirm_msg">Demote Admin to User ? </p>
+                }
+
+                {(whichPart === "permDeleteUser") &&
+                    <p className="confirm_msg">Are you very sure, want to delete user account ? </p>
                 }
 
                 <div className="buttons_div">
@@ -52,7 +68,9 @@ const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart }) => {
                         onClick={() => {
                             handleConfirmAction(true) // pass confirm action true if we want to complete action
                             closeConfirmBox() // close confirm box
-                        }}>
+                            closeUserOption() // close admin option box in admin page after yes confirm
+                        }}
+                    >
                         YES  <IoCheckmarkCircle />
                     </button>
 
@@ -74,4 +92,4 @@ const ConfirmBox = ({ closeConfirmBox, handleConfirmAction, whichPart }) => {
     )
 }
 
-export default ConfirmBox
+export default ConfirmBox;
