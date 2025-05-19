@@ -167,25 +167,23 @@ export const verifyEmailOtp = createAsyncThunk("auth/verifyEmailOtp", async (otp
 });
 
 // thunk to upload user profile image
-export const uploadProfilePic = createAsyncThunk('auth/uploadProfilePic', async (formData, { rejectWithValue }) => {
+export const uploadProfilePic = createAsyncThunk('auth/uploadProfilePic', async (formData, { rejectWithValue }) => {    
 
     try {
 
-        const { data } = await axios.post(`${backendUrl}/api/user/upload-profile-pic`,
-            formData,
-            {
-                withCredentials: true,
-                headers: { 'Content-Type': 'multipart/form-data' }
-            }
-        );
+        const { data } = await axios.post(`${backendUrl}/api/user/upload-profile-pic`, formData, {
+            withCredentials: true,
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
 
         toast.success(data.message);
+        console.log(data);
         
-
         return data;
 
     } catch (err) {
         console.log(err);
         return rejectWithValue(err.response?.data?.message || "Failed to upload profile picture");
     }
+
 });

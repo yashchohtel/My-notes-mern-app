@@ -2,10 +2,14 @@ import React, { useState } from 'react'
 import Navbar from '../../Components/Navbar/Navbar'
 import "./userAccount.css"
 import { FaUserTie } from "react-icons/fa";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MdModeEdit } from "react-icons/md";
+import { loadUser, uploadProfilePic } from '../../features/auth/authThunks';
 
 const UserAccount = () => {
+
+    // initilize use dispatch 
+    const dispatch = useDispatch();
 
     // getting required Data from global store using useSelector
     const { user: logedUser } = useSelector((state) => state.auth);
@@ -28,10 +32,17 @@ const UserAccount = () => {
     // state to store url
     const [imagePreview, setImagePreview] = useState(null);
 
+    // state to store file of image
+    const [selectedFile, setSelectedFile] = useState(null); // actual file
+
     const handleFileChange = (e) => {
         console.log(e.target.files[0]);
         const file = e.target.files[0];
         if (file) {
+
+            // store image file
+            setSelectedFile(file);
+
             // Purane URL ko revoke karo
             if (imagePreview) {
                 URL.revokeObjectURL(imagePreview);
@@ -41,6 +52,16 @@ const UserAccount = () => {
             const newPreview = URL.createObjectURL(file);
             setImagePreview(newPreview);
         }
+    };
+
+    const handleUpload = (e) => {
+
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('profilePic', selectedFile); // your file input state
+
+        useDispatch(uploadProfilePic(formData))
     };
 
     return (
@@ -55,7 +76,7 @@ const UserAccount = () => {
                 {showImgUpload &&
                     <div className="upload_image" onClick={() => closeImgForm()}>
 
-                        <form onClick={(e) => e.stopPropagation()}>
+                        <form onClick={(e) => e.stopPropagation()} onSubmit={(e) => handleUpload(e)}>
 
                             {imagePreview &&
                                 <div className="img_pre">
