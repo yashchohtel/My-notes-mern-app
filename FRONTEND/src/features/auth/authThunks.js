@@ -8,6 +8,8 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 // thunk to load user data and auth state
 export const loadUser = createAsyncThunk('auth/loadUser', async (_, { rejectWithValue }) => {
 
+    console.log("loaduser runs thunk");
+
     try {
 
         // send post request to register user
@@ -20,6 +22,8 @@ export const loadUser = createAsyncThunk('auth/loadUser', async (_, { rejectWith
             const { data: userData } = await axios.get(`${backendUrl}/api/user/get-user-data`, {
                 withCredentials: true,
             });
+
+            console.log(userData);
 
             return userData;
 
@@ -188,3 +192,26 @@ export const uploadProfilePic = createAsyncThunk('auth/uploadProfilePic', async 
     }
 
 });
+
+// thunk to delete user profile iamge
+export const deleteProfilePic = createAsyncThunk('auth/deleteProfilePic', async (_, { rejectWithValue }) => {
+
+    try {
+
+        const { data } = await axios.delete(`${backendUrl}/api/user/delete-profile-pic`, {
+            withCredentials: true,
+        });
+
+        toast.success(data.message);
+        return data;
+
+    } catch (err) {
+
+        console.log(err);
+        toast.error(err.response?.data?.message || "Failed to delete profile picture");
+        return rejectWithValue(err.response?.data?.message || "Failed to delete profile picture");
+
+    }
+});
+
+

@@ -1,5 +1,5 @@
 import express from "express"; // Importing express
-import { register, login, logout, sendEmailVerifyOtp, verifyEmail, isUserAuthenticated, sendPassResetOtp, resetPassword, getUserData, softDeleteAccount, uploadUserProfile, } from "../controllers/userController.js"; // Importing the controllers function
+import { register, login, logout, sendEmailVerifyOtp, verifyEmail, isUserAuthenticated, sendPassResetOtp, resetPassword, getUserData, softDeleteAccount, uploadUserProfile, deleteUserProfile, } from "../controllers/userController.js"; // Importing the controllers function
 import userAuth from "../middleware/userAuthMiddleware.js"; // Importing User Authentication middleware
 import catchAsyncError from "../middleware/catchAsyncError.js"; // Importing catchAsyncError middleware
 import upload from "../middleware/multer.js";
@@ -51,6 +51,10 @@ userRouter.delete("/soft-delete-account", userAuth, catchAsyncError(softDeleteAc
 // UPLOAD PROFILE PICTURE [POST]
 userRouter.post("/upload-profile-pic", userAuth, upload.single("profilePic"), catchAsyncError(uploadUserProfile)); // 
 // 'http://localhost:3000/api/user/upload-profile-pic'
+
+// DELETE PROFILE PICTURE [POST]
+userRouter.delete("/delete-profile-pic", userAuth, catchAsyncError(deleteUserProfile)); // 
+// 'http://localhost:3000/api/user/delete-profile-pic'
 
 export default userRouter; // exporting the userRouter
 

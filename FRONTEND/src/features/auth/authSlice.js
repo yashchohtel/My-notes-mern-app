@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadUser, registerUser, logoutAccount, loginUser, sendVerificationOtp, verifyEmailOtp, uploadProfilePic } from "./authThunks";
+import { loadUser, registerUser, logoutAccount, loginUser, sendVerificationOtp, verifyEmailOtp, uploadProfilePic, deleteProfilePic } from "./authThunks";
 
 
 // initial state for auth slice
@@ -149,6 +149,7 @@ const authSlice = createSlice({
                 state.successMessage = null;
             })
 
+            // upload profile pic
             .addCase(uploadProfilePic.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -159,6 +160,22 @@ const authSlice = createSlice({
                 state.successMessage = action.payload.message;
             })
             .addCase(uploadProfilePic.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.successMessage = null;
+            })
+
+            // delete profile pic 
+            .addCase(deleteProfilePic.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(deleteProfilePic.fulfilled, (state, action) => {
+                state.loading = false;
+                state.successMessage = action.payload.message;
+            })
+            .addCase(deleteProfilePic.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 state.successMessage = null;

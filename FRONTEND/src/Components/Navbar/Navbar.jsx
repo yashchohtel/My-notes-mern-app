@@ -28,6 +28,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     // initilize use dispatch 
     const dispatch = useDispatch();
 
+    // getting required Data from global store using useSelector
+    const { user: logedUser } = useSelector((state) => state.auth);
+
     // state to store profile sub menu visible status
     const [isMenuVisible, setIsMenuVisible] = useState(false);
 
@@ -206,7 +209,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                             {/* user button */}
                             <div className="navbar_circular_btn" onClick={() => setIsMenuVisible(prev => !prev)}>
-                                <LuUser />
+
+                                {/* image or icon */}
+                                {logedUser.profileImage ?
+                                    <img src={logedUser.profileImage} alt="user_img" />
+                                    :
+                                    <LuUser />
+                                }
+
                             </div>
 
                             {/* Sub Menu */}

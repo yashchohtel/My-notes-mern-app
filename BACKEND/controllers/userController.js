@@ -176,6 +176,8 @@ export const login = async (req, res, next) => {
             email: user.email,
             isAccountVerified: user.isAccountVerified,
             role: user.role,
+            cloudinaryPublicId: user.cloudinaryPublicId,
+            profileImage: user.profileImage,
         }
     });
 
@@ -653,7 +655,41 @@ export const uploadUserProfile = async (req, res, next) => {
 
 }
 
+// DELETE PROFILE PICTURE ---------------- //
+export const deleteUserProfile = async (req, res, next) => {
 
+    const userId = req.userId;
+
+    // Find user by ID
+    const user = await User.findById(userId);
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // Agar user ke paas profile image hai to Cloudinary se delete karo
+    if (user.cloudinaryPublicId) {
+        await cloudinary.uploader.destroy(user.cloudinaryPublicId);
+    }
+
+    // Database se profile image aur public_id hata do
+    user.profileImage = null;  // ya null bhi kar sakte ho
+    user.cloudinaryPublicId = null;
+
+    await user.save();
+
+    // logs for debugging remove in production
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- remove dp controller ---↓');
+        console.log("User image:", user);
+        console.log('↑--- remove dp controller ---↑');
+    }
+
+
+    res.status(200).json({
+        success: true,
+        message: "Profile photo deleted successfully",
+    });
+};
 
 
 

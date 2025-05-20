@@ -4,9 +4,10 @@ import "./userAccount.css"
 import { FaUserTie } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { MdModeEdit } from "react-icons/md";
-import { loadUser, uploadProfilePic } from '../../features/auth/authThunks';
+import { deleteProfilePic, loadUser, uploadProfilePic } from '../../features/auth/authThunks';
 import { CgSpinner } from 'react-icons/cg';
 import { useEffect } from 'react';
+import { IoClose } from 'react-icons/io5';
 
 const UserAccount = () => {
 
@@ -73,6 +74,11 @@ const UserAccount = () => {
 
     };
 
+    // function to delete image
+    const deleteUserProfile = () => {
+        dispatch(deleteProfilePic()).then(() => dispatch(loadUser()))
+    }
+
     useEffect(() => {
         if (successMessage?.toLowerCase() === "profile photo uploaded successfully".toLowerCase()) {
             closeImgForm();
@@ -104,13 +110,18 @@ const UserAccount = () => {
                                 accept="image/*"
                                 className="file-input"
                                 onChange={handleFileChange}
+                                required
                             />
 
+                            {/* upload button  */}
                             <button type="submit" className='edit_button button_primary'>
                                 {loading ? (<span className='loder'> <CgSpinner size={25} /> </span>) : "UPLOAD"}
                             </button>
 
+                            {/* form clse button */}
+                            <span class="close_model" onClick={() => closeImgForm()}> <IoClose /> </span>
                         </form>
+
 
                     </div>
                 }
@@ -139,7 +150,18 @@ const UserAccount = () => {
                             </span>
 
                             {/* upload button */}
-                            <button className='edit_button button_primary' onClick={() => openImgForm()} > add </button>
+                            <button className='edit_button button_primary' onClick={() => openImgForm()} > 
+                                {logedUser.profileImage ? "change" : "add"}
+                            </button>
+
+
+                            {/* delete button */}
+                            {logedUser.profileImage &&
+                                <button className='edit_button button_primary' onClick={() => deleteUserProfile()}>
+                                    remove
+                                </button>
+                            }
+
                         </div>
 
                         <div className="v-rule"> </div>
@@ -155,6 +177,9 @@ const UserAccount = () => {
                         </ul>
 
                     </div>
+
+                    {/* change email */}
+                    <div className="change_email"></div>
 
                 </div>
 
