@@ -167,7 +167,7 @@ export const verifyEmailOtp = createAsyncThunk("auth/verifyEmailOtp", async (otp
 });
 
 // thunk to upload user profile image
-export const uploadProfilePic = createAsyncThunk('auth/uploadProfilePic', async (formData, { rejectWithValue }) => {    
+export const uploadProfilePic = createAsyncThunk('auth/uploadProfilePic', async (formData, { rejectWithValue }) => {
 
     try {
 
@@ -178,11 +178,12 @@ export const uploadProfilePic = createAsyncThunk('auth/uploadProfilePic', async 
 
         toast.success(data.message);
         console.log(data);
-        
+
         return data;
 
     } catch (err) {
         console.log(err);
+        toast.success(err.response?.data?.message || "Failed to upload profile picture");
         return rejectWithValue(err.response?.data?.message || "Failed to upload profile picture");
     }
 

@@ -12,6 +12,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { loginUser, registerUser } from '../../features/auth/authThunks';
 import { clearMessages } from '../../features/auth/authSlice';
 
+// Profile photo uploaded successfully
 
 const RegisterForm = ({ type }) => {
 

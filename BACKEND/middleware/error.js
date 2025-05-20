@@ -1,4 +1,5 @@
 import ErrorHandler from "../utils/errorHandler.js"; // Import the custom ErrorHandler
+import multer from "multer"; // 👈 Required for instanceof check
 
 // Global error handling middleware
 const errorMiddleware = (err, req, res, next) => {
@@ -30,6 +31,15 @@ const errorMiddleware = (err, req, res, next) => {
     if (err.name === "TokenExpiredError") {
         const message = "Json Web Token is expired, Try again.";
         err = new ErrorHandler(message, 400);
+    }
+
+    // ✅ Multer file too large error
+    if (err instanceof multer.MulterError) {
+        if (err.code === "LIMIT_FILE_SIZE") {
+            err = new ErrorHandler("Profile picture must be less than 2MB.", 400);
+        } else {
+            err = new ErrorHandler(err.message, 400);
+        }
     }
 
     // Send error response

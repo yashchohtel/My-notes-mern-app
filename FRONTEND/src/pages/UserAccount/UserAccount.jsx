@@ -5,6 +5,8 @@ import { FaUserTie } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { MdModeEdit } from "react-icons/md";
 import { loadUser, uploadProfilePic } from '../../features/auth/authThunks';
+import { CgSpinner } from 'react-icons/cg';
+import { useEffect } from 'react';
 
 const UserAccount = () => {
 
@@ -12,8 +14,10 @@ const UserAccount = () => {
     const dispatch = useDispatch();
 
     // getting required Data from global store using useSelector
-    const { user: logedUser } = useSelector((state) => state.auth);
+    const { user: logedUser, loading, successMessage } = useSelector((state) => state.auth);
     const { notes } = useSelector((state) => state.notes);
+
+    console.log(successMessage);
 
     // state to show hide upload image form
     const [showImgUpload, setShowImgUpload] = useState(false);
@@ -54,15 +58,26 @@ const UserAccount = () => {
         }
     };
 
+    // submit function to upload image
     const handleUpload = (e) => {
 
+        // prevenitng default 
         e.preventDefault();
 
+        // loading image file in form data
         const formData = new FormData();
         formData.append('profilePic', selectedFile); // your file input state
 
-        useDispatch(uploadProfilePic(formData))
+        // dispatching upload functon
+        dispatch(uploadProfilePic(formData)).then(() => dispatch(loadUser()))
+
     };
+
+    useEffect(() => {
+        if (successMessage?.toLowerCase() === "profile photo uploaded successfully".toLowerCase()) {
+            closeImgForm();
+        }
+    }, [successMessage])
 
     return (
         <>
@@ -73,7 +88,7 @@ const UserAccount = () => {
                 <Navbar />
 
                 {/* image upload form */}
-                {showImgUpload &&
+                {(showImgUpload) &&
                     <div className="upload_image" onClick={() => closeImgForm()}>
 
                         <form onClick={(e) => e.stopPropagation()} onSubmit={(e) => handleUpload(e)}>
@@ -92,8 +107,9 @@ const UserAccount = () => {
                             />
 
                             <button type="submit" className='edit_button button_primary'>
-                                Upload
+                                {loading ? (<span className='loder'> <CgSpinner size={25} /> </span>) : "UPLOAD"}
                             </button>
+
                         </form>
 
                     </div>
@@ -110,7 +126,17 @@ const UserAccount = () => {
                     <div className="details">
 
                         <div className="photo_display">
-                            <span className='user_icon'> <FaUserTie /> </span>
+
+                            {/* profile image */}
+                            <span className="user_icon">
+                                {loading ? (
+                                    <span className='loder'> <CgSpinner size={25} /> </span>
+                                ) : logedUser.profileImage ? (
+                                    <img src={logedUser.profileImage} alt="image" />
+                                ) : (
+                                    <FaUserTie />
+                                )}
+                            </span>
 
                             {/* upload button */}
                             <button className='edit_button button_primary' onClick={() => openImgForm()} > add </button>

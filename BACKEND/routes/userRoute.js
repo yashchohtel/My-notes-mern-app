@@ -49,7 +49,7 @@ userRouter.delete("/soft-delete-account", userAuth, catchAsyncError(softDeleteAc
 // 'http://localhost:3000/api/user/soft-delete-account'
 
 // UPLOAD PROFILE PICTURE [POST]
-userRouter.post("/upload-profile-pic", userAuth, upload.single("image"), catchAsyncError(uploadUserProfile)); // 
+userRouter.post("/upload-profile-pic", userAuth, upload.single("profilePic"), catchAsyncError(uploadUserProfile)); // 
 // 'http://localhost:3000/api/user/upload-profile-pic'
 
 export default userRouter; // exporting the userRouter

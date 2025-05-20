@@ -586,6 +586,8 @@ export const getUserData = async (req, res, next) => {
             email: user.email,
             isAccountVerified: user.isAccountVerified,
             role: user.role,
+            cloudinaryPublicId: user.cloudinaryPublicId,
+            profileImage: user.profileImage,
         }
     });
 
@@ -623,9 +625,9 @@ export const uploadUserProfile = async (req, res, next) => {
         return next(new ErrorHandler("User not found", 404));
     }
 
-    // 4. (Optional) Purani image delete karo agar ho to
-    if (user.avatar && user.avatar.public_id) {
-        await cloudinary.uploader.destroy(user.avatar.public_id);
+    // 4. delete old image if exist on uploading new one
+    if (user.profileImage && user.cloudinaryPublicId) {
+        await cloudinary.uploader.destroy(user.cloudinaryPublicId);
     }
 
     // 5. Save new image info in user
@@ -635,11 +637,18 @@ export const uploadUserProfile = async (req, res, next) => {
     // save the image detail
     await user.save();
 
+    // logs for debugging remove in production
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- imageUpload controller ---↓');
+        console.log("User image:", user.profileImage);
+        console.log('↑--- imageUpload controller ---↑');
+    }
+
     // return respoinse
     res.status(200).json({
         success: true,
         message: "Profile photo uploaded successfully",
-        avatar: user.avatar,
+        avatar: user.profileImage
     });
 
 }
