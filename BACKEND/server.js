@@ -24,8 +24,11 @@ app.use(express.json());
 
 // Enable CORS to allow frontend to communicate with backend
 app.use(cors({
-    origin: "http://localhost:5173", // Allow frontend origin
-    credentials: true // Allow sending cookies
+    origin: [
+        "http://localhost:5173",           // local frontend
+        "https://mynotenest.netlify.app"  // tumhara live frontend URL
+    ],
+    credentials: true
 }));
 
 // Middleware to parse cookies from incoming requests
