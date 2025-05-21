@@ -555,6 +555,102 @@ export const resetPassword = async (req, res, next) => {
 
 }
 
+// CHANGE USERNAME CONTROLLER --------------- //
+
+export const changeUsername = async (req, res, next) => {
+
+    // getting new user name
+    const { newUsername } = req.body;
+
+    // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
+    const userId = req.userId;
+
+    console.log(userId);
+
+    // Validate input
+    if (!newUsername) {
+        return next(new ErrorHandler("New username is required", 400));
+    }
+
+    // Check if username already exists
+    const existingUser = await User.findOne({ username: newUsername });
+    if (existingUser) {
+        return next(new ErrorHandler("Username already taken, try another", 400));
+    }
+
+    // Find and update user
+    const user = await User.findById(userId);
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // check length of new user name
+    if (newUsername.length < 4 || newUsername.length > 20) {
+        return next(new ErrorHandler("User name must be 4-20 chars", 400));
+    }
+
+    user.username = newUsername;
+    await user.save();
+
+    // logs for debugging remove in production
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- change username controller ---↓');
+        console.log("User details:", user);
+        console.log('↑--- change username controller ---↑');
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "User name updated successfully.",
+        username: user.username
+    });
+
+};
+
+// CHANGE FULL NAME CONTROLLER --------------- //
+
+export const changeFullName = async (req, res, next) => {
+
+    // Get new full name from body
+    const { newFullName } = req.body;
+
+    // Get userId from middleware (userAuth)
+    const userId = req.userId;
+
+    // Validate input
+    if (!newFullName) {
+        return next(new ErrorHandler("New full name is required", 400));
+    }
+
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+    }
+
+    // check leng of new full name
+    if (newFullName.length < 4 || newFullName.length > 20) {
+        return next(new ErrorHandler("Full Name must be 4-20 chars", 400));
+    }
+
+    // Update full name
+    user.fullName = newFullName;
+    await user.save();
+
+    // logs for debugging (remove in production)
+    if (process.env.NODE_ENV === "development") {
+        console.log('↓--- change full name controller ---↓');
+        console.log("User details:", user);
+        console.log('↑--- change full name controller ---↑');
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "Full name updated successfully.",
+        fullName: user.fullName
+    });
+};
+
 // GET USER DATA CONTROLLER ---------------- //
 
 export const getUserData = async (req, res, next) => {
@@ -690,24 +786,6 @@ export const deleteUserProfile = async (req, res, next) => {
         message: "Profile photo deleted successfully",
     });
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // END OF FILE

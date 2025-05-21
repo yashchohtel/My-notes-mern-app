@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import Navbar from '../../Components/Navbar/Navbar'
 import "./userAccount.css"
+import Navbar from '../../Components/Navbar/Navbar'
 import { FaUserTie } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
-import { MdModeEdit } from "react-icons/md";
-import { deleteProfilePic, loadUser, uploadProfilePic } from '../../features/auth/authThunks';
+import { changeFullName, changeUsername, deleteProfilePic, loadUser, uploadProfilePic } from '../../features/auth/authThunks';
 import { CgSpinner } from 'react-icons/cg';
 import { useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
+import { FiUser } from "react-icons/fi";
+import { MdDriveFileRenameOutline } from "react-icons/md";
 
 const UserAccount = () => {
 
@@ -15,13 +16,14 @@ const UserAccount = () => {
     const dispatch = useDispatch();
 
     // getting required Data from global store using useSelector
-    const { user: logedUser, loading, successMessage } = useSelector((state) => state.auth);
+    const { user: logedUser, loading, successMessage, error } = useSelector((state) => state.auth);
     const { notes } = useSelector((state) => state.notes);
-
-    console.log(successMessage);
 
     // state to show hide upload image form
     const [showImgUpload, setShowImgUpload] = useState(false);
+
+    // state to store potoloading
+    const [photoLoad, setPhotoLoad] = useState(false);
 
     // open img opload form
     const openImgForm = () => {
@@ -72,17 +74,101 @@ const UserAccount = () => {
         // dispatching upload functon
         dispatch(uploadProfilePic(formData)).then(() => dispatch(loadUser()))
 
+        // photo loading
+        setPhotoLoad(true)
+
     };
 
     // function to delete image
     const deleteUserProfile = () => {
         dispatch(deleteProfilePic()).then(() => dispatch(loadUser()))
+
+        // photo loading
+        setPhotoLoad(true)
+
+    }
+
+    // ---------------------------------
+
+    // edit user name and fullname
+    const [showProEdit, setShowProEdit] = useState(false);
+
+    // to store what to edit
+    const [whatToEdit, setWhatToEdit] = useState(null);
+
+    // open edit form
+    const openProEdit = (whatEdit) => {
+        setShowProEdit(true)
+        setWhatToEdit(whatEdit)
+    }
+
+    // close edit form
+    const closeProEdit = () => {
+        setShowProEdit(false)
+        setWhatToEdit(null)
+
+        setFormData({
+            newFullName: "",
+            newUsername: "",
+        })
+
+    }
+
+    // state for storing form data
+    const [formData, setFormData] = useState({
+        newFullName: "",
+        newUsername: "",
+    });
+
+    // function to handle form data change
+    const handleInputChange = (e) => {
+
+        // destructuring name and value from event target
+        const { name, value } = e.target;
+
+        // updating form data state with the new value
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+
+    };
+
+    // submit function to edit username and full name
+    const submitProfileEdit = (e) => {
+
+        // prevenitng default 
+        e.preventDefault();
+
+        if (whatToEdit === "username") {
+            dispatch(changeUsername(formData)).then(() => dispatch(loadUser()))
+        }
+
+        if (whatToEdit === "fullname") {
+            dispatch(changeFullName(formData)).then(() => dispatch(loadUser()))
+        }
+
     }
 
     useEffect(() => {
+
+        // tp close image upload form
         if (successMessage?.toLowerCase() === "profile photo uploaded successfully".toLowerCase()) {
             closeImgForm();
         }
+
+        // to stop photo loading
+        if (successMessage || error) {
+            setPhotoLoad(false);
+        }
+
+        // to close profie edit form
+        if (successMessage?.toLowerCase() === "User name updated successfully.".toLowerCase() ||
+            successMessage?.toLowerCase() === "Full name updated successfully.".toLowerCase()
+        ) {
+            closeProEdit()
+        }
+
     }, [successMessage])
 
     return (
@@ -126,6 +212,65 @@ const UserAccount = () => {
                     </div>
                 }
 
+                {/* change user name */}
+                {showProEdit &&
+                    <div className="editProfileSection upload_image" onClick={() => closeProEdit()}>
+
+                        <form className='pro_edit_form' onClick={(e) => e.stopPropagation()}>
+
+                            <h2> {whatToEdit === "username" ? "CHANGE USER NAME" : "CHANGE FULL NAME"} </h2>
+
+                            {whatToEdit === "username" ?
+
+                                <div className="input_group">
+                                    <span><FiUser /></span>
+                                    <input
+                                        placeholder="Enter new username"
+                                        type="text"
+                                        name='newUsername'
+                                        autoComplete="off"
+                                        value={formData.newUsername}
+                                        onChange={(e) => handleInputChange(e)}
+                                        required
+                                    />
+                                </div>
+                                :
+                                <div className="input_group">
+                                    <span><MdDriveFileRenameOutline /></span>
+                                    <input
+                                        placeholder="Enter new full name"
+                                        type="text"
+                                        name='newFullName'
+                                        autoComplete="off"
+                                        value={formData.newFullName}
+                                        onChange={(e) => handleInputChange(e)}
+                                        required
+                                    />
+                                </div>
+
+                            }
+
+                            <p className='desc'>
+                                {whatToEdit === "username" ?
+                                    "Username must be 4-20 chars"
+                                    :
+                                    "Full Name must be 4-20 chars"}
+                            </p>
+
+                            {/* form submit button */}
+                            <button type='submit' className='button_primary' onClick={(e) => submitProfileEdit(e)}>
+                                {(loading && showProEdit) ? (<span className='loder'> <CgSpinner size={25} /> </span>) : "submit"}
+                            </button>
+
+
+                            {/* form clse button */}
+                            <span className="close_model" onClick={() => closeProEdit()}> <IoClose /> </span>
+
+                        </form>
+
+                    </div>
+                }
+
 
                 {/* profile section */}
                 <div className="userPrifile_section">
@@ -140,7 +285,7 @@ const UserAccount = () => {
 
                             {/* profile image */}
                             <span className="user_icon">
-                                {loading ? (
+                                {(photoLoad) ? (
                                     <span className='loder'> <CgSpinner size={25} /> </span>
                                 ) : logedUser.profileImage ? (
                                     <img src={logedUser.profileImage} alt="image" />
@@ -150,7 +295,7 @@ const UserAccount = () => {
                             </span>
 
                             {/* upload button */}
-                            <button className='edit_button button_primary' onClick={() => openImgForm()} > 
+                            <button className='edit_button button_primary' onClick={() => openImgForm()} >
                                 {logedUser.profileImage ? "change" : "add"}
                             </button>
 
@@ -168,11 +313,31 @@ const UserAccount = () => {
 
                         <ul className="detail_display">
 
-                            <li>Full Name : <span> {logedUser.fullName} </span></li>
-                            <li>User Name : <span> {logedUser.username} </span></li>
-                            <li>Email : <span> {logedUser.email} </span> </li>
-                            <li>Account Verified : <span> {logedUser.isAccountVerified ? "Verified" : "Not Verified"} </span></li>
-                            <li>TotalNotes : <span> {notes.length} </span> </li>
+                            <li>
+                                Full Name :
+                                <span> {logedUser.fullName} </span>
+                                <p onClick={() => openProEdit("fullname")}>change name</p>
+                            </li>
+                            <li>
+                                User Name :
+                                <span> {logedUser.username} </span>
+                                <p onClick={() => openProEdit("username")}>change user name</p>
+                            </li>
+                            <li>
+                                Email :
+                                <span> {logedUser.email} </span>
+                            </li>
+                            <li>
+                                Account Verified :
+                                <span> {logedUser.isAccountVerified ? "Verified" : "Not Verified"} </span>
+                            </li>
+                            <li>
+                                TotalNotes :
+                                <span> {notes.length} </span>
+                            </li>
+                            <li>
+                                <button className='button_primary changePass_btn'>CHANGE PASSWORD</button>
+                            </li>
 
                         </ul>
 
@@ -189,3 +354,4 @@ const UserAccount = () => {
 }
 
 export default UserAccount
+

@@ -27,8 +27,6 @@ function App() {
   // getting required Data from global store using useSelector
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const { themeType } = useSelector((state) => state.theme);  
-
-  console.log(user);
   
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();

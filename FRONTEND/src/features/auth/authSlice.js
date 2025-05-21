@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadUser, registerUser, logoutAccount, loginUser, sendVerificationOtp, verifyEmailOtp, uploadProfilePic, deleteProfilePic } from "./authThunks";
+import { loadUser, registerUser, logoutAccount, loginUser, sendVerificationOtp, verifyEmailOtp, uploadProfilePic, deleteProfilePic, changeFullName, changeUsername } from "./authThunks";
 
 
 // initial state for auth slice
@@ -176,6 +176,38 @@ const authSlice = createSlice({
                 state.successMessage = action.payload.message;
             })
             .addCase(deleteProfilePic.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.successMessage = null;
+            })
+
+            // change full name
+            .addCase(changeFullName.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(changeFullName.fulfilled, (state, action) => {
+                state.loading = false;
+                state.successMessage = action.payload.message;
+            })
+            .addCase(changeFullName.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.successMessage = null;
+            })
+
+            // change username
+            .addCase(changeUsername.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(changeUsername.fulfilled, (state, action) => {
+                state.loading = false;
+                state.successMessage = action.payload.message;
+            })
+            .addCase(changeUsername.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 state.successMessage = null;

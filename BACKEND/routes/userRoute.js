@@ -1,5 +1,5 @@
 import express from "express"; // Importing express
-import { register, login, logout, sendEmailVerifyOtp, verifyEmail, isUserAuthenticated, sendPassResetOtp, resetPassword, getUserData, softDeleteAccount, uploadUserProfile, deleteUserProfile, } from "../controllers/userController.js"; // Importing the controllers function
+import { register, login, logout, sendEmailVerifyOtp, verifyEmail, isUserAuthenticated, sendPassResetOtp, resetPassword, getUserData, softDeleteAccount, uploadUserProfile, deleteUserProfile, changeUsername, changeFullName, } from "../controllers/userController.js"; // Importing the controllers function
 import userAuth from "../middleware/userAuthMiddleware.js"; // Importing User Authentication middleware
 import catchAsyncError from "../middleware/catchAsyncError.js"; // Importing catchAsyncError middleware
 import upload from "../middleware/multer.js";
@@ -39,6 +39,14 @@ userRouter.post("/send-pass-reset-otp", catchAsyncError(sendPassResetOtp)); //
 // reset password route [POST]
 userRouter.post("/reset-password", catchAsyncError(resetPassword)); // 
 // 'http://localhost:3000/api/user/reset-password'
+
+// change username route [PATCH]
+userRouter.patch("/change-username", userAuth, catchAsyncError(changeUsername)); // 
+// 'http://localhost:3000/api/user/change-username'
+
+// change fullname route [PATCH]
+userRouter.patch("/change-fullname", userAuth, catchAsyncError(changeFullName)); // 
+// 'http://localhost:3000/api/user/change-fullname'
 
 // get user data route [GET]
 userRouter.get("/get-user-data", userAuth, catchAsyncError(getUserData)); // 

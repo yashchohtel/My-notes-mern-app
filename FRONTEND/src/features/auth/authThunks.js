@@ -7,8 +7,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 // thunk to load user data and auth state
 export const loadUser = createAsyncThunk('auth/loadUser', async (_, { rejectWithValue }) => {
-
-    console.log("loaduser runs thunk");
+    ;
 
     try {
 
@@ -22,8 +21,6 @@ export const loadUser = createAsyncThunk('auth/loadUser', async (_, { rejectWith
             const { data: userData } = await axios.get(`${backendUrl}/api/user/get-user-data`, {
                 withCredentials: true,
             });
-
-            console.log(userData);
 
             return userData;
 
@@ -214,4 +211,44 @@ export const deleteProfilePic = createAsyncThunk('auth/deleteProfilePic', async 
     }
 });
 
+// thunk to change full name
+export const changeFullName = createAsyncThunk('auth/changeFullName', async (formData, { rejectWithValue }) => {
 
+    try {
+
+        const { data } = await axios.patch(`${backendUrl}/api/user/change-fullname`, formData, {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        toast.success(data.message);
+
+        return data;
+
+    } catch (err) {
+        console.log(err);
+        toast.error(err.response?.data?.message || "Failed to change full name");
+        return rejectWithValue(err.response?.data?.message || "Failed to change full name");
+    }
+
+});
+
+export const changeUsername = createAsyncThunk('auth/changeUsername', async (formData, { rejectWithValue }) => {
+    try {
+
+        const { data } = await axios.patch(`${backendUrl}/api/user/change-username`, formData, {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        toast.success(data.message);
+        return data;
+
+    } catch (err) {
+
+        console.log(err);
+        toast.error(err.response?.data?.message || "Failed to change username");
+        return rejectWithValue(err.response?.data?.message || "Failed to change username");
+
+    }
+});
