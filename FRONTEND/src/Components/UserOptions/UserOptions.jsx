@@ -42,6 +42,7 @@ const UserOptions = () => {
     const handleLogout = () => {
         dispatch(logoutAccount());
         dispatch(logoutUser())
+        navigate("/")
     };
 
     return (

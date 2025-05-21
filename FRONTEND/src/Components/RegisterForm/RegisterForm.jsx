@@ -8,7 +8,7 @@ import { LuEye } from "react-icons/lu";
 import { LuEyeClosed } from "react-icons/lu";
 import { CgSpinner } from "react-icons/cg";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { loginUser, registerUser } from '../../features/auth/authThunks';
 import { clearMessages } from '../../features/auth/authSlice';
 
@@ -285,7 +285,9 @@ const RegisterForm = ({ type }) => {
 
                     {/* reset password link */}
                     {formType === 'login' && (
-                        <p className='reset_password'>Forgot password ?</p>
+                        <NavLink to="/change-password/send" >
+                            <p className='reset_password'>Forgot password ?</p>
+                        </NavLink>
                     )}
 
                     {/* submit button */}

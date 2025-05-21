@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Admin from "./pages/Admin/Admin";
 import AdminRoute from "./Components/ProtectedRoute/AdminRoute";
+import PassReset from "./pages/PassReset/PassReset";
 
 function App() {
 
@@ -26,8 +27,8 @@ function App() {
 
   // getting required Data from global store using useSelector
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const { themeType } = useSelector((state) => state.theme);  
-  
+  const { themeType } = useSelector((state) => state.theme);
+
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();
 
@@ -85,6 +86,10 @@ function App() {
 
         {/* Route for enter verify Email */}
         <Route path="/verify-email/enter" element={<ProtectedRoute> <VerifyEmail /> </ProtectedRoute>} />
+
+        {/* Route for enter reset password */}
+        <Route path="/change-password/send" element={<PassReset />} />
+        <Route path="/change-password/change" element={<PassReset />} />
 
         {/* route for admin page */}
         <Route path="/admin-page" element={<AdminRoute> <Admin /> </AdminRoute>} />

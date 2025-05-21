@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadUser, registerUser, logoutAccount, loginUser, sendVerificationOtp, verifyEmailOtp, uploadProfilePic, deleteProfilePic, changeFullName, changeUsername } from "./authThunks";
+import { loadUser, registerUser, logoutAccount, loginUser, sendVerificationOtp, verifyEmailOtp, uploadProfilePic, deleteProfilePic, changeFullName, changeUsername, sendPasswordResetOtp, resetPassword } from "./authThunks";
 
 
 // initial state for auth slice
@@ -208,6 +208,38 @@ const authSlice = createSlice({
                 state.successMessage = action.payload.message;
             })
             .addCase(changeUsername.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.successMessage = null;
+            })
+
+            // send passreset otp
+            .addCase(sendPasswordResetOtp.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(sendPasswordResetOtp.fulfilled, (state, action) => {
+                state.loading = false;
+                state.successMessage = action.payload.message;
+            })
+            .addCase(sendPasswordResetOtp.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.successMessage = null;
+            })
+
+            // reset password
+            .addCase(resetPassword.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(resetPassword.fulfilled, (state, action) => {
+                state.loading = false;
+                state.successMessage = action.payload.message;
+            })
+            .addCase(resetPassword.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 state.successMessage = null;

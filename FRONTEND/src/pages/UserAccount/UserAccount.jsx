@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { FiUser } from "react-icons/fi";
 import { MdDriveFileRenameOutline } from "react-icons/md";
+import { NavLink } from 'react-router-dom';
 
 const UserAccount = () => {
 
@@ -335,8 +336,11 @@ const UserAccount = () => {
                                 TotalNotes :
                                 <span> {notes.length} </span>
                             </li>
-                            <li>
-                                <button className='button_primary changePass_btn'>CHANGE PASSWORD</button>
+                            <li className='btn-grp'>
+                                <NavLink to="/change-password/send" >
+                                    <button className='button_primary changePass_btn'>CHANGE PASSWORD</button>
+                                </NavLink>
+                                <button className='button_primary changePass_btn'>DELETE ACCOUNT</button>
                             </li>
 
                         </ul>

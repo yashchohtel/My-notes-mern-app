@@ -491,7 +491,6 @@ export const sendPassResetOtp = async (req, res, next) => {
         message: `OTP sent to your registered email`
     });
 
-
 }
 
 // RESET PASSWORD CONTROLLER --------------- //
@@ -524,6 +523,10 @@ export const resetPassword = async (req, res, next) => {
 
     if (!isOtpValid) {
         return next(new ErrorHandler("Invalid OTP", 400));
+    }
+
+    if (!newPassword || newPassword.length < 8) {
+        return next(new ErrorHandler("Password must be 8 characters long", 400));
     }
 
     // Hash the new password

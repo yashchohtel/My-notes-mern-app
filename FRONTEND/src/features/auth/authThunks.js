@@ -233,6 +233,7 @@ export const changeFullName = createAsyncThunk('auth/changeFullName', async (for
 
 });
 
+// thunk to change username
 export const changeUsername = createAsyncThunk('auth/changeUsername', async (formData, { rejectWithValue }) => {
     try {
 
@@ -250,5 +251,47 @@ export const changeUsername = createAsyncThunk('auth/changeUsername', async (for
         toast.error(err.response?.data?.message || "Failed to change username");
         return rejectWithValue(err.response?.data?.message || "Failed to change username");
 
+    }
+});
+
+// thunk to send reset password otp
+export const sendPasswordResetOtp = createAsyncThunk('auth/sendPasswordResetOtp', async (formData, { rejectWithValue }) => {
+
+    try {
+
+        const { data } = await axios.post(`${backendUrl}/api/user/send-pass-reset-otp`, formData , {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' }
+        });
+        toast.success(data.message);
+        return data;
+
+    } catch (err) {
+
+        console.log(err);
+        toast.error(err.response?.data?.message || "Failed to send password reset OTP");
+        return rejectWithValue(err.response?.data?.message || "Failed to send password reset OTP");
+
+    }
+});
+
+// thunk to reset password
+export const resetPassword = createAsyncThunk('auth/resetPassword', async (formData, { rejectWithValue }) => {
+
+    try {
+
+        const { data } = await axios.post(`${backendUrl}/api/user/reset-password`, formData, {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' }
+        });
+        toast.success(data.message);
+        return data;
+        
+    } catch (err) {
+
+        console.log(err);
+        toast.error(err.response?.data?.message || "Failed to reset password");
+        return rejectWithValue(err.response?.data?.message || "Failed to reset password");
+        
     }
 });

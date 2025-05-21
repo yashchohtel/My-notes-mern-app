@@ -29,7 +29,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     const dispatch = useDispatch();
 
     // getting required Data from global store using useSelector
-    const { user: logedUser } = useSelector((state) => state.auth);
+    const { user: logedUser, isAuthenticated } = useSelector((state) => state.auth);
 
     // state to store profile sub menu visible status
     const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -47,6 +47,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     const isAccount = location.pathname === "/user-account";
     const isEmailVerify = location.pathname.startsWith("/verify-email");
     const isAdmin = location.pathname === "/admin-page";
+    const isPassRess = location.pathname.startsWith("/change-password");
 
 
     // state to store sticky navbar status
@@ -182,7 +183,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                     }
 
                     {/* home button */}
-                    {(isEmailVerify || isAdmin || isAccount) &&
+                    {(isEmailVerify || isAdmin || isAccount || (isPassRess && isAuthenticated)) &&
                         <NavLink to="/home" className="home_btn nav_btn_container">
 
                             {/* grid icon */}
@@ -204,14 +205,14 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                     </div>
 
                     {/* user profile button*/}
-                    {(isHome || isAdmin || isAccount) &&
+                    {(isHome || isAdmin || isAccount || (isPassRess && isAuthenticated)) &&
                         <div className="profile_btn nav_btn_container" ref={menuRef}>
 
                             {/* user button */}
                             <div className="navbar_circular_btn" onClick={() => setIsMenuVisible(prev => !prev)}>
 
                                 {/* image or icon */}
-                                {logedUser.profileImage ?
+                                {logedUser?.profileImage ?
                                     <img src={logedUser.profileImage} alt="user_img" />
                                     :
                                     <LuUser />
