@@ -259,7 +259,7 @@ export const sendPasswordResetOtp = createAsyncThunk('auth/sendPasswordResetOtp'
 
     try {
 
-        const { data } = await axios.post(`${backendUrl}/api/user/send-pass-reset-otp`, formData , {
+        const { data } = await axios.post(`${backendUrl}/api/user/send-pass-reset-otp`, formData, {
             withCredentials: true,
             headers: { 'Content-Type': 'application/json' }
         });
@@ -286,12 +286,34 @@ export const resetPassword = createAsyncThunk('auth/resetPassword', async (formD
         });
         toast.success(data.message);
         return data;
-        
+
     } catch (err) {
 
         console.log(err);
         toast.error(err.response?.data?.message || "Failed to reset password");
         return rejectWithValue(err.response?.data?.message || "Failed to reset password");
-        
+
+    }
+});
+
+// thunk to soft delete account
+export const softDeleteAccount = createAsyncThunk('auth/softDeleteAccount', async (password, { rejectWithValue }) => {
+
+    try {
+
+        const { data } = await axios.delete(`${backendUrl}/api/user/soft-delete-account`, {
+            data: { password },
+            withCredentials: true
+        });
+
+        toast.success(data.message);
+        return data;
+
+    } catch (err) {
+
+        console.log(err);
+        toast.error(err.response?.data?.message || "Failed to delete account");
+        return rejectWithValue(err.response?.data?.message || "Failed to delete account");
+
     }
 });

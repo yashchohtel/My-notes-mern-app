@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadUser, registerUser, logoutAccount, loginUser, sendVerificationOtp, verifyEmailOtp, uploadProfilePic, deleteProfilePic, changeFullName, changeUsername, sendPasswordResetOtp, resetPassword } from "./authThunks";
+import { loadUser, registerUser, logoutAccount, loginUser, sendVerificationOtp, verifyEmailOtp, uploadProfilePic, deleteProfilePic, changeFullName, changeUsername, sendPasswordResetOtp, resetPassword, softDeleteAccount } from "./authThunks";
 
 
 // initial state for auth slice
@@ -240,6 +240,24 @@ const authSlice = createSlice({
                 state.successMessage = action.payload.message;
             })
             .addCase(resetPassword.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.successMessage = null;
+            })
+
+            // soft delete account
+            .addCase(softDeleteAccount.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.successMessage = null;
+            })
+            .addCase(softDeleteAccount.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = null;
+                state.isAuthenticated = false;
+                state.successMessage = action.payload.message;
+            })
+            .addCase(softDeleteAccount.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 state.successMessage = null;

@@ -3,13 +3,14 @@ import "./userAccount.css"
 import Navbar from '../../Components/Navbar/Navbar'
 import { FaUserTie } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFullName, changeUsername, deleteProfilePic, loadUser, uploadProfilePic } from '../../features/auth/authThunks';
+import { changeFullName, changeUsername, deleteProfilePic, loadUser, softDeleteAccount, uploadProfilePic } from '../../features/auth/authThunks';
 import { CgSpinner } from 'react-icons/cg';
 import { useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { FiUser } from "react-icons/fi";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { NavLink } from 'react-router-dom';
+import { CiLock } from "react-icons/ci";
 
 const UserAccount = () => {
 
@@ -151,6 +152,33 @@ const UserAccount = () => {
 
     }
 
+    // ---------------------------------
+
+    // delete account
+    const [showDelete, setShowDelete] = useState(false);
+    const [password, setPassword] = useState("")
+
+    const openDeletBox = () => {
+        setShowDelete(true);
+    }
+
+    const closeDeletBox = () => {
+        setShowDelete(false);
+        setPassword("")
+    }
+
+    const handlePassChange = (e) => {
+        setPassword(e.target.value); // input ki value state me save
+    };
+
+    const handleAccountDelete = (e) => {
+        // prevenitng default 
+        e.preventDefault();
+
+        dispatch(softDeleteAccount(password))
+
+    }
+
     useEffect(() => {
 
         // tp close image upload form
@@ -272,6 +300,43 @@ const UserAccount = () => {
                     </div>
                 }
 
+                {/* delete account form */}
+                {showDelete &&
+                    <div className="upload_image" onClick={() => closeDeletBox()} onSubmit={(e) => handleAccountDelete(e)}>
+
+                        <form className='pro_edit_form' onClick={(e) => e.stopPropagation()}>
+
+                            <h2> DELETE YOUR ACCOUNT </h2>
+
+                            <div className="input_group">
+                                <span><CiLock /></span>
+                                <input
+                                    placeholder="enter password"
+                                    type="text"
+                                    name='password'
+                                    autoComplete="off"
+                                    required
+                                    value={password}
+                                    onChange={(e) => handlePassChange(e)}
+                                />
+                            </div>
+
+                            <p className='desc'> enter your password to delete </p>
+
+                            {/* form submit button */}
+                            <button type='submit' className='button_primary'>
+                                {(loading && showProEdit) ? (<span className='loder'> <CgSpinner size={25} /> </span>) : "Delete Account"}
+                            </button>
+
+
+                            {/* form clse button */}
+                            <span className="close_model" onClick={() => closeDeletBox()}> <IoClose /> </span>
+
+                        </form>
+
+                    </div>
+                }
+
 
                 {/* profile section */}
                 <div className="userPrifile_section">
@@ -340,7 +405,7 @@ const UserAccount = () => {
                                 <NavLink to="/change-password/send" >
                                     <button className='button_primary changePass_btn'>CHANGE PASSWORD</button>
                                 </NavLink>
-                                <button className='button_primary changePass_btn'>DELETE ACCOUNT</button>
+                                <button className='button_primary changePass_btn' onClick={() => openDeletBox()}>DELETE ACCOUNT</button>
                             </li>
 
                         </ul>

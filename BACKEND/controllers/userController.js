@@ -218,37 +218,47 @@ export const logout = async (req, res, next) => {
 // DELETE USER ACCOUNT CONTROLLER ------------- //
 export const softDeleteAccount = async (req, res, next) => {
 
-    // Extract userId from req.userId (token will send the id by req.userId from userAuth middleware)
     const userId = req.userId;
+    
+    const { password } = req.body;
 
-    // Find user by ID in database
-    const user = await User.findById(userId);
+    // Check if password is provided
+    if (!password) {
+        return next(new ErrorHandler("Please enter your password to delete the account", 400));
+    }
 
-    // Check if user exists
+    // Find user by ID
+    const user = await User.findById(userId).select("+password"); // include password field
+
     if (!user) {
         return next(new ErrorHandler("User not found", 404));
     }
 
-    // Check if user is already marked for deletion
+    // Check if already marked for deletion
     if (user.isAccountDeleted) {
         return next(new ErrorHandler("Your account is already marked for deletion", 400));
     }
 
-    // Mark user as deleted and set deletion date
+    // Compare password
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+        return next(new ErrorHandler("Incorrect password", 401));
+    }
+
+    // Mark account for deletion
     user.isAccountDeleted = true;
     user.deletedAt = new Date();
 
-    // Save the updated user 
     await user.save();
 
-    // Clear the token cookie to log out the user
+    // Clear token cookie
     res.clearCookie('token', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
     });
 
-    // logs for debugging remove in production
+    // Dev logs
     if (process.env.NODE_ENV === "development") {
         console.log('↓--- softDeleteAccount controller ---↓');
         console.log("User details:", user);
@@ -260,7 +270,7 @@ export const softDeleteAccount = async (req, res, next) => {
         message: "We'll delete your account in 30 days. Log in to undo."
     });
 
-}
+};
 
 // SEND VERIFY OTP CONTROLLER ---------------- //
 
