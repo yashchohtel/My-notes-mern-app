@@ -325,7 +325,7 @@ const UserAccount = () => {
 
                             {/* form submit button */}
                             <button type='submit' className='button_primary'>
-                                {(loading && showProEdit) ? (<span className='loder'> <CgSpinner size={25} /> </span>) : "Delete Account"}
+                                {loading ? (<span className='loder'> <CgSpinner size={25} /> </span>) : "Delete Account"}
                             </button>
 
 
