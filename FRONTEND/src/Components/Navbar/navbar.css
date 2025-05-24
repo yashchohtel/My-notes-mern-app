@@ -45,11 +45,17 @@
     display: flex;
     align-items: center;
     gap: 2rem;
+    position: relative;
 }
 
+/* navbar navigaion menu */
+.nevigationMenu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
 
 /* navbar curcular button */
-
 .nav_btn_container {
     position: relative;
     cursor: pointer;
@@ -73,6 +79,36 @@
     overflow: hidden;
 }
 
+
+/* search bar contaner */
+.Search_Bar_Container {
+    transition: var(--transition);
+}
+
+/* search bar close button */
+.searchBar_close {
+    margin-left: 1rem;
+    background: var(--bg-secondary);
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 5px;
+    font-size: 2rem;
+    color: var(--text-color-primary-light);
+    cursor: pointer;
+    display: none;
+}
+
+/* search bar button */
+.searchbar_btn {
+    display: none;
+}
+
+/* menu button */
+.navigationMenu_btn{
+    display: none;
+}
 
 .navbar_circular_btn:hover {
     background-color: var(--hover-primary);
@@ -123,3 +159,74 @@
     opacity: 1;
     transform: translateY(0);
 }
+
+@media (max-width: 1200px) {
+    /* large desktops */
+}
+
+@media (max-width: 1070px) {
+    /* laptops */
+}
+
+@media (max-width: 980px) {
+    /* tablets */
+
+    /* search bar button */
+    .searchbar_btn {
+        display: block;
+    }
+
+    /* searchbar container */
+    .Search_Bar_Container {
+        background: var(--bg-primary);
+        position: absolute;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+        height: 8rem;
+        left: 0;
+        top: -8rem;
+    }
+
+    .searchBar_close {
+        display: flex;
+    }
+
+    .Search_Bar_Container.active {
+        top: 0;
+        /* show when active */
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    /* navigation menu */
+    .nevigationMenu{
+        display: none;
+    }
+
+    /* mevigation menu button*/
+    .navigationMenu_btn{
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    /* phones */
+}
+
+@media (max-width: 360px) {
+    /* small phones */
+}
+
+    /* display: none; */
+    position: absolute;
+    background: #a4a4a4;
+    top: 119%;
+    z-index: 2;
+    padding: 1rem;
+    border-radius: 4px;
+    flex-direction: column;

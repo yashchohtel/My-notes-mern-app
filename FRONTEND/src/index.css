@@ -77,7 +77,7 @@ body.light-mode {
     --loading-primary: #afafaf;
     --loading-secondary: #a8a2a2;
     --loading-tertiary: #968f8f;
-    --loading-four: #9e9191 ;
+    --loading-four: #9e9191;
 
 }
 
@@ -274,24 +274,29 @@ img {
 
 }
 
-/* 
 
+@media (max-width: 1200px) {
+    /* large desktops */
+}
 
-    --bg-primary: #f4f4f4;
-    --bg-secondary: #d3d3d3;
-    --bg-tettiary: #dcdcdc9c;
-    --bg-button: #434343;
-    --text-color-primary-light: #000000;
-    --text-color-secondary-light: #4a4a4a;
-    --text-color-tertiary-light: #353535;
-    --text-color-primary-bright: #525252;
-    --text-color-primary-dim: #161616;
-    --text-color-white: #ffffff;
-    --hover-primary: #c5c5c5;
-    --border-primary: #3b3c3e;
-    --border-secondary: #e4e4e4;
-    --border-tertiary: #cecece;
+@media (max-width: 1070px) {
+    /* laptop */
+}
 
+@media (max-width: 915px) {
+    /* tablets */
 
+    html {
+        font-size: 59.375%;
+        /* 1rem = 9.5px */
+    }
 
-*/
+}
+
+@media (max-width: 480px) {
+    /* phones */
+}
+
+@media (max-width: 360px) {
+    /* small phones */
+}

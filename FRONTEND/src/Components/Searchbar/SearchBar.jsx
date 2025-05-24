@@ -24,7 +24,7 @@ const SearchBar = ({ searchQuery, setSearchQuery }) => {
   return (
     <>
 
-      <div className="searchBar">
+      <div className="searchBar" onClick={(e) => e.stopPropagation()}>
         <input
           className="search_input"
           type="text"

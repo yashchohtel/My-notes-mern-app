@@ -52,13 +52,22 @@
     -webkit-text-stroke: 1px var(--text-color-secondary-light);
 }
 
+@media (max-width: 1200px) {
+    /* large desktops */
+}
 
+@media (max-width: 1024px) {
+    /* laptops */
+}
 
+@media (max-width: 768px) {
+    /* tablets */
+}
 
+@media (max-width: 480px) {
+    /* phones */
+}
 
-
-
-
-
-
-
+@media (max-width: 360px) {
+    /* small phones */
+}

@@ -6,7 +6,7 @@ import SearchBar from '../Searchbar/SearchBar';
 import UserOptions from '../UserOptions/UserOptions';
 
 import { FiSun } from "react-icons/fi";
-import { IoMoonOutline } from "react-icons/io5";
+import { IoClose, IoMoonOutline } from "react-icons/io5";
 import { LuLogIn, LuUser } from "react-icons/lu";
 import { PiRecycleBold } from "react-icons/pi";
 import { FaRegStar } from "react-icons/fa6";
@@ -14,8 +14,10 @@ import { FaRegNoteSticky } from "react-icons/fa6";
 import { IoGridOutline } from "react-icons/io5";
 import { IoHomeOutline } from "react-icons/io5";
 import { HiMiniBars2 } from "react-icons/hi2";
-import { changeNoteViewType, toggleAppTheme } from '../../features/theme/themeSlice';
+import { IoSearch } from "react-icons/io5";
+import { HiOutlineMenuAlt1 } from "react-icons/hi";
 
+import { changeNoteViewType, toggleAppTheme } from '../../features/theme/themeSlice';
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
 
@@ -37,9 +39,6 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     // refrence to close the menu when clicked outside
     const menuRef = useRef(null);
 
-    // getting required data from global store using useSelector
-    const { user } = useSelector((state) => state.auth);
-
     // setting page locations
     const isWelcome = location.pathname === "/";
     const isRegister = location.pathname === "/register";
@@ -49,6 +48,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     const isAdmin = location.pathname === "/admin-page";
     const isPassRess = location.pathname.startsWith("/change-password");
 
+    // -------------------------
 
     // state to store sticky navbar status
     const [isSticky, setIsSticky] = useState(false);
@@ -61,6 +61,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         dispatch(changeNoteViewType(!noteViewType))
     }
 
+    // -------------------------
+
     // toggle app theme dark or light
     const handleThemeToggle = () => {
         if (themeType === "dark") {
@@ -69,6 +71,23 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
             dispatch(toggleAppTheme("dark"))
         }
     }
+
+    // -------------------------
+
+    // state to show hide searchbar
+    const [showSearch, setShowSearch] = useState(false);
+
+    // function to open searchbar
+    const openSearchBar = () => {
+        setShowSearch(true)
+    }
+
+    // function to open searchbar
+    const closeSearchBar = () => {
+        setShowSearch(false)
+    }
+
+    // -------------------------
 
     // use effect ho handle show hide of scroll bar
     useEffect(() => {
@@ -117,10 +136,13 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                 {/* searchBar */}
                 {(isHome || isAdmin) &&
-                    <div className="Search_Bar_Container">
+                    <div className={`Search_Bar_Container ${showSearch ? "active" : ""}`} onClick={() => closeSearchBar()}>
 
                         {/* searchbar component */}
                         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
+                        {/* searchbar close button */}
+                        <div className="searchBar_close" onClick={() => closeSearchBar()}> <IoClose /> </div>
 
                     </div>
                 }
@@ -128,39 +150,64 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 {/* Right - Buttons */}
                 <div className="navbar__right">
 
-                    {/* All note button */}
-                    {isHome &&
-                        <div className="allNotes_btn nav_btn_container">
+                    {/* navigation menu */}
+                    <div className="nevigationMenu">
 
-                            {/* notes icon */}
-                            <NavLink to="/home"
-                                end
-                                className={({ isActive }) => `navbar_circular_btn ${(isActive || location.pathname === "/home") ? 'active' : ''}`}>
-                                <FaRegNoteSticky />
-                            </NavLink>
+                        {/* All note button */}
+                        {isHome &&
+                            <div className="allNotes_btn nav_btn_container">
 
+                                {/* notes icon */}
+                                <NavLink to="/home"
+                                    end
+                                    className={({ isActive }) => `navbar_circular_btn ${(isActive || location.pathname === "/home") ? 'active' : ''}`}>
+                                    <FaRegNoteSticky />
+                                </NavLink>
+
+                            </div>
+                        }
+
+                        {/* important note button */}
+                        {isHome &&
+                            <div className="important_btn nav_btn_container">
+
+                                {/* star icon */}
+                                <NavLink to="/home/important-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <FaRegStar /> </NavLink>
+
+                            </div>
+                        }
+
+                        {/* recucle bin button */}
+                        {isHome &&
+                            <div className="recycle_btn nav_btn_container">
+
+                                {/* bin icon */}
+                                <NavLink to="/home/deleted-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <PiRecycleBold /> </NavLink>
+
+                            </div>
+                        }
+
+                    </div>
+
+                    {/* searchbar icon */}
+                    <div className="navigationMenu_btn nav_btn_container">
+
+                        {/* sun/moon icon */}
+                        <div className="navbar_circular_btn">
+                            <HiOutlineMenuAlt1 />
                         </div>
-                    }
 
-                    {/* important note button */}
-                    {isHome &&
-                        <div className="important_btn nav_btn_container">
+                    </div>
 
-                            {/* star icon */}
-                            <NavLink to="/home/important-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <FaRegStar /> </NavLink>
+                    {/* searchbar icon */}
+                    <div className="searchbar_btn nav_btn_container" onClick={() => openSearchBar()}>
 
+                        {/* sun/moon icon */}
+                        <div className="navbar_circular_btn">
+                            <IoSearch />
                         </div>
-                    }
 
-                    {/* recucle bin button */}
-                    {isHome &&
-                        <div className="recycle_btn nav_btn_container">
-
-                            {/* bin icon */}
-                            <NavLink to="/home/deleted-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <PiRecycleBold /> </NavLink>
-
-                        </div>
-                    }
+                    </div>
 
                     {/* layout button */}
                     {isHome &&

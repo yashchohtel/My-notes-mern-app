@@ -146,3 +146,32 @@
     transform: translateX(-50%);
     top: 10%;
 }
+
+@media (max-width: 1200px) {
+    /* large desktops */
+}
+
+@media (max-width: 1024px) {
+    /* laptops */
+}
+
+@media (max-width: 850px) {
+
+    /* note display section */
+    .notes_display_sec {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 768px) {
+    /* tablets */
+}
+
+@media (max-width: 480px) {
+    /* phones */
+}
+
+@media (max-width: 360px) {
+    /* small phones */
+}
