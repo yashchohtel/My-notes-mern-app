@@ -155,34 +155,42 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
                         {/* All note button */}
                         {isHome &&
-                            <div className="allNotes_btn nav_btn_container">
+                            <div className="allNotes_btn nav_btn_container responsive">
 
                                 {/* notes icon */}
-                                <NavLink to="/home"
-                                    end
+                                <NavLink to="/home" end
                                     className={({ isActive }) => `navbar_circular_btn ${(isActive || location.pathname === "/home") ? 'active' : ''}`}>
                                     <FaRegNoteSticky />
                                 </NavLink>
+
+                                {/* link name */}
+                                <p className='link_name'>ALL NOTES</p>
 
                             </div>
                         }
 
                         {/* important note button */}
                         {isHome &&
-                            <div className="important_btn nav_btn_container">
+                            <div className="important_btn nav_btn_container responsive">
 
                                 {/* star icon */}
                                 <NavLink to="/home/important-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <FaRegStar /> </NavLink>
+
+                                {/* link name */}
+                                <p className='link_name'>IMPORTENT NOTES</p>
 
                             </div>
                         }
 
                         {/* recucle bin button */}
                         {isHome &&
-                            <div className="recycle_btn nav_btn_container">
+                            <div className="recycle_btn nav_btn_container responsive">
 
                                 {/* bin icon */}
                                 <NavLink to="/home/deleted-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <PiRecycleBold /> </NavLink>
+
+                                {/* link name */}
+                                <p className='link_name'>DELETED NOTES</p>
 
                             </div>
                         }
