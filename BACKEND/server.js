@@ -26,7 +26,8 @@ app.use(express.json());
 app.use(cors({
     origin: [
         "http://localhost:5173",           // local frontend
-        "https://mynotenest.netlify.app"  // tumhara live frontend URL
+        "https://mynotenest.netlify.app", // tumhara live frontend URL
+        'http://192.168.43.138:5173'
     ],
     credentials: true
 }));

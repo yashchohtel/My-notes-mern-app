@@ -8,6 +8,7 @@
     gap: 2rem;
     padding-bottom: 1rem;
     grid-auto-rows: 22rem;
+    padding-bottom: 5rem;
 }
 
 .notes_display_sec.line_view {
@@ -179,6 +180,11 @@
     .no_notes {
         font-size: 2rem;
     }
+
+    .notesForm {
+        width: 95%;
+    }
+
 }
 
 @media (max-width: 480px) {
@@ -187,6 +193,7 @@
     .notes_display_sec {
         grid-template-columns: repeat(1, 1fr);
         padding: 0px 1rem;
+        padding-bottom: 5rem;
     }
 
 

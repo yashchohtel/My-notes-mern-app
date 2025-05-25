@@ -271,6 +271,24 @@
 
 }
 
+@media (max-width: 480px) {
+    /* phones */
+
+    /* navigation logo */
+    .nav_logo {
+        display: none;
+    }
+
+    .layout_btn {
+        display: none;
+    }
+
+    .nevigationMenu {
+        right: 80%;
+    }
+
+}
+
 @media (max-width: 410px) {
     /* phones */
 

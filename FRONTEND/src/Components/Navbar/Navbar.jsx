@@ -46,6 +46,8 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
     const isAccount = location.pathname === "/user-account";
     const isEmailVerify = location.pathname.startsWith("/verify-email");
     const isAdmin = location.pathname === "/admin-page";
+    const isImportent = location.pathname === "/important-notes";
+    const isDeleted = location.pathname === "/deleted-notes";
     const isPassRess = location.pathname.startsWith("/change-password");
 
     // -------------------------
@@ -244,7 +246,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                     </div>
 
                     {/* navigation icon */}
-                    {(!isAdmin || !isAccount || !isWelcome || !isRegister) &&
+                    {(isHome || isImportent || isDeleted) &&
                         <div className="navigationMenu_btn nav_btn_container" onClick={() => togleNavMenu()} ref={toggleBtnRef}>
 
                             {/* sun/moon icon */}
@@ -256,7 +258,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                     }
 
                     {/* searchbar icon */}
-                    {(!isAdmin || !isAccount || !isWelcome || !isRegister) &&
+                    {(isHome || isImportent || isDeleted || isAdmin) &&
                         <div className="searchbar_btn nav_btn_container" onClick={() => openSearchBar()}>
 
                             {/* sun/moon icon */}
