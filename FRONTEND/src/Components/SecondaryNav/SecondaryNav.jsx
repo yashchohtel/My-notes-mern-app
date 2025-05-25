@@ -67,7 +67,7 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                     {/* Add Note Button - Shown based on page location and notes length */}
                     {(isHome || (isImportant && notes.length === 0) || (isDeleted && notes.length === 0 && deletedNotes.length === 0)) && (
                         <button className="button_primary deleteAll-btn" onClick={openNoteFormCreate}>
-                            Add Note <FaPlus className="button-icon" />
+                            <span className='sev_nav_btn_name'> Add Note </span> <FaPlus className="button-icon" />
                         </button>
                     )}
 
@@ -81,7 +81,7 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                                 className="button_primary"
                                 disabled={isImportant && importantNotes.length === 0}
                             >
-                                Filter by <MdFilterAlt className="button-icon" />
+                                <span className='sev_nav_btn_name'>Filter by</span> <MdFilterAlt className="button-icon" />
                             </button>
 
                             <ul className="filter-options">
@@ -111,7 +111,7 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                             onClick={() => openConfirmBox(null, "unmark-imp")}
                             disabled={isImportant && importantNotes.length < 2}
                         >
-                            UNMARK ALL <IoBookmarkSharp className="button-icon" />
+                            <span className='sev_nav_btn_name'>UNMARK ALL</span> <IoBookmarkSharp className="button-icon" />
                         </button>
                     )}
 
@@ -122,7 +122,7 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                             onClick={() => handleAllDelete()}
                             disabled={isImportant && importantNotes.length < 2}
                         >
-                            DELETE ALL <MdDelete className="button-icon" />
+                            <span className='sev_nav_btn_name'>DELETE ALL</span> <MdDelete className="button-icon" />
                         </button>
                     )}
 
@@ -132,7 +132,7 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                             className="button_primary deleteAll-btn"
                             onClick={() => openConfirmBox(null, "secondaryNavResAll")}
                         >
-                            RESTORE ALL <MdRestoreFromTrash className="button-icon" />
+                            <span className='sev_nav_btn_name'>RESTORE ALL</span> <MdRestoreFromTrash className="button-icon" />
                         </button>
                     )}
 
@@ -142,7 +142,7 @@ const SecondaryNav = ({ title, count, openNoteFormCreate, openConfirmBox }) => {
                             className="button_primary deleteAll-btn"
                             onClick={() => openConfirmBox(null, "secondaryNavPermDelAllNote")}
                         >
-                            EMPTY BIN <MdDelete className="button-icon" />
+                            <span className='sev_nav_btn_name'>EMPTY BIN</span> <MdDelete className="button-icon" />
                         </button>
                     )}
 

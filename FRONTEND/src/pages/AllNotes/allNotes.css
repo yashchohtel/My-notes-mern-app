@@ -95,6 +95,7 @@
 }
 
 .no_notes {
+    width: 100%;
     text-align: center;
     margin-top: 10rem;
     font-size: 3rem;
@@ -168,8 +169,28 @@
     /* tablets */
 }
 
+@media (max-width: 650px) {
+    .notes_display_sec {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 510px) {
+    .no_notes {
+        font-size: 2rem;
+    }
+}
+
 @media (max-width: 480px) {
+
     /* phones */
+    .notes_display_sec {
+        grid-template-columns: repeat(1, 1fr);
+        padding: 0px 1rem;
+    }
+
+
+
 }
 
 @media (max-width: 360px) {

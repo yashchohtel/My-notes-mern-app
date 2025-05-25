@@ -82,10 +82,47 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         setShowSearch(true)
     }
 
-    // function to open searchbar
+    // function to close searchbar
     const closeSearchBar = () => {
         setShowSearch(false)
     }
+
+    // -------------------------
+
+    // state to show hide navigation menu
+    const [showNavMenu, setShowNavMenu] = useState(false);
+
+    // function to open NavMenu
+    const togleNavMenu = () => {
+        setShowNavMenu(!showNavMenu)
+    }
+
+    // function to close NavMenu
+    const closeNavMenu = () => {
+        setShowNavMenu(false)
+    }
+
+    // ------------------------
+
+    // refrence to close navigation menu on cick outside 
+    const navMenuRef = useRef(null);        // for .nevigationMenu
+    const toggleBtnRef = useRef(null);      // for .navigationMenu_btn
+
+    // effect ho close navmenu when clicked outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (navMenuRef.current && !navMenuRef.current.contains(event.target) &&
+                toggleBtnRef.current && !toggleBtnRef.current.contains(event.target)) {
+                closeNavMenu();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     // -------------------------
 
@@ -131,7 +168,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 {/* Left - Logo area */}
                 <div className="navbar__left" onClick={() => navigate("/")}>
                     <img src="/logo1.png" alt="logo" />
-                    <p>note nest</p>
+                    <p className='nav_logo'>note nest</p>
                 </div>
 
                 {/* searchBar */}
@@ -151,71 +188,84 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
                 <div className="navbar__right">
 
                     {/* navigation menu */}
-                    <div className="nevigationMenu">
+                    <div className={`nevigationMenu ${showNavMenu ? 'active' : ''}`} ref={navMenuRef}>
 
                         {/* All note button */}
                         {isHome &&
-                            <div className="allNotes_btn nav_btn_container responsive">
-
+                            <NavLink to="/home" end
+                                onClick={() => closeNavMenu()}
+                                className={({ isActive }) => `allNotes_btn nav_btn_container responsive ${isActive || location.pathname === "/home" ? "active" : ""}`}
+                            >
                                 {/* notes icon */}
-                                <NavLink to="/home" end
-                                    className={({ isActive }) => `navbar_circular_btn ${(isActive || location.pathname === "/home") ? 'active' : ''}`}>
+                                <div className="navbar_circular_btn">
                                     <FaRegNoteSticky />
-                                </NavLink>
+                                </div>
 
                                 {/* link name */}
-                                <p className='link_name'>ALL NOTES</p>
-
-                            </div>
+                                <p className="link_name">ALL NOTES</p>
+                            </NavLink>
                         }
 
                         {/* important note button */}
                         {isHome &&
-                            <div className="important_btn nav_btn_container responsive">
+                            <NavLink to="/home/important-notes"
+                                onClick={() => closeNavMenu()}
+                                className={({ isActive }) => `important_btn nav_btn_container responsive ${isActive ? 'active' : ''}`}>
 
                                 {/* star icon */}
-                                <NavLink to="/home/important-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <FaRegStar /> </NavLink>
+
+                                <div className='navbar_circular_btn'>
+                                    <FaRegStar />
+                                </div>
 
                                 {/* link name */}
                                 <p className='link_name'>IMPORTENT NOTES</p>
 
-                            </div>
+                            </NavLink>
                         }
 
                         {/* recucle bin button */}
                         {isHome &&
-                            <div className="recycle_btn nav_btn_container responsive">
+                            <NavLink to="/home/deleted-notes"
+                                onClick={() => closeNavMenu()}
+                                className={({ isActive }) => `recycle_btn nav_btn_container responsive ${isActive ? 'active' : ''}`}>
 
                                 {/* bin icon */}
-                                <NavLink to="/home/deleted-notes" className={({ isActive }) => `navbar_circular_btn ${isActive ? 'active' : ''}`}> <PiRecycleBold /> </NavLink>
+                                <div className='navbar_circular_btn'>
+                                    <PiRecycleBold />
+                                </div>
 
                                 {/* link name */}
                                 <p className='link_name'>DELETED NOTES</p>
 
-                            </div>
+                            </NavLink>
                         }
 
                     </div>
 
-                    {/* searchbar icon */}
-                    <div className="navigationMenu_btn nav_btn_container">
+                    {/* navigation icon */}
+                    {(!isAdmin || !isAccount || !isWelcome || !isRegister) &&
+                        <div className="navigationMenu_btn nav_btn_container" onClick={() => togleNavMenu()} ref={toggleBtnRef}>
 
-                        {/* sun/moon icon */}
-                        <div className="navbar_circular_btn">
-                            <HiOutlineMenuAlt1 />
+                            {/* sun/moon icon */}
+                            <div className="navbar_circular_btn">
+                                {showNavMenu ? <IoClose /> : <HiOutlineMenuAlt1 />}
+                            </div>
+
                         </div>
-
-                    </div>
+                    }
 
                     {/* searchbar icon */}
-                    <div className="searchbar_btn nav_btn_container" onClick={() => openSearchBar()}>
+                    {(!isAdmin || !isAccount || !isWelcome || !isRegister) &&
+                        <div className="searchbar_btn nav_btn_container" onClick={() => openSearchBar()}>
 
-                        {/* sun/moon icon */}
-                        <div className="navbar_circular_btn">
-                            <IoSearch />
+                            {/* sun/moon icon */}
+                            <div className="navbar_circular_btn">
+                                <IoSearch />
+                            </div>
+
                         </div>
-
-                    </div>
+                    }
 
                     {/* layout button */}
                     {isHome &&

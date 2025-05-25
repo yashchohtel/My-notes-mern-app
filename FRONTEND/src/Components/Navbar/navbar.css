@@ -6,6 +6,7 @@
     justify-content: space-between;
     width: 100%;
     padding: 1.5rem 2rem;
+    user-select: none;
 
     position: absolute;
     top: 0;
@@ -62,14 +63,25 @@
     height: 4rem;
     width: 4rem;
     border-radius: 50%;
-    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.responsive {
+    overflow: hidden;
+}
+
+.nav_btn_container.active {
+    border: 1.5px solid var(--text-color-primary-bright);
 }
 
 .link_name {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 600;
     font-family: var(--font-four);
     display: none;
+    color: var(--text-color-primary-light);
 }
 
 .navbar_circular_btn {
@@ -121,9 +133,7 @@
     background-color: var(--hover-primary);
 }
 
-.navbar_circular_btn.active {
-    border: 1.5px solid var(--text-color-primary-bright);
-}
+
 
 /* navbar curcular button icons */
 .navbar_circular_btn span {
@@ -222,6 +232,11 @@
         background: var(--bg-primary);
         padding: 2rem 1rem;
         border: 2px solid var(--border-dark);
+        display: none;
+    }
+
+    .nevigationMenu.active {
+        display: flex;
     }
 
     /* mevigation menu button*/
@@ -234,10 +249,11 @@
     }
 
     .responsive {
-        display: flex;
-        align-items: center;
         width: 100%;
-        gap: 1rem;
+        border-radius: 5px;
+        justify-content: flex-start;
+        gap: 2rem;
+        padding: 3rem 1rem;
     }
 
     .link_name {
@@ -246,19 +262,25 @@
 
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
     /* phones */
+
+    .navbar__right {
+        gap: 1rem;
+    }
+
+}
+
+@media (max-width: 410px) {
+    /* phones */
+
+    /* navigation logo */
+    .nav_logo {
+        display: none;
+    }
+
 }
 
 @media (max-width: 360px) {
     /* small phones */
 }
-
-/* display: none; */
-position: absolute;
-background: #a4a4a4;
-top: 119%;
-z-index: 2;
-padding: 1rem;
-border-radius: 4px;
-flex-direction: column;

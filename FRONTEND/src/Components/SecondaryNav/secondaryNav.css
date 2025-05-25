@@ -75,3 +75,47 @@
 .button-icon {
     font-family: 2rem;
 }
+
+
+@media (max-width: 1200px) {
+    /* large desktops */
+}
+
+@media (max-width: 1070px) {
+    /* laptop */
+}
+
+@media (max-width: 915px) {
+    /* tablets */
+
+}
+
+@media (max-width: 660px) {
+    /* phones */
+
+    .sec_nav_right {
+        gap: 1rem;
+    }
+
+}
+@media (max-width: 640px) {
+    /* phones */
+
+    /* secondary na btn */
+    .sev_nav_btn_name {
+        display: none;
+    }
+
+    .sec_nav_right {
+        gap: 1rem;
+    }
+
+}
+
+@media (max-width: 480px) {
+    /* phones */
+}
+
+@media (max-width: 360px) {
+    /* small phones */
+}

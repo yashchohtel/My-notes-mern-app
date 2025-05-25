@@ -293,8 +293,31 @@ img {
 
 }
 
-@media (max-width: 480px) {
-    /* phones */
+@media (max-width: 860px) {
+    /* tablets */
+
+    html {
+        font-size: 56.25%;
+        /* 1rem = 9px */
+    }
+
+}
+
+@media (max-width: 750px) {
+    /* tablets */
+
+    html {
+        font-size: 53.125%;
+        /* 1rem = 8.5px */
+    }
+
+}
+
+@media (max-width: 650px) {
+    html {
+        font-size: 50.125%;
+        /* 1rem = 8.5px */
+    }
 }
 
 @media (max-width: 360px) {
