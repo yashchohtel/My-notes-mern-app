@@ -235,10 +235,6 @@ img {
 }
 
 
-
-
-
-
 /* width */
 ::-webkit-scrollbar {
     width: 8px;
@@ -305,21 +301,20 @@ img {
 
 @media (max-width: 750px) {
     /* tablets */
-
-    html {
-        font-size: 53.125%;
-        /* 1rem = 8.5px */
-    }
-
 }
 
-@media (max-width: 650px) {
-    html {
-        font-size: 50.125%;
-        /* 1rem = 8.5px */
-    }
-}
 
 @media (max-width: 360px) {
     /* small phones */
 }
+
+
+
+
+
+
+@media (max-width: 1200px) { /* large desktops */ }
+@media (max-width: 1024px) { /* laptops */ }
+@media (max-width: 768px)  { /* tablets */ }
+@media (max-width: 480px)  { /* phones */ }
+@media (max-width: 360px)  { /* small phones */ }

@@ -98,6 +98,7 @@
     }
 
 }
+
 @media (max-width: 640px) {
     /* phones */
 
@@ -108,6 +109,10 @@
 
     .sec_nav_right {
         gap: 1rem;
+    }
+
+    .filter-options {
+        left: -160%;
     }
 
 }

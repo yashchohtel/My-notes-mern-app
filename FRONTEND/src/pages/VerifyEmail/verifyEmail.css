@@ -93,13 +93,38 @@
     text-align: center;
 }
 
-.otp_description span{
+.otp_description span {
     text-decoration: underline;
     cursor: pointer;
     margin-left: 0.5rem;
     color: var(--text-color-primary-bright);
 }
 
-.try_again{
+.try_again {
     color: var(--text-color-secondary-light);
+}
+
+@media (max-width: 1200px) {
+    /* large desktops */
+}
+
+@media (max-width: 1024px) {
+    /* laptops */
+}
+
+@media (max-width: 600px) {
+
+    /* tablets */
+    .otp_description span {
+        display: block;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* phones */
+}
+
+@media (max-width: 360px) {
+    /* small phones */
 }

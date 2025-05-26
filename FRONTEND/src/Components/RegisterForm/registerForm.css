@@ -6,6 +6,7 @@
     width: 100%;
     max-width: 45rem;
     color: #818cf8;
+    margin-top: -15rem;
 }
 
 .register_form h2 {
@@ -95,8 +96,34 @@
 
 }
 
-.loder{
+.loder {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@media (max-width: 1200px) {
+    /* large desktops */
+}
+
+@media (max-width: 1024px) {
+    /* laptops */
+}
+
+@media (max-width: 768px) {
+    /* tablets */
+}
+
+@media (max-width: 450px) {
+
+    /* phones */
+    .register_form {
+        width: 95%;
+        margin-top: -15rem;
+    }
+
+}
+
+@media (max-width: 360px) {
+    /* small phones */
 }

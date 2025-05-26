@@ -251,3 +251,53 @@
 .pro_edit_form .desc {
     font-size: 1.5rem;
 }
+
+@media (max-width: 1200px) {
+    /* large desktops */
+}
+
+@media (max-width: 1024px) {
+    /* laptops */
+}
+
+@media (max-width: 600px) {
+    /* tablets */
+
+    .userPrifile_section {
+        padding: 0 0rem;
+    }
+
+    .userPrifile_section .details {
+        flex-direction: column;
+        gap: 2rem;
+        padding-bottom: 2rem;
+        margin-bottom: 15rem;
+    }
+
+    .details .v-rule {
+        height: 5px;
+        width: auto;
+    }
+
+    .detail_display li {
+        margin-bottom: 1rem;
+    }
+
+    .detail_display li p {
+        margin-left: 0rem;
+        display: block;
+    }
+
+    .upload_image form {
+        width: 95%;
+    }
+
+}
+
+@media (max-width: 480px) {
+    /* phones */
+}
+
+@media (max-width: 360px) {
+    /* small phones */
+}

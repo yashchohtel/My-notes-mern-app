@@ -19,7 +19,7 @@ const Welcome = () => {
                 {/* welcome page content */}
                 <div className="welcomePage__content">
 
-                    <h1> "Capture Your Thoughts Effortlessly "</h1>
+                    <h1> <span className='quote'>"</span> Capture Your Thoughts Effortlessly <span className='quote'>"</span></h1>
 
                     <img src="/pen.png" alt="png" />
 

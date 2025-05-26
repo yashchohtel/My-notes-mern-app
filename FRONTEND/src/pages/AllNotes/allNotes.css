@@ -193,7 +193,7 @@
     .notes_display_sec {
         grid-template-columns: repeat(1, 1fr);
         padding: 0px 1rem;
-        padding-bottom: 5rem;
+        padding-bottom: 10rem;
     }
 
 

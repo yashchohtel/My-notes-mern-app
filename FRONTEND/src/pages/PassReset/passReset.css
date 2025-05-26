@@ -28,3 +28,18 @@
     justify-content: center;
     color: var(--text-color-primary-bright);
 }
+
+@media (max-width: 450px) {
+
+    /* phones */
+
+    .send_otp_container {
+        width: 95%;
+        margin-top: -15rem;
+    }
+
+    .button {
+        width: 70%;
+    }
+
+}
