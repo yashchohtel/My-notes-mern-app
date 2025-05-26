@@ -15,9 +15,9 @@ import useSearch from '../../hooks/useSearch';
 const AllNotes = () => {
 
     // getting required Data from global store using useSelector
-    const { notes, loading: notesLoading, filteredNote, isFilterActive } = useSelector((state) => state.notes);
+    const { notes, loading: notesLoading, filteredNote, isFilterActive, importantLoading } = useSelector((state) => state.notes);
     const { noteViewType } = useSelector((state) => state.theme);
-
+    
     // getting all required state and actions functions to perform actions
     const {
 
@@ -146,6 +146,7 @@ const AllNotes = () => {
                                             markImportant={markImportant}
                                             openNoteFormEdit={openNoteFormEdit}
                                             openConfirmBox={openConfirmBox}
+                                            notesLoading={notesLoading}
                                         />
                                     ))
                                 )

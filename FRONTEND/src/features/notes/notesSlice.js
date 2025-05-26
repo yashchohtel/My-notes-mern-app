@@ -13,6 +13,9 @@ const initialState = {
     // loading
     loading: false,
 
+    // important loading
+    importantLoading: false,
+
     // messages
     error: null,
     successMessage: null,
@@ -157,11 +160,13 @@ const notesSlice = createSlice({
 
             // MARK NOTE IMPORTANT
             .addCase(markNoteImportant.pending, (state) => {
-                state.loading = true;
+                state.loading = true
+                state.importantLoading = true;
                 state.error = null;
                 state.successMessage = null;
             })
             .addCase(markNoteImportant.fulfilled, (state, action) => {
+                state.importantLoading = false;
                 state.loading = false;
                 const noteIndex = state.notes.findIndex(note => note._id === action.payload.note._id);
                 if (noteIndex !== -1) {
@@ -176,11 +181,13 @@ const notesSlice = createSlice({
 
             // MARK NOTE UNIMPORTANT
             .addCase(markNoteUnimportant.pending, (state) => {
+                state.importantLoading = true;
                 state.loading = true;
                 state.error = null;
                 state.successMessage = null;
             })
             .addCase(markNoteUnimportant.fulfilled, (state, action) => {
+                state.importantLoading = false;
                 state.loading = false;
                 state.successMessage = action.payload.message;
             })

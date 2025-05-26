@@ -42,6 +42,7 @@
     flex-direction: column;
     gap: 1.5rem;
     position: relative;
+    height: 50rem;
 }
 
 .notesForm input {
@@ -68,6 +69,7 @@
     word-spacing: 0.07rem;
     letter-spacing: 0.01rem;
     resize: none;
+    height: 100%;
 }
 
 .notesForm .close_model {

@@ -7,11 +7,12 @@ import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useSelector } from 'react-redux';
+import { CgSpinner } from 'react-icons/cg';
 
 const ViewFullNote = ({ fullViewNoteId, closeViewModal, markImportant, openNoteFormEdit, openConfirmBox }) => {
 
     // getting required Data from global store using useSelector
-    const { notes } = useSelector((state) => state.notes);
+    const { notes, importantLoading } = useSelector((state) => state.notes);
 
     // getting note via id to display full screen
     const noteDataToFullView = notes.find((note) => note._id === fullViewNoteId);
@@ -52,7 +53,11 @@ const ViewFullNote = ({ fullViewNoteId, closeViewModal, markImportant, openNoteF
                 <div className="action_btn">
 
                     <span className='action important' onClick={() => markImportant(_id)}>
-                        {isImportant ? <FaStar /> : <FaRegStar />}
+                        {importantLoading ? (
+                            (<span className='loder'> <CgSpinner size={25} /> </span>) // replace this with your actual spinner
+                        ) : (
+                            isImportant ? <FaStar /> : <FaRegStar />
+                        )}
                     </span>
 
                     <span className='action edit' onClick={() => openNoteFormEdit(_id)}>

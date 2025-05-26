@@ -39,7 +39,7 @@ const NoteCard = ({ note, viewFullNote, markImportant, openNoteFormEdit, openCon
                         {/* important mark */}
                         {(isHomePage || isImportantPage) &&
                             <span className='act_btn important' onClick={() => markImportant(_id)}>
-                                {isImportant ? <FaStar /> : <FaRegStar />}
+                                { isImportant ? <FaStar /> : <FaRegStar /> }
                             </span>
                         }
 
@@ -73,7 +73,7 @@ const NoteCard = ({ note, viewFullNote, markImportant, openNoteFormEdit, openCon
 
                         {/* delete notes permanent*/}
                         {isDeletedPage &&
-                            <span className='act_btn delete' onClick={() => openConfirmBox(_id,"permDelNote")}>
+                            <span className='act_btn delete' onClick={() => openConfirmBox(_id, "permDelNote")}>
                                 <MdDelete />
                             </span>
                         }
