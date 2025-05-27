@@ -2,7 +2,7 @@ import { Route, Routes, useNavigate } from "react-router-dom"
 import Welcome from "./pages/Welcome/Welcome"
 import Register from "./pages/Register/Register"
 import Home from "./pages/Home/Home"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUser } from "./features/auth/authThunks";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
@@ -32,6 +32,29 @@ function App() {
   // configure dispatch use to dispatch actions
   const dispatch = useDispatch();
 
+  // ---------------------------
+
+  // state to store the toast position
+  const [toastPosition, setToastPosition] = useState('bottom-right');
+
+  useEffect(() => {
+
+    const handleResize = () => {
+      if (window.innerWidth <= 400) {
+        setToastPosition('top-right');
+      } else {
+        setToastPosition('bottom-right');
+      }
+    };
+
+    handleResize(); // initial check
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   // load user data and auth state
   useEffect(() => {
     dispatch(loadUser());
@@ -54,11 +77,13 @@ function App() {
     }
   }, [themeType]);
 
+
+
   return (
     <>
 
       {/* to show toast notification */}
-      <ToastContainer position="bottom-right" toastClassName="my_toast" autoClose={2000} theme='dark' />
+      <ToastContainer position={toastPosition} toastClassName="my_toast" autoClose={2000} theme='dark' />
 
       <Routes>
 

@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { resetPassword, sendPasswordResetOtp } from '../../features/auth/authThunks'
 import { clearMessages } from '../../features/auth/authSlice'
+import { MdPassword } from "react-icons/md";
+import { TbLockPassword } from "react-icons/tb";
+
 
 const PassReset = () => {
 
@@ -32,10 +35,6 @@ const PassReset = () => {
         otp: "",
         newPassword: "",
     });
-
-    console.log(formData.email);
-    console.log(formData.otp);
-    console.log(formData.newPassword);
 
     // function to handle form data change
     const handleInputChange = (e) => {
@@ -144,7 +143,7 @@ const PassReset = () => {
                             />
                         </div>
                         <div className="input_group">
-                            <span> <MdOutlineEmail /> </span>
+                            <span> <MdPassword /> </span>
                             <input
                                 type="number"
                                 placeholder="Enter otp"
@@ -156,7 +155,7 @@ const PassReset = () => {
                             />
                         </div>
                         <div className="input_group">
-                            <span> <MdOutlineEmail /> </span>
+                            <span> <TbLockPassword /> </span>
                             <input
                                 type="text"
                                 placeholder="Enter new 8 digit pass"
