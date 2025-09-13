@@ -1,3 +1,5 @@
+
+
 **# Notes App Features - Detailed Summary**
 
 ## **1. Frontend Features (Client-Side Only)**
